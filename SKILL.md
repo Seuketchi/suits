@@ -21,7 +21,7 @@ A **seam** is the public boundary you test at: the interface where you observe b
 
 **Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user. Write no test at an unconfirmed seam. You can't test everything; agreeing seams up front puts the effort on critical paths and complex logic instead of every edge case.
 
-Ask: "What's the public interface, and which seams should we test?"
+Ask: "What's the public interface, and which seams should we test?" With each seam you propose, say in one line what a test there catches and what it misses.
 
 When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface exposes), call the Skill tool with "codebase-design" for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms: a reference to consult, not a session to run.
 

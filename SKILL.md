@@ -28,6 +28,8 @@ Hold back a question whose answer depends on another question in the same round.
 ❓ **Q2** - ...
 ```
 
+Word each question so that "yes" accepts your recommended answer.
+
 ## Facts versus decisions
 
 - **Facts are yours.** If a question needs a fact you can look up (files, tools, docs), send a sub-agent to find it. Never ask the user for it.

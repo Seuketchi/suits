@@ -18,17 +18,17 @@ Hold back a question whose answer depends on another question in the same round.
 
 ## Format
 
+One table per round, one row per question:
+
 ```
-❓ **Q1** - **<title>**: <the question, with the options if there are any>
-
-➡️ <your recommended answer>
-
----
-
-❓ **Q2** - ...
+| # | Question | My pick | Why |
+| --- | --- | --- | --- |
+| 1 | <short question; options inline: "A or B?"> | <your recommended answer> | <one clause> |
+| 2 | ... | ... | ... |
 ```
 
-Word each question so that "yes" accepts your recommended answer.
+- Keep each cell to one line. A question that needs more context gets one sentence under the table, prefixed with its number.
+- Word each question so that "yes" accepts your pick.
 
 ## Facts versus decisions
 

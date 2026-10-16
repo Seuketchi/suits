@@ -66,7 +66,7 @@ Iterate until the user approves the breakdown.
 Publish the approved tickets to the tracker `/mise` configured. The tickets are the same either way; only the shape of the blocking edges changes:
 
 - **Local files** → one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket template below: one ticket per file, never one combined file.
-- **A real issue tracker (GitHub, Linear, …)** → one issue per ticket, in dependency order (blockers first), so blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to its blocking issues. Apply the `ready-for-agent` triage label unless told otherwise; the tickets are agent-grabbable by construction.
+- **A real issue tracker (GitHub, Linear, …)** → one issue per ticket, in dependency order (blockers first), so blocking edges can reference real identifiers. Use the platform's native blocking relationship where it has one; otherwise set each ticket's "Blocked by" to its blocking issues. When the work was cut from an existing issue, make each ticket a sub-issue of it, with the operation the tracker doc gives. Apply the `ready-for-agent` triage label unless told otherwise; the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain, that's top to bottom.
 
@@ -104,7 +104,7 @@ The end-to-end behaviour this ticket makes work, from the user's perspective, no
 
 ## Blocked by
 
-- A reference to each blocking ticket, or "None (can start immediately)".
+- A reference to each blocking ticket, or "None (can start immediately)". Leave this section out when the blockers are native edges, so they aren't recorded twice.
 
 </issue-template>
 

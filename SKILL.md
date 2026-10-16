@@ -10,7 +10,7 @@ Review the diff between `HEAD` and a fixed point the user supplies, along two ax
 
 Each axis runs in its own **parallel sub-agent**, so neither pollutes the other's context. This skill then aggregates their findings.
 
-The issue tracker should have been provided to you. If `docs/agents/issue-tracker.md` is missing, tell the user to run `/mise`.
+The issue tracker should have been provided to you. If it wasn't, tell the user to run `/mise`.
 
 ## Process
 
@@ -24,14 +24,14 @@ The issue tracker should have been provided to you. If `docs/agents/issue-tracke
 
 Look for the originating spec in this order:
 
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in `docs/agents/issue-tracker.md`.
+1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in the tracker doc.
 2. A path the user passed as an argument.
 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
 4. Nothing found: ask the user where the spec is. If there isn't one, the **Spec** sub-agent skips and reports "no spec available".
 
 ### 3. Identify the standards sources
 
-Collect anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
+Search the repo for every file that documents how code should be written. A `CODING_STANDARDS.md` or `CONTRIBUTING.md` that exists is always on the list.
 
 The Standards axis always adds the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when the repo documents nothing. Two rules bind it:
 
@@ -54,6 +54,8 @@ Each smell reads *what it is* → *how to fix*. Match each against the diff:
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
 ### 4. Spawn both sub-agents in parallel
+
+Start both sub-agents in one go, in the foreground, and aggregate the reports they return.
 
 **Standards sub-agent prompt** includes:
 

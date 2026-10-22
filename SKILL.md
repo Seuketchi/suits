@@ -17,7 +17,7 @@ You need the issue tracker and the triage label vocabulary. If you weren't given
    - Use the highest seam possible. Propose any new seam at the highest point you can.
    - Fewer seams is better; the ideal is one.
 
-   Done when the user confirms the seams match their expectations.
+   Done when the seams are proposed. If the user is here, ask them to confirm; if they are away, don't wait: write the seams into the spec as proposed and go on.
 
 3. **Write and publish.** Write the spec from the template below and publish it to the project issue tracker. Apply the `ready-for-agent` triage label; it needs no further triage.
 

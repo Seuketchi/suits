@@ -206,7 +206,22 @@ describe("the voice", () => {
 });
 
 describe("the READMEs say who calls each tool", () => {
-  const tools = readdirSync(join(root, "skills/tools"), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name);
+  // A user-invoked tool has no caller: the owner starts it. Both READMEs must list it under User-invoked instead.
+  const allTools = readdirSync(join(root, "skills/tools"), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name);
+  const userInvoked = (t) => /^disable-model-invocation:\s*true$/m.test(frontmatter(read("skills/tools", t, "SKILL.md")));
+  const tools = allTools.filter((t) => !userInvoked(t));
+  const userBlock = (text) => text.split(/^#{2,3} /m).find((b) => b.startsWith("User-invoked")) ?? "";
+
+  for (const tool of allTools.filter(userInvoked)) {
+    test(`${tool}: user-invoked, so both READMEs list it under User-invoked and not under Model-invoked`, () => {
+      const rootReadme = read("README.md");
+      const toolsReadme = read("skills/tools/README.md");
+      assert.match(userBlock(rootReadme), new RegExp(`^- \`${tool}\`: `, "m"), "README.md");
+      assert.match(userBlock(toolsReadme), new RegExp(`^- \\*\\*\\[${tool}\\]\\(\\./${tool}/SKILL\\.md\\)`, "m"), "skills/tools/README.md");
+      assert.doesNotMatch(rootReadme.split(/^#{2,3} Model-invoked/m)[1] ?? "", new RegExp(`^- \`${tool}\``, "m"), "README.md model-invoked");
+      assert.doesNotMatch(toolsReadme.split(/^## Model-invoked/m)[1] ?? "", new RegExp(`\\[${tool}\\]\\(`), "tools README model-invoked");
+    });
+  }
   // A character calls a tool when the tool is in its When to call table.
   const callersOf = (tool) =>
     characters.filter((c) => named(section(read("skills/characters", c, "SKILL.md"), "When to call")).includes(tool)).sort();

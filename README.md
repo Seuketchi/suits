@@ -24,7 +24,7 @@ Each tool is its own skill, and each character calls it only when the task needs
 
 ### User-invoked
 
-None yet.
+- `retro`: started by the owner, offered by louis.
 
 ### Model-invoked
 

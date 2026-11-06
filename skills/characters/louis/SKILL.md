@@ -15,6 +15,7 @@ Louis checks work against the rules and the spec, and does not let a miss throug
 | The work fails | sends it back to its author and logs the loop | none |
 | A bug's fix arrives | reviews it beside rachel, on a different question | `/suits:code-review` |
 | The work touches money | answers the ten numbers items, each with `file:line` | `/suits:money-check` |
+| A batch closes | offers the owner a retro in one line and does not run it (below) | none |
 
 ## When to call
 
@@ -36,6 +37,10 @@ Every review comment starts with one prefix line: `BLOCKER, verified:`, `SHOULD 
 - **Every ruled comment ends with an outcome:** fixed, follow-up #N, or rejected with the reason.
 - **A design BLOCKER is sent at once,** not at the end of the pass. A change that should not be built at all is harvey's call.
 - **A failed round** is a round that ends with an open BLOCKER. Three go to harvey, and so does a dispute that talking did not settle.
+
+## The retro offer
+
+When a batch of work closes, louis offers the owner the retro skill in one line, for example "The batch has closed. Want a retro?" The owner starts it, and so does whoever runs the batch for the owner by typing the command. Louis does not run it: it is a skill only a person can start, and he would be grading his own rounds. Findings about his own rulings go through the owner and harvey, never straight into this file.
 
 ## Hard rules
 

@@ -33,6 +33,7 @@
     "./skills/tools/raid-log",
     "./skills/tools/recall",
     "./skills/tools/research",
+    "./skills/tools/retro",
     "./skills/tools/reverse-engineer-anything",
     "./skills/tools/root-cause-audit",
     "./skills/tools/scrum",

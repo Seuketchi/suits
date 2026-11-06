@@ -44,11 +44,11 @@ When the user provides a specific claim that needs a citation:
 When the user provides a topic or keyword for literature review:
 
 1. Search broadly: `[topic] survey OR review [year range] site:arxiv.org OR site:ieeexplore.ieee.org`
-2. Also search: `[topic] state of the art [year] edge OR embedded OR MCU` (adjust domain terms to thesis context)
+2. Also search: `[topic] state of the art [year]` (adjust the domain terms to the topic)
 3. Find at least 5 papers; aim for a mix of:
    - 1–2 foundational/survey papers (can be older)
    - 2–3 recent papers (last 3 years preferred)
-   - 1 paper from a venue the thesis adviser would recognize (IEEE, ACM, Springer, Elsevier)
+   - 1 paper from a venue the reader would recognize (IEEE, ACM, Springer, Elsevier)
 4. Verify each via WebFetch before including
 5. Return in output format
 
@@ -72,11 +72,6 @@ When the user says a thesis section is missing citations:
 - If a paper title appears in search results but the link is paywalled and no abstract is visible, note it as **Potentially valid — abstract not confirmed**.
 - Prefer DOI links over plain URLs. If a DOI is visible in search results, include it.
 - Prefer papers with clear authorship (named authors, not just "et al." in the snippet).
-- For the edge-RL thesis specifically, prioritize sources from:
-  - IEEE Transactions on Industrial Electronics / Neural Networks / Embedded Systems
-  - ACM Transactions on Embedded Computing Systems
-  - arXiv cs.LG, cs.RO, cs.SY
-  - ICRA, IROS, NeurIPS, ICLR, ECCV (for RL/vision methods)
 
 ---
 
@@ -103,5 +98,4 @@ Group results as:
 
 - Do not fabricate DOIs, page numbers, or volume numbers — only include what was visible in the search result or fetched page.
 - If you find a paper that seems perfect but cannot confirm its abstract, say so explicitly rather than including it as verified.
-- When the thesis topic (edge AI, RL, MCU, tomato ripening) is involved, check that the paper's domain actually overlaps — a general RL paper is weaker evidence for an MCU deployment claim than an edge-specific one.
-- After returning results, offer to run the thesis-checker on any section that uses the newly found citations.
+- Check that the paper's domain actually overlaps the claim. A general result is weaker evidence for a specific deployment than a paper on that deployment.

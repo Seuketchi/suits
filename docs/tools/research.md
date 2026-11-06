@@ -6,7 +6,7 @@ It does not answer you in the conversation. The output is a file at `docs/findin
 
 ## When to reach for it
 
-Type `/source`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task turns into reading legwork.
+Type `/research`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task turns into reading legwork.
 
 Reach for it when the next step is *finding something out* from outside the working directory (how a third-party API behaves, what a spec actually says, whether a version claim holds), and you'd rather not stall your own thread doing the reading. What you need decides which skill:
 
@@ -15,8 +15,7 @@ Reach for it when the next step is *finding something out* from outside the work
 | An external fact a decision is waiting on | `research` |
 | A decision made *with* you, by interview | [grilling](https://aihero.dev/skills-grilling) |
 | A durable architecture decision, written into `CONTEXT.md` and ADRs | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
-| To find out whether an approach works in your codebase | [sample](https://aihero.dev/skills-prototype) |
-| A plan too big to hold in one session | [banquet](https://aihero.dev/skills-banquet) |
+| To find out whether an approach works in your codebase | [prototype](https://aihero.dev/skills-prototype) |
 
 The line between `research` and `grill-with-docs` is the **shelf life of what comes back**. Research produces short-lived assets: what this library's auth mechanism does as of this week. An ADR records a decision you keep. If what you are producing is a decision rather than a fact, you are [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling), not researching.
 
@@ -56,10 +55,6 @@ You can, and a two-line prompt saying exactly that was the practice this skill r
 
 There is no stopping criterion in the skill, and this shows up as two complaints that look opposite but are the same gap: agents that go far too deep, and agents that cover a topic broadly while missing the one specific detail that mattered. One practitioner put it as "deep-research skills are a bit too deep sometimes. And telling an agent to research usually results in missing crucial details." Scoping is on you. A narrow, answerable question (one API, one behaviour, one version claim) comes back far better than "research X".
 
-**`/banquet` created research tickets. Do I resolve those myself?**
-
-No, it now fires them for you. In the unreleased changes since v1.1, a charting session spawns a `/source` subagent per research ticket and burns them down in parallel, capturing findings on a throwaway `research/<name>` branch with a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) from the ticket. Research tickets are the one exception to banquet's one-ticket-per-session rule, because they are [AFK](https://www.aihero.dev/ai-coding-dictionary/afk): nothing waits on you. One known snag with those branches: deleting one later breaks the context pointers the tickets hold.
-
 ## It's working if
 
 - Your own session keeps going. If you are sitting watching it read, the delegation didn't happen.
@@ -70,4 +65,4 @@ No, it now fires them for you. In the unreleased changes since v1.1, a charting 
 
 ## Where it fits
 
-A reach-for-it-anytime standalone that feeds the thinking skills rather than sitting in the build chain. Its file is something to take *into* the flow: [grilling](https://aihero.dev/skills-grilling) and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) ask sharper questions when the facts are already on the table, and [recipe](https://aihero.dev/skills-to-spec) can synthesise against it. [banquet](https://aihero.dev/skills-banquet) is the one skill that invokes it directly, resolving each research ticket on its map with a `/source` subagent. For the whole map, see [ask-matt](https://aihero.dev/skills-ask-matt).
+A reach-for-it-anytime standalone that feeds the thinking skills rather than sitting in the build chain. Its file is something to take *into* the flow: [grilling](https://aihero.dev/skills-grilling) and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) ask sharper questions when the facts are already on the table, and [to-spec](https://aihero.dev/skills-to-spec) can synthesise against it.

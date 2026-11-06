@@ -22,7 +22,9 @@ It fails before the fix and fails because of the named cause.
 
 ## It's working if
 
-- The test was seen to fail before the code was written.
+- The test was seen to fail before the code was written, and the whole suite passes.
+- The hand-over has the two command lines (`new test failed before`, `suite passes`) and says done or partial.
+- A commit states the problem, the cause, the one change and the check.
 - A bug fix addresses the cause rachel named.
 - Each associate touched only the files its ticket owns.
 - Three failed fixes stopped the work and went to harvey.

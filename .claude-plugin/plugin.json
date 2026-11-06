@@ -8,8 +8,10 @@
   "license": "MIT",
   "skills": [
     "./skills/characters/harvey",
+    "./skills/characters/louis",
     "./skills/characters/mike",
     "./skills/characters/rachel",
+    "./skills/tools/code-review",
     "./skills/tools/codebase-design",
     "./skills/tools/domain-modeling",
     "./skills/tools/findings",

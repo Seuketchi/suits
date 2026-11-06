@@ -23,7 +23,9 @@ She offers you a `/rabbit-hole` on it and never starts one.
 ## It's working if
 
 - Each finding is tagged found, not found or inferred, with a source.
-- A bug gets a cause and three directions before a fix.
+- A bug gets a trigger and its causes, with four questions answered or marked not found, before a fix.
+- No cause ends on a person or "human error".
+- Her findings end in typed items for you to assign: prevent, sweep, redesign, detect or mitigate.
 - She tells you at once on a trigger, and harvey's verdict is on the same thread.
 - She skips the tools that do not apply, without comment.
 - She changes no file.

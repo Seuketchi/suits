@@ -1,44 +1,46 @@
-# What rachel copies: real roles and real teams
+# What rachel copies: real root-cause reports, not a single culprit
 
-Rachel checks what is true outside our code, and what is behind a bug. This page names where that comes from.
+**Verdict: change "the cause" to "causes" (a trigger plus the conditions that let it hurt), and add a fourth question, "why was it not caught earlier"; every real report opened has both, and rachel's SKILL.md has neither.**
+How it was read. VERIFIED (fetch) = a fetch agent opened the page and reported its headings and wording; the output is a model extraction, not raw HTML. VERIFIED (read) = I read the text myself from the downloaded PDF. UNCONFIRMED = not read. No company data was used.
 
-Drawn from the research notes of 6 November 2026 (`cast-rrl.md` and `team-work-rrl.md`). The sources below were read for those notes; they were not re-read for this page. VERIFIED means the sentence was read on the page named. UNCONFIRMED means a summary only, a conflict, or not found.
+## What the real ones do
 
-## From the show
+| Kind | Artifact | What it does | What rachel should copy |
+| --- | --- | --- | --- |
+| Postmortem template | [Google SRE, Example Postmortem](https://sre.google/sre-book/example-postmortem/) VERIFIED (fetch). "Under normal circumstances, the rate of task failures due to resource leaks is low enough to be unnoticed." | Fields: Summary, Impact, Root Causes, Trigger, Resolution, Detection, Action Items (Type / Owner / Bug), Lessons Learned (went well, went wrong, where we got lucky), Timeline. Trigger and causes are separate fields. | Separate trigger from causes; a Detection field; action items typed mitigate / prevent / process / other, each with an owner and a bug. |
+| Postmortem culture | [Google SRE ch. 15](https://sre.google/sre-book/postmortem-culture/) VERIFIED (fetch). "Writing a postmortem is not punishment—it is a learning opportunity for the entire company." | Goal is that "all contributing root cause(s) are well understood". Review asks whether the root cause is "sufficiently deep". | Plural causes; a depth test on review. No required owner or date fields on this page. |
+| Essay on failure | [Cook, How Complex Systems Fail](https://how.complexsystems.fail/) VERIFIED (fetch). "Post-accident attribution to a 'root cause' is fundamentally wrong." | 18 points. Point 3: each small failure is necessary, only the combination is sufficient. Point 8: hindsight biases the review. Point 5: reviews find earlier "proto-accidents". | Never one cause as fact. Warn that she reads with hindsight. Look for earlier near-misses (same flaw, earlier symptom). |
+| Public postmortem | [GitLab, database outage of 31 Jan 2017](https://about.gitlab.com/blog/postmortem-of-database-outage-of-january-31/) VERIFIED (fetch). "An ideal environment is one in which you can make mistakes but easily and quickly recover from them" (emphasis dropped). | Timeline, a section on each broken recovery procedure, then 5 Whys per problem: 5 whys for "down 18 hours", 8 for "restore took 18 hours". The whys end at process (no one owned backup testing, failure emails rejected), not at the engineer. 15 linked issues, among them "Assign an owner for data durability" and "Disaster recovery for everything that is not the database". | Whys that end on a missing owner, check or test. Two problems, two chains (the bug, and why recovery was slow). A sideways issue filed beyond the one system. Questions the single-primary design (back up). No dates, no owners on the issues. |
+| Public postmortem | [GitHub, 21 Oct 2018 post-incident analysis](https://github.blog/news-insights/company-news/oct21-post-incident-analysis/) VERIFIED (fetch). "tighter operational controls or improved response times are insufficient safeguards for site reliability" | Background, minute-level timeline, next steps (technical, organisational). Never says "root cause"; calls it a chain of events with several contributing factors. Config of Orchestrator is changed, and the design moves to active/active. | A guardrail or "be faster" fix is not a design fix: say which one the proposed fix is. Next steps have no owners or dates here. |
+| Provider summary | [AWS, S3 disruption, 28 Feb 2017](https://aws.amazon.com/message/41926/) VERIFIED (fetch). "We are also auditing our other operational tools to ensure we have similar safety checks." | A mistyped input is the trigger; the tool allowing too much removal too fast is the flaw. Fixes: the tool (back up), an audit of other tools (sideways), a status dashboard that no longer depends on S3 (sideways, other dependency). Timeline present. | Sideways as an audit with a named scope. A trigger is not a cause: the typo was human, the missing limit was the flaw. |
+| Provider summary | [Cloudflare, 2 Jul 2019](https://blog.cloudflare.com/cloudflare-outage/) VERIFIED (fetch) but only a placeholder plus one update, not the full postmortem. "Our testing processes were insufficient in this case." | Trigger (rule deploy), cause (regex CPU spike), contributing factor (deployed globally in one go), minute timeline. States the testing gap; no concrete fixes in this text. | Naming the testing gap as a finding of its own, even when no fix is yet known. |
+| Facilitation guide | [Etsy Debriefing Facilitation Guide, 2016](https://extfiles.etsy.com/DebriefingFacilitationGuide.pdf) VERIFIED (read, pdftotext). "One rule of thumb as you facilitate is to steer clear of asking people “why” and substitute “how” instead." | Build the timeline first, remediations only after it is agreed (early fixes are often made moot by the full timeline). Warns of a "dashboard trap": a new graph as the fix is a sign to dig deeper. Success test: someone learned one thing that changes how they work. | Timeline before cause. A fix that only adds a check someone must watch is a signal to dig deeper. "How was it possible" over "why". |
+| Criticism of 5 Whys | [Allspaw, The Infinite Hows](https://www.kitchensoap.com/2014/11/14/the-infinite-hows/) VERIFIED (fetch). "The Five Whys is such an approach that I think we should discard." | Says a "why" chain assumes too much about each answer, tends toward "who", and stops looking once a root cause is "found". | Do not present a single chain as the analysis; keep the directions parallel. |
+| Method summary (secondary) | [Wikipedia, Five whys](https://en.wikipedia.org/wiki/Five_whys) VERIFIED (fetch), secondary. "Tendency for investigators to stop at symptoms rather than going on to lower-level root causes." | Lists criticisms: arbitrary depth, not repeatable, isolates a single cause, limited by the investigator's knowledge. | A stopping rule that is not a count (see 6). Only a lead, not primary. |
+| Regulator procedure | [NRC Inspection Procedure 71152](https://www.nrc.gov/reading-rm/doc-collections/insp-manual/inspection-procedure/ip71152.pdf) VERIFIED (read, pdftotext); the file is the 09/08/03 issue and may be superseded. "Consideration of extent of condition, generic implications, common cause, and previous occurrences." | Attributes an inspector checks in a plant's problem handling: complete identification; extent of condition; root and contributing causes ("only assessed for significant conditions"); actions "appropriately focused to correct the problem"; interim actions until the permanent one lands. It lists extent of condition but does not define it. | "Sideways" is a recognised step. Depth scales with significance (matches her rule 5). A fix check with interim vs permanent. |
 
-- Paralegal at the firm, later "handles the entire case on Mike's behalf". VERIFIED, [List of Suits characters](https://en.wikipedia.org/wiki/List_of_Suits_characters).
-- Not found: any sentence that shows Rachel researching or looking outside the firm. The research link comes from the profession, not the character. The show gives her a stronger action: handing a delegated task through end to end, which is why she owns a bug's cause from the first look to the check of the fix. UNCONFIRMED as a show fact.
+## What is dropped, and the check that holds it
 
-## From the real job
+| Pattern | Why it is out | Check |
+| --- | --- | --- |
+| One root cause as fact: "the root cause is", "the only cause" | Cook point 7; GitHub and GitLab list several | Fail a finding that uses those phrases without a tag, or that has one cause line and no trigger line. Checkable (grep + shape). |
+| Blaming a person or "human error" as a cause | Etsy; Allspaw; SRE | Fail on cause lines matching `human error|careless|forgot|should have|mistake by|negligen|[name] wrote`. Checkable as a heuristic, with false positives; not checkable for subtler blame. |
+| A why-chain that ends on a person or a symptom | Wikipedia criticism; Allspaw | Not checkable. Partial: the last line of a chain must not match the blame list above. |
+| "Nothing found" for sideways with no search named | NRC extent of condition; AWS audit | Fail a "not found" in sideways unless it has a `searched:` line with a pattern or path. Checkable. |
+| A direction missing from the finding | Real reports fill every field or say none | Fail unless all four headings carry a tag or "nothing found". Checkable. |
+| Guardrail-only fix to a design cause | GitHub; Etsy dashboard trap | Warn when every back-up item is alert, doc, reminder or dashboard. Heuristic only. |
+| Action item with no type or "owner to assign" | SRE table; GitLab owner issue | Fail an item row missing type. Checkable. |
+| An inferred finding with no "to confirm" | Cook point 8 | Fail an `inferred` tag without a `to confirm:` clause. Checkable. |
+| A fixed number of whys as the method | Wikipedia criticism | Not checkable. |
+| Invented source or quote | her hard rule 6 | Checkable only by re-fetching; not in a node test. |
 
-- Paralegals, on [O*NET OnLine](https://www.onetonline.org) (23-2011.00), assist lawyers "by investigating facts, preparing legal documents, or researching legal precedent".
-- The Bureau of Labor Statistics lists conducting legal research and drafting documents, and the qualities of research skills, attention to detail and organisation.
-- NALA: a paralegal does not "give legal opinions or advice". She reports what she found and leaves the decision to others.
+## Not seen
 
-## From how real teams work
-
-- **Inquiry, not blame.** [DORA capabilities](https://dora.dev/capabilities/) (generative culture): "Failure leads to inquiry". Google's postmortem practice asks for "the contributing causes of the incident without indicting any individual or team". Her audit asks what design made the bug possible, not who wrote it.
-- **Safe to report.** Edmondson (1999): team psychological safety predicts learning behaviour. She reports what she did not find as readily as what she found.
-- **Facts first.** [Google engineering practices, code review](https://google.github.io/eng-practices/review/reviewer/standard.html): technical facts and data overrule opinions.
-- **Primary sources.** Her research rule: official docs, source code, specs and first-party APIs, cited per claim.
-
-## What is dropped
-
-- Nothing from the show's drama. She is sceptical of claims and says what is sourced.
-
-## Not verified
-
-- The three directions of the root-cause look (deeper, sideways, back up) are the owner's design, taken from the `rabbit-hole` skill. They are not from a published source.
-- The root-cause audit tool is not built yet.
-- The sample lines in the voice section are mine, not quotations.
-
-## Sources
-
-- [List of Suits characters](https://en.wikipedia.org/wiki/List_of_Suits_characters)
-- [Legal Cheek on Rachel Zane](https://www.legalcheek.com/2023/02/suits-rachel-zane-ranked-among-tvs-most-influential-characters)
-- [O*NET OnLine](https://www.onetonline.org)
-- [BLS paralegals](https://www.bls.gov/ooh/legal/paralegals-and-legal-assistants.htm)
-- [NALA code of ethics](https://nala.org/nala-code-ethics-and-professional-responsibility/)
-- [Google SRE book, postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-- [DORA, generative organizational culture](https://dora.dev/capabilities/generative-organizational-culture/)
-- [Edmondson 1999, psychological safety](https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Group_Performance/Edmondson%20Psychological%20safety.pdf)
+- Toyota's own 5 Whys article: the Toyota URL returned 301 to a company home page; the archived copy is blocked in this environment. Toyota's original method is UNCONFIRMED; only secondary and critics were read.
+- Leveson's CAST handbook: connection refused; the mirror redirects to another host, not followed. STAMP/CAST claims are UNCONFIRMED and nothing is taken from them.
+- Fault tree (NUREG-0492): NRC returned 403. Ishikawa (ASQ fishbone): 403. Neither is opened; no claim from them.
+- "Extent of cause", and any definition of "extent of condition": not found. NRC glossary has no entry (index only, 200); full-text glossary 403; DOE root cause guide DOE-NE-STD-1004-92 404 or redirected. IP 71152 only lists the term, and the copy read is a 2003 issue.
+- Dekker's Field Guide: his own site has only sales copy ("The Bad Apple Theory"); the book text and the line "human error is a symptom" were not read. Etsy cites the book (VERIFIED (read)); that is all.
+- Cloudflare: only the placeholder with an update, not the later full postmortem. Its "no fix listed" is about that text only.
+- Not tried: Atlassian, PagerDuty, Amazon COE, Allspaw's "Each necessary, but only jointly sufficient". No site that refused was retried.
+- The GitLab page has an inconsistency in its own data-loss window (intro vs impact section); not relevant to rachel.

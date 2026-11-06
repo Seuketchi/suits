@@ -8,6 +8,7 @@
   "license": "MIT",
   "skills": [
     "./skills/characters/harvey",
+    "./skills/characters/jessica",
     "./skills/characters/louis",
     "./skills/characters/mike",
     "./skills/characters/rachel",
@@ -21,9 +22,12 @@
     "./skills/tools/recall",
     "./skills/tools/research",
     "./skills/tools/reverse-engineer-anything",
+    "./skills/tools/scrum",
     "./skills/tools/senior",
     "./skills/tools/source-finder",
     "./skills/tools/stocktake",
-    "./skills/tools/test-kitchen"
+    "./skills/tools/test-kitchen",
+    "./skills/tools/to-spec",
+    "./skills/tools/to-tickets"
   ]
 }

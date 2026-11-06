@@ -17,7 +17,10 @@ The skills the characters call. Each is a separate file, never copied into a cha
 - **[recall](./recall/SKILL.md)**: Search past sessions for how something was done or decided.
 - **[research](./research/SKILL.md)**: Answer an outside question from primary sources, as a cited findings file.
 - **[reverse-engineer-anything](./reverse-engineer-anything/SKILL.md)**: Work out what a shipped artifact does when there is no source (from morluto/rea).
+- **[scrum](./scrum/SKILL.md)**: Draft a daily standup report from real git and GitHub activity.
 - **[senior](./senior/SKILL.md)**: A senior developer's judgement before a non-trivial change, and a read-only PR review.
 - **[source-finder](./source-finder/SKILL.md)**: Find and verify real academic papers for a claim, a topic, or a gap.
 - **[stocktake](./stocktake/SKILL.md)**: Audit how our own code behaves today, citing file:line for every claim.
 - **[test-kitchen](./test-kitchen/SKILL.md)**: Settle a question by measuring it on staging and record the data.
+- **[to-spec](./to-spec/SKILL.md)**: Turn the conversation into a spec; publish to the tracker only when asked.
+- **[to-tickets](./to-tickets/SKILL.md)**: Break a plan or spec into tracer-bullet tickets with blocking edges.

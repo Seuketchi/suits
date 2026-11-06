@@ -8,4 +8,4 @@ None yet.
 
 ## Model-invoked
 
-None yet.
+- **[grilling](./grilling/SKILL.md)**: Question the user about a plan, decision, or idea until every open decision is settled.

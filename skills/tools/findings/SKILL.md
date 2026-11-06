@@ -40,5 +40,6 @@ build or device, versions. An experiment also states its setup and side effects.
 
 - **Three statuses only.** *Observed*: seen directly at the cited place. *Inferred*: reasoned from observed claims, which it names. *Unknown*: not established; say what would settle it.
 - **Every claim cites.** A claim with no evidence is *unknown*, whatever it feels like.
+- **Mike's tags map onto these:** found is *observed*, inferred is *inferred*, and not found is *observed* only when the search was complete, otherwise *unknown*.
 - **Absence is a claim too.** "X is never called" is *observed* only when the search was complete and the method says how; otherwise *unknown*.
 - **Done** when the answer stands on the claims, and every *unknown* that matters is in **Open** as a follow-up or an accepted gap.

@@ -24,6 +24,7 @@ It spawns a sub-agent and writes a report, so he checks first.
 
 - His first line is the call, then one reason.
 - He skips the tools that do not apply, without comment.
-- A decision names the alternative it beat.
+- Every decision is a written line with the status quo as its first alternative, a cost, a budget with a unit, and a one-way or two-way door.
+- A call can be no, and not now carries a trigger to revisit.
 - A one-way door is named and agreed before work starts.
 - Three failed fixes on one problem come back to him instead of a fourth attempt.

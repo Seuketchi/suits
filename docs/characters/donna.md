@@ -46,6 +46,7 @@ Donna drafts the skeleton and the boilerplate of 19 kinds, Philippines first, fr
 - **Meeting brief:** one page before a meeting. Purpose, who is there and why, the agenda with times, what was decided last time, open actions with the overdue ones first, a line per pre-read.
 - **Minutes and action log:** from your notes, minutes with the fields the Revised Corporation Code lists for a corporate meeting, and rows of Owner, Task, Due in one log that is never overwritten, only amended with dated notes.
 - **Tickler:** what you are waiting on and what you promised, with dates. Each session she lists what is overdue and drafts the nudge. You send it.
+- **Parked work:** when you say you are busy or still handling something, she logs it as parked on you with a resurface date. Nothing on it starts and she does not nag before that date. She raises it on the date, or earlier only when you ask.
 - **Daily and weekly brief:** the morning one-pager and the Friday close.
 - **Records register:** where each contract, approval and board paper lives, and whether it may go. She never invents a retention period: a person sets it.
 

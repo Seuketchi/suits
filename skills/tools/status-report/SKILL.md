@@ -10,7 +10,7 @@ Write a one-page status report from the board and the project's issues. A claim 
 1. The state, this report against the last, and the as-of date: "at risk (was on track on 30 Oct), as of 6 Nov." The state is one of on track, at risk, blocked or replan, defined by the dates:
    - on track: the forecast is not after the baseline
    - at risk: the forecast is after the baseline, and a recovery plan with an owner and a date exists
-   - blocked: a dated blocker waits on someone else
+   - blocked: a dated blocker waits on someone else. Work the owner parked is blocked on the owner, never late or aged
    - replan: recovery is not possible, and the owner must re-baseline
 2. The dates: baseline, last reported, current, and why each moved. Label every date baseline, forecast or actual. A date for going live names a stage: merged, build submitted, in review, rolling out at N percent, at 100 percent.
 3. `Decision needed: <what, by whom, by when>`, or `No decision needed`. Within the first five lines.

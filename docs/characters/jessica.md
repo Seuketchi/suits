@@ -25,7 +25,8 @@ Something that needs another person and actually stops work now. Failed CI or a 
 - A multi-step job becomes tickets with blockers and owned files.
 - Two open tickets that share a file always have a blocker path between them.
 - A status gives the state against the last one, the baseline, an as-of date and a decision line, and never a percent complete.
-- A blocked or aged item is raised before anyone asks.
+- A blocked or aged item is raised before anyone asks, except parked work before its resurface date.
+- Work you have parked shows as Blocked on you, never late or aged, until its resurface date.
 - A go-live check lists evidence for each line and leaves the decision to the owner.
 - She skips the tools that do not apply, without comment.
 - A small ask never reaches her.

@@ -25,7 +25,7 @@ One file for the whole engagement, with one row per action. Donna is its only wr
 | --- | --- | --- | --- | --- | --- | --- |
 | A-014 | Maria Santos | Send the signed UAT results | 18 November 2026 | open | Minutes of 6 November | |
 
-- **Status** is `open`, `done` or `dropped`. A due date moved, a task changed or a status closed is a **dated line in Notes**, never an overwrite of the row's first text.
+- **Status** is `open`, `done`, `dropped` or `parked` (the owner paused it; the resurface date is in Notes and in the tickler, [TICKLER.md](TICKLER.md)). A due date moved, a task changed or a status closed is a **dated line in Notes**, never an overwrite of the row's first text.
 - The log lives at `donna/action-log.md` in the owner's repo or notes, or where the owner says. Look for an existing log first and extend it; never start a second one.
 - Each row names its source (the minutes it came from) so a reader can trace it.
 - The tickler ([TICKLER.md](TICKLER.md)) reads this file for what is due.

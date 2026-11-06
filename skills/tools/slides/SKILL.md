@@ -26,13 +26,13 @@ Build the deck. Do not decide what it says: the structure comes from `/pitching`
 
 ## Leave out the machine-made look
 
-A deck made by a template tool is recognised in a second. Do not use: a small tracked-capitals kicker above a title; a hero-sized title anywhere but the title slide; a line of facts joined by dots; a coloured side bar on a box; rounded cards, pills or badges; drop shadows; gradients; emoji or icons as bullets; more than one accent colour; a stock photograph that shows nothing. The accent colour is for the title slide, the rule under a title, numbers and the slide number.
+A deck made by a template tool is recognised in a second. Do not use: a small tracked-capitals kicker above a title; a hero-sized title anywhere but the title slide; a line of facts joined by dots; a coloured side bar on a box; rounded cards, pills or badges; drop shadows; gradients; emoji or icons as bullets; more than one accent colour; a stock photograph that shows nothing. The accent colour is for the title slide, the rule under a title, numbers and the slide number. This list is a summary; `check.sh` is the authority on what fails.
 
 ## Build and check
 
 The source is `deck.html` and its stylesheet; the PDF is output and is never edited. It is a slide to a page: one `section class="slide"` prints as one page, landscape 16:9. Rebuild after every change and keep the previous version.
 
-Then run the same document checks as for any finished PDF, on the deck's HTML and its PDF: the layout measures, the contrast, the generated-looking patterns and the prose check. They are called, not restated here. Fix each FAIL in the source and rebuild. Then look at every page as an image: text that runs off the slide, a title wrapped onto three lines, a picture too small to read from the back of a room, a slide that holds two points. The checks cannot see those.
+Build with `print.sh <deck.html> <deck.pdf>`. Keep a claims ledger, `claims.md`, beside the deck: one row for each number, quote and name on a slide that is not marked `unverified`, with the source it was checked against. Then run the same document checks as for any finished PDF: `check.sh <deck.html> <deck.pdf> --claims claims.md`. Both scripts are the ones donna's documents use, and the ledger's format is hers; they are called, not restated here. Fix each FAIL in the source and rebuild. Then look at every page as an image: text that runs off the slide, a title wrapped onto three lines, a picture too small to read from the back of a room, a slide that holds two points. The checks cannot see those.
 
 ## Hand over
 

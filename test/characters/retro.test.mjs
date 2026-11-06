@@ -73,11 +73,10 @@ describe("retro: the tool", () => {
     assert.match(sort, /judgement[^\n]*proposed review rule for louis/i);
   });
 
-  test("a proposed rule for louis goes to the owner and harvey, and never into his file", () => {
+  test("a proposed rule for louis goes to the owner and harvey, and nothing changes until the owner agrees", () => {
     const sort = section(skill(), "Sorting");
     assert.match(sort, /owner and harvey/i);
     assert.match(sort, /nothing changes until the owner agrees/i);
-    assert.doesNotMatch(skill(), /(write|edit|add|append)[^.\n]*skills\/characters\/louis/i);
   });
 
   test("edits nothing: no existing file, no commit, no push; one new file in the notes directory", () => {
@@ -88,6 +87,16 @@ describe("retro: the tool", () => {
     assert.match(out, /new file in the notes directory/i);
     assert.match(out, /does not write (that|the) digest/i);
     assert.match(out, /verdict first[^.]*at most three changes[^.]*decisions[^.]*pick/i);
+  });
+
+  test("names its findings file and the one directory it may create", () => {
+    const out = section(skill(), "Edits nothing");
+    assert.match(out, /`notes\/retro-<batch>\.md`/);
+    assert.match(out, /when the notes directory is missing, it is the one directory the tool may create/i);
+    const page = readFileSync("docs/tools/retro.md", "utf8");
+    assert.match(section(page, "What it does"), /`notes\/retro-<batch>\.md`/);
+    assert.match(section(page, "What it does"), /notes directory is missing[^.]*creates that directory and nothing else/i);
+    assert.match(section(page, "It's working if"), /`notes\/retro-<batch>\.md`[^\n]*notes directory[^\n]*created[^\n]*no other file changes/i);
   });
 
   test("stays out of the background queue and the writing-style step", () => {

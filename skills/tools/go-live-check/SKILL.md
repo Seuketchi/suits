@@ -3,7 +3,7 @@ name: go-live-check
 description: Build the go-live check for a release, each line with its reason, how it is checked and the evidence. Use when a release is next.
 ---
 
-Build the check for one release. It lists evidence, not a verdict: the owner decides whether to go.
+Build the check for one release. It lists evidence and ends in a recommendation, not a verdict: the owner decides whether to go.
 
 ## Shape
 
@@ -25,4 +25,4 @@ Size it to the release. A first store publication gets the long list, because st
 
 ## Findings
 
-A finding with no fix becomes a ticket that blocks the release. The result is go, no go, or go with conditions, and each condition is dated. Name the person who decides.
+A finding with no fix becomes a ticket that blocks the release. The result is a recommendation: go, no go, or go with conditions, and each condition is dated. The check names the person who decides.

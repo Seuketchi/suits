@@ -12,7 +12,7 @@ When you need an outside fact, a literature check, or a bug looked at before it 
 No. She names the cause. The fix goes to the associates.
 
 **When does she interrupt me?**
-When the cause is a design flaw, the finding changes the scope, it involves money, or it breaks a rule. Harvey validates the finding at the same moment.
+When the cause is a design flaw, the finding changes the scope, it involves money, or it breaks a rule, among other cases. Each is a red flag, and it goes to harvey with mike's check of the facts at the same moment.
 
 **Why is she checked beside louis?**
 They check different things. She asks whether the fix addresses the cause. He asks whether it meets the standards and the spec. Their reports stay separate.

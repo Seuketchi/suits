@@ -1,6 +1,6 @@
 ## What it does
 
-`slides` builds a deck from a structure that is already set. The slides print one to a page, landscape 16:9, from an HTML source and a stylesheet, with a title slide, claim slides, two columns, a demo slide, one large number, a request slide and a closing slide. Speaker notes stay in the source. The deck goes through the same layout, contrast, look and prose checks as a finished PDF, so a kicker, a card, a gradient or a stock opener fails the same way it does in a document.
+`slides` builds a deck from a structure that is already set. The slides print one to a page, landscape 16:9, from an HTML source and a stylesheet, with a title slide, claim slides, two columns, a demo slide, one large number, a request slide and a closing slide. Speaker notes stay in the source. The deck is built with `print.sh` and goes through the same layout, contrast, look and prose checks as a finished PDF, run with `check.sh` against a claims ledger, `claims.md`. A kicker, a card, a gradient or a stock opener fails the same way it does in a document.
 
 ## When to reach for it
 
@@ -15,7 +15,7 @@ Harvey, through `/pitching`, for a pitch. For a talk that is not a pitch, the ow
 In the source, inside each slide, so they are read by the prose check and left out of the PDF. Ask for them as a separate page if you want to print them.
 
 **Why no icons, cards or gradients?**
-They are what a deck made by a template looks like. The tool leaves them out and the checks fail the ones they can measure.
+They are what a deck made by a template looks like. The tool leaves them out and the checks fail the ones they can measure. The list in the skill is a summary; `check.sh` is the authority on what fails.
 
 **What if a number has no source?**
 It goes on the slide marked as unverified and is listed in the hand-over. It is not left to read as fact.
@@ -26,4 +26,4 @@ It goes on the slide marked as unverified and is listed in the hand-over. It is 
 - Each slide has one point, and its title states the claim.
 - The document checks pass on the deck, and every page has been looked at.
 - Speaker notes are in the source and absent from the PDF.
-- Every number on a slide has a source, or is marked unverified.
+- Every number on a slide has a source, or is marked unverified, and `check.sh --claims claims.md` passes.

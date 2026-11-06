@@ -57,6 +57,21 @@ describe("jessica", () => {
   test("the risk log has owner, raised and review-by columns", () => {
     assert.match(raid, /`owner` \| `status` \| `raised` \| `review-by`/);
   });
+  test("the go-live check returns a recommendation, not a verdict, and names who decides", () => {
+    assert.match(goLive, /ends in a recommendation, not a verdict/);
+    assert.match(section(goLive, "Findings"), /recommendation: go, no go, or go with conditions/);
+    assert.match(section(goLive, "Findings"), /names the person who decides/);
+    assert.match(section(read("docs/tools/go-live-check.md"), "What it does"), /recommendation of go, no go or go with conditions, and names the person who decides/);
+    assert.match(section(read("docs/tools/go-live-check.md"), "Common questions"), /recommendation: go, no go or go with conditions, and the person who decides/);
+  });
+  test("rule 9 stays a short pointer to the tool and does not copy its lines", () => {
+    const rule = section(skill, "Hard rules").match(/^9\. (.*)$/m)?.[1] ?? "";
+    assert.match(rule, /recommendation, not a verdict/);
+    assert.match(rule, /`\/go-live-check`/);
+    assert.ok(rule.split(/(?<=[.!?])\s+/).length <= 2, `rule 9 is more than two sentences: ${rule}`);
+    assert.doesNotMatch(rule, /its reason, its check and its evidence/);
+    assert.doesNotMatch(rule, /no fix becomes a ticket/);
+  });
   test("the go-live check is capped at 30 lines and lists evidence", () => {
     assert.match(goLive, /At most 30 lines/);
     assert.match(goLive, /the evidence, and the result/);

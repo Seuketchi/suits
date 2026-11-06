@@ -1,6 +1,6 @@
 ## What this is
 
-A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked**, and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
+A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `test/characters/characters.test.mjs` fails otherwise), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
 
 Run `npm run check-skills` after adding, moving or renaming a skill. CI runs it on every pull request.
 

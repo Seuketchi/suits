@@ -58,6 +58,6 @@ If the signals show nothing worth fixing, say so in the first line.
 
 ## Edits nothing
 
-The retro edits no existing file, makes no commit and pushes nothing. It changes no steering file, standards file or skill. The one thing it writes is the findings list, as a new file in the notes directory outside the files under review.
+The retro edits no existing file, makes no commit and pushes nothing. It changes no steering file, standards file or skill. The one thing it writes is the findings list, as a new file in the notes directory, `notes/retro-<batch>.md`, outside the files under review. When the notes directory is missing, it is the one directory the tool may create.
 
 It hands the list to donna to present. Donna's digest is verdict first, at most three changes, then the owner's decisions each with a pick. The retro does not write that digest itself.

@@ -17,7 +17,7 @@ Authority: what the person negotiating may commit to; anything above it goes to 
 
 - **Our interests** are what we need, not the position we will open with. Rank them; the ranking is what lets a trade give up the low ones for the high ones.
 - **Their interests** come from what they have said or done. Where we are guessing, say so.
-- **Alternatives** are the best thing each side can do alone if talks fail. Ours must be real and available today. Theirs is a guess unless they told us. Never state an alternative we do not have: answer truthfully if asked.
+- **Alternatives** are the best thing each side can do alone if talks fail. Ours must be real and available today. Theirs is a guess unless they told us. If asked, decline to answer or answer truthfully; never invent one.
 - **Walk-away** is a point, not a mood, and it names an objective criterion behind it: a market price, a benchmark, a standard or a precedent that someone outside the room would accept. A walk-away point with no criterion is a wish.
 - **Authority** says what the person at the table can commit to without asking. Anything above it goes to the owner before it is offered or accepted.
 

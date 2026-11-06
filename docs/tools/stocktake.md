@@ -31,7 +31,9 @@ That is an experiment. It hands the question to `test-kitchen` instead of guessi
 
 ## It's working if
 
+- The first line answers the question asked.
 - Every claim in the file cites file:line, and the file names the commit it was read at.
+- Every claim is tagged found, inferred or not found, and each cited line was re-read before it went in.
 - The trace from each entry point to its effect has no unexplained hop, or the hop is listed as *unknown*.
 - Nothing in your working tree changed.
 

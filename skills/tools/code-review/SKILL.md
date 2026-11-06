@@ -1,5 +1,5 @@
 ---
-name: taste
+name: code-review
 description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 ---
 
@@ -10,7 +10,7 @@ Review the diff between `HEAD` and a fixed point the user supplies, along two ax
 
 Each axis runs in its own **parallel sub-agent**, so neither pollutes the other's context. This skill then aggregates their findings.
 
-The issue tracker should have been provided to you. If it wasn't, tell the user to run `/mise`.
+The issue tracker should have been provided to you. If it wasn't, ask the user where issues are tracked and where that is documented.
 
 ## Process
 

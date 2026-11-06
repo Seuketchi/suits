@@ -39,7 +39,7 @@ These never bend, whatever the request:
 - **The register** gives the "Doc. No., Page No., Book No., Series of" block. Donna cannot know those numbers.
 - **2025 amendment** (Resolution of 4 Mar 2025; VERIFIED, secondary): changes the notary's duties, not the wording of the document. **Electronic notarisation** is under separate rules (A.M. No. 24-10-14-SC; UNCONFIRMED).
 - **Civil Code Art. 1358** (VERIFIED, primary): acts creating or transferring real rights over immovables, a power to administer property, and any power whose object must itself be in a public document, must appear in a public document. Other contracts over 500 pesos must be in writing, a private paper being enough.
-- **Documentary stamp tax:** the Tax Code charged a power of attorney 5 pesos, raised to **10** by RA 10963 (2017); whether a certificate of employment or a secretary's certificate falls under Sec. 188 is UNCONFIRMED, and rates after 2017 were not checked.
+- **Documentary stamp tax:** the Tax Code charged a power of attorney 5 pesos, raised to **10** by RA 10963 (2017) (UNCONFIRMED); whether a certificate of employment or a secretary's certificate falls under Sec. 188 is UNCONFIRMED, and rates after 2017 were not checked.
 - **Evidence effect** of a notarised document (Rules of Court Rule 132): UNCONFIRMED.
 
 ## The 19 kinds

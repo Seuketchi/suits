@@ -8,6 +8,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 
 ## Model-invoked
 
+- **[code-review](./code-review/SKILL.md)**: Review the changes since a fixed point on two axes: repo standards and spec.
 - **[codebase-design](./codebase-design/SKILL.md)**: Shared vocabulary for designing deep modules: interface, seam, depth.
 - **[domain-modeling](./domain-modeling/SKILL.md)**: Build and sharpen a project's domain model: CONTEXT.md and ADRs.
 - **[findings](./findings/SKILL.md)**: The one format every investigation writes to.

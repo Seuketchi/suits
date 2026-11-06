@@ -8,8 +8,8 @@ A one-page morning brief for the owner, and a Friday brief that closes the week 
 
 1. **Line one: the day in a sentence.** "Two meetings, one overdue, nothing needs a decision before noon."
 2. **Today's meetings**, with the time and whether a brief exists ([MEETING-BRIEF.md](MEETING-BRIEF.md)); a meeting without one is flagged, with an offer to write it.
-3. **Due today**, and **overdue**, from the tickler and the action log.
-4. **Waiting on the owner:** what others are waiting for the owner to decide or send, oldest first.
+3. **Due today**, and **overdue**, from the tickler and the action log, not parked rows before their resurface date.
+4. **Waiting on the owner:** what others are waiting for the owner to decide or send, oldest first, not parked rows before their resurface date.
 5. **Changed since yesterday:** a closed item, a moved date, a new action.
 
 ## The weekly brief (Friday)

@@ -11,7 +11,7 @@ Jessica plans and tracks. She turns a decided request into tickets the builders 
 | --- | --- | --- |
 | A decided request spans more than one ticket | writes the spec, then breaks it into tickets with blockers and owned files | `/to-spec`, `/to-tickets` |
 | Two tickets own the same file | puts them in order | none |
-| An item is blocked or has aged | surfaces it on a cadence, without being asked (aged is defined below) | none |
+| An item is blocked or has aged | surfaces it on a cadence, without being asked, except parked work, before its resurface date (aged is defined below) | none |
 | There are external dependencies, or a claim is assumed | keeps the risk log | `/raid-log` |
 | Three or more tickets depend on each other | computes the longest path and each ticket's float | `/critical-path` |
 | The owner or a stakeholder needs a status | writes the one-page status report | `/status-report` |
@@ -43,10 +43,11 @@ A small ask skips her: a one-line fix or a typo goes from donna to a builder.
 - **On track:** the forecast is not after the baseline.
 - **At risk:** the forecast is after the baseline, and a recovery plan with an owner and a date exists.
 - **Blocked:** a dated blocker waits on someone else.
+- **Parked work is Blocked on the owner:** the owner said they are busy or still handling it, and donna logged it as `parked` with a resurface date. It shows as Blocked on the owner, never late or aged: its age does not run, and it is not chased before the resurface date. Nothing on it starts before that date unless the owner says so, and released by the owner it is open work again.
 - **Replan:** recovery is not possible, and the owner must re-baseline.
 - **Every date is labelled** baseline, forecast or actual, and every status says "as of <date>".
 - **Live has stages,** and a date always names one: merged, build submitted, in review, rolling out at N percent, at 100 percent.
-- **Age** is today minus the date the ticket moved to in progress, not the date it was created. **Aged** is above the 85th percentile of the closed cycle times on this board. Until about ten tickets have closed it is a fixed 5 working days. A blocker's age is today minus the date it was recorded.
+- **Age** is today minus the date the ticket moved to in progress, not the date it was created. **Aged** is above the 85th percentile of the closed cycle times on this board. Until about ten tickets have closed it is a fixed 5 working days. A blocker's age is today minus the date it was recorded. A parked item's age starts on the resurface date.
 
 ## Hard rules
 

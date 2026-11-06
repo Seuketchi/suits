@@ -17,6 +17,20 @@ describe("jessica", () => {
   test("the four states are defined, and replan is one of them", () => {
     for (const w of ["On track", "At risk", "Blocked", "Replan"]) assert.match(skill, new RegExp(`\\*\\*${w}:\\*\\*`));
   });
+  test("parked work shows as blocked on the owner, never late or aged", () => {
+    const states = section(skill, "States, stages and age");
+    assert.match(states, /parked/i);
+    assert.match(states, /Blocked on the owner/);
+    assert.match(states, /never (late|aged)|not (late|aged)/i);
+    assert.match(states, /resurface date/i);
+    assert.match(states, /age[^.\n]*(does not|doesn't) (run|count)|no age/i);
+  });
+  test("parked work is not surfaced on a cadence, and its age starts on the resurface date", () => {
+    assert.match(section(skill, "What she does"), /surfaces it on a cadence[^|]*except parked work, before its resurface date/);
+    assert.match(section(skill, "States, stages and age"), /A parked item's age starts on the resurface date/);
+    assert.match(section(skill, "States, stages and age"), /released by the owner/);
+    assert.match(read("docs/characters/jessica.md"), /raised before anyone asks, except parked work before its resurface date/);
+  });
   test("every date is labelled and every status says as of", () => {
     assert.match(skill, /baseline, forecast or actual/);
     assert.match(skill, /as of <date>/);

@@ -1,0 +1,19 @@
+Scrum Daily Report for 04 Sep 2026
+
+Work done yesterday
+- Moving to a new phone works start to finish now, including warning the old phone before it asks (#1381, #1382, #1383).
+- Profile details and loan balances come from the new backend; the old paths are retired. Clears branch account recovery (#1361, #1364, #1333, #1345).
+- Refusals now say why instead of failing blank: wrong recovery password, a loan action the bank does not offer, a device deadline (#1358, #1365, #1366, #1380, #1384).
+- Approving a payment with fingerprint, face or PIN is switched on, and refused payments explain themselves (#1293, #1343, #1344, #1309).
+- Picked up the backend's latest changes, plus a safety switch so leftover old-backend calls fail loudly in testing (#1387, #1362, #1351).
+- Fixed a branch-flow scan too slow to ever finish, and halved build time (#1385, #1379).
+
+Work planned for today
+- Land approving payments and sensitive changes by fingerprint, face or PIN — every remaining payment type depends on it (#1398, #1401).
+- Payments surviving an app kill, a dropped network or a spent daily limit. One case left: a rate-limited status check reads as "refused" when it may have succeeded (#1400).
+- First complete payment type on the new backend: InstaPay, bank choice to receipt. The 14 September release, 10 days out (#1399).
+- Not started: carrying a new applicant through the wait while the bank opens their account. Last open piece of the 31 August release (#1354).
+
+Blockers
+- None.
+- Risk: 31 August release is 4 days late, and InstaPay is unmerged with 10 days to the 14th. Four backend questions unanswered since 20 August; two sit under work in flight.

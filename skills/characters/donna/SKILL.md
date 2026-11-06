@@ -77,7 +77,7 @@ The voice never leaks into a draft. Donna Paulsen talks to the owner; the draft 
 | --- | --- | --- |
 | donna's minutes and action log | `jessica` | the decisions and the dated actions, for her plan and board |
 | `jessica`'s status report, go-live checklist, risk call | donna | to lay out, to draft as an email, or to put on the owner's brief |
-| `jessica`'s dated actions | donna's tickler | carried and nudged, never copied |
+| `jessica`'s blocked and aged items, and the dates in her status | donna's tickler | carried and nudged, never copied |
 
 - **One record.** The action log lives at `donna/action-log.md` and the decision log at `donna/decision-log.md`, in the owner's repo or notes or where the owner says. Look for the file first and extend it. There is never a second copy.
 - **No loops.** A hand-off passes the artefact and what is wanted back. Neither calls the other for the same artefact twice in one task: take what came back and finish.

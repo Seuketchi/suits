@@ -1,0 +1,35 @@
+<!-- State diagram: four states in a row, one skip path above, one return path below. Edit the text and the boxes; keep it as an SVG file
+     in src/img/ and offer it beside the PDF. Paste it inline into the HTML inside a <figure> to take the document's colours.
+     Rules: at most 6 states; a state is a noun or a short verb ("Measure"); a transition label is 1 to 3 words and names the event ("timer", "ack",
+     "sensor fault"), never a sentence; the state the system rests in is the filled one. A longer rule goes in a transition table under the figure,
+     one row per arrow: From, Event, To, What happens. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" width="640" height="250" style="font-family: var(--c-font)" role="img" aria-label="{{What the diagram shows}}">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--c-ink)"/></marker>
+  </defs>
+  <!-- start -->
+  <circle cx="14" cy="104" r="5" fill="var(--c-ink)"/>
+  <line x1="19" y1="104" x2="34" y2="104" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <!-- states -->
+  <rect x="36"  y="78" width="104" height="52" fill="var(--c-tint)" stroke="var(--c-ink)" stroke-width="1.2"/>
+  <text x="88"  y="109" font-size="13" font-weight="700" text-anchor="middle" fill="var(--c-ink)">{{State 1}}</text>
+  <rect x="196" y="78" width="104" height="52" fill="var(--c-tint)" stroke="var(--c-ink)" stroke-width="1.2"/>
+  <text x="248" y="109" font-size="13" font-weight="700" text-anchor="middle" fill="var(--c-ink)">{{State 2}}</text>
+  <rect x="356" y="78" width="104" height="52" fill="var(--c-tint)" stroke="var(--c-ink)" stroke-width="1.2"/>
+  <text x="408" y="109" font-size="13" font-weight="700" text-anchor="middle" fill="var(--c-ink)">{{State 3}}</text>
+  <rect x="516" y="78" width="104" height="52" fill="var(--c-accent)" stroke="var(--c-ink)" stroke-width="1.2"/>
+  <text x="568" y="109" font-size="13" font-weight="700" text-anchor="middle" fill="#ffffff">{{Resting state}}</text>
+  <!-- transitions in a row -->
+  <line x1="140" y1="104" x2="194" y2="104" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="167" y="96" font-size="11" text-anchor="middle" fill="var(--c-ink)">{{event}}</text>
+  <line x1="300" y1="104" x2="354" y2="104" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="327" y="96" font-size="11" text-anchor="middle" fill="var(--c-ink)">{{event}}</text>
+  <line x1="460" y1="104" x2="514" y2="104" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="487" y="96" font-size="11" text-anchor="middle" fill="var(--c-ink)">{{event}}</text>
+  <!-- the skip path above: from state 2 over state 3 to the resting state -->
+  <path d="M248 78 L248 40 L568 40 L568 76" fill="none" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="408" y="32" font-size="11" text-anchor="middle" fill="var(--c-ink)">{{fault or skip}}</text>
+  <!-- the return path below: from the resting state back to state 1 -->
+  <path d="M568 130 L568 196 L88 196 L88 132" fill="none" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="328" y="216" font-size="11" text-anchor="middle" fill="var(--c-ink)">{{wake event}}</text>
+</svg>

@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- A company or legal document (LEGAL.md). A starter: pick the parts of the kind from LEGAL.md, replace every {{...}}, delete what does not apply.
+     Needs print.css (styles/letterhead.css) and fonts/ beside it; add tokens.css when the project has one.
+     Rules that hold for every legal kind (LEGAL.md, "Hard rules"): the review notice stays on page 1; the notary's block stays EMPTY under
+     "TO BE COMPLETED BY THE NOTARY PUBLIC"; no signature typed or drawn; no blank except the date and place of signing; no invented fact. -->
+<html lang="en"><head><meta charset="utf-8"><title>{{Title of the document}}</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="print.css">
+<style>:root { --running: "{{Short title, parties}}. Initial each page: ____"; }</style></head>
+<body class="plain legal">
+
+<div class="notice">
+  <p><strong>Draft for review by the company&rsquo;s counsel. Not legal advice. Not executed or notarized.</strong> Facts, names and amounts to be confirmed by the signers.</p>
+</div>
+
+<h1>{{Title of the document, in title case}}</h1>
+<p class="subtitle">{{Date, number or reference when the kind has one}}</p>
+
+<!-- Venue, for a sworn paper (an affidavit, a secretary's certificate): -->
+<p class="venue">REPUBLIC OF THE PHILIPPINES<br>City of ______________ ) S.S.</p>
+
+<!-- Parties, named in full once, then by a short defined name used the same way throughout: -->
+<div class="parties">
+  <p>{{Party one in full: name, kind of entity, address, who signs for it and in what capacity}} (the <strong>{{Short name}}</strong>), and {{party two in the same way}}.</p>
+</div>
+
+<!-- Numbered articles, so a clause can be cited. Each article is a sentence or a short list of numbered sub-clauses. -->
+<ol class="articles">
+  <li><p><span class="article-title">{{What the article is about.}}</span> {{The clause, plain and specific.}}</p></li>
+  <li><p><span class="article-title">{{Next article.}}</span></p>
+    <ol>
+      <li>{{Sub-clause.}}</li>
+      <li>{{Sub-clause.}}</li>
+    </ol></li>
+</ol>
+
+<p><strong>IN WITNESS WHEREOF</strong>, {{who}} have signed this {{document}} this ____ day of __________ 20__ at ______________, Philippines.</p>
+
+<!-- Signature lines above the printed name and capacity. Two columns for two signers, "one" for a single signer. -->
+<div class="sigs">
+  <div class="sig"><p class="on">{{For the company, if signing for one}}</p><div class="line"></div><p class="name">{{Printed name}}</p><p class="cap">{{Capacity}}</p></div>
+  <div class="sig"><div class="line"></div><p class="name">{{Printed name}}</p><p class="cap">{{Capacity}}</p></div>
+</div>
+
+<!-- The notary's frame. Only for a paper that is sworn or acknowledged. Leave EVERY blank empty. A sworn paper takes the jurat below;
+     a contract, deed or power of attorney takes an acknowledgment (BEFORE ME ... personally appeared ... free and voluntary act and deed). -->
+<div class="notary">
+  <p class="head">TO BE COMPLETED BY THE NOTARY PUBLIC</p>
+  <p>SUBSCRIBED AND SWORN to before me this <span class="blank short"></span> day of <span class="blank"></span> 20<span class="blank short"></span><br>at <span class="blank"></span>, affiant exhibiting to me <span class="blank long"></span>.</p>
+  <p class="block">Notary public <span class="blank long"></span> until 31 December 20<span class="blank short"></span><br>Roll no. <span class="blank short"></span> PTR no. <span class="blank short"></span> IBP no. <span class="blank short"></span><br>Doc. No. <span class="blank short"></span>; Page No. <span class="blank short"></span>; Book No. <span class="blank short"></span>; Series of 20<span class="blank short"></span></p>
+</div>
+
+<!-- The last page: outside the instrument. Each choice donna made and why; each unconfirmed item marked; what counsel must check. -->
+<div class="page-break"></div>
+<h2 class="doc-title">Open points for counsel</h2>
+<p class="subtitle">Not part of the document. Remove this page before signing.</p>
+<ul>
+  <li><strong>{{The choice, e.g. "A jurat, not an acknowledgment."}}</strong> {{Why, in a sentence.}} <mark class="unverified">{{Unconfirmed: what was not read at its source.}}</mark></li>
+</ul>
+
+</body></html>

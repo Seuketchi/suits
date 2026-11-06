@@ -8,6 +8,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "check-skills": "node scripts/check-skills.mjs"
+    "check-skills": "node scripts/check-skills.mjs",
+    "test": "npm run test:donna",
+    "test:donna": "node --test \"test/donna/**/*.test.mjs\""
   }
 }

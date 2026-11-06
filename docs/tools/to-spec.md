@@ -75,7 +75,7 @@ Very large specs can outgrow what a tracker issue will serve back cleanly, and t
 `to-spec` is a step in the main build chain, and only on the multi-session branch of it:
 
 ```txt
-grill-with-docs → recipe → ticket → cook → taste
+grill-with-docs → to-spec → to-tickets → implement → code-review
 ```
 
 Its neighbours upstream are [grill-with-docs](https://aihero.dev/skills-grill-with-docs), which does the deciding this skill only records, and [banquet](https://aihero.dev/skills-banquet), whose finished map merges onto the chain right here. Downstream, [to-tickets](https://aihero.dev/skills-to-tickets) cuts the spec into tracer-bullet tickets for [cook](https://aihero.dev/skills-implement) to build. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.

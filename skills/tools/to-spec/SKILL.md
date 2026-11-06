@@ -1,12 +1,11 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed."
-disable-model-invocation: true
+description: "Turn the current conversation into a spec: no interview, just synthesis of what you've already discussed. Drafts in chat, and publishes to the project issue tracker only when asked."
 ---
 
 Turn what you already know (this conversation and your understanding of the codebase) into a spec. Synthesize; do not interview the user.
 
-You need the issue tracker and the triage label vocabulary. If you weren't given them, tell the user to run `/mise`.
+You need the issue tracker and the triage label vocabulary. If you weren't given them, ask the user where issues are tracked and which labels the project uses.
 
 ## Process
 
@@ -19,7 +18,7 @@ You need the issue tracker and the triage label vocabulary. If you weren't given
 
    Done when the seams are proposed. If the user is here, ask them to confirm; if they are away, don't wait: write the seams into the spec as proposed and go on.
 
-3. **Write and publish.** Write the spec from the template below and publish it to the project issue tracker. Apply the `ready-for-agent` triage label; it needs no further triage.
+3. **Write, and publish only when asked.** Write the spec from the template below. Publish it to the project issue tracker and apply the `ready-for-agent` triage label (it needs no further triage) only when the request said to publish. Otherwise show the draft in chat and stop.
 
 <spec-template>
 

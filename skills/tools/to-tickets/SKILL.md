@@ -1,14 +1,13 @@
 ---
 name: to-tickets
 description: Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).
-disable-model-invocation: true
 ---
 
 # To Tickets
 
 Break a plan, spec, or conversation into **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/mise`.
+The issue tracker and triage label vocabulary should have been provided to you. If not, ask the user where issues are tracked and which labels the project uses.
 
 ## Process
 
@@ -63,7 +62,7 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the tickets to the configured tracker
 
-Publish the approved tickets to the tracker `/mise` configured. The tickets are the same either way; only the shape of the blocking edges changes:
+Publish the approved tickets to the project's configured tracker. The tickets are the same either way; only the shape of the blocking edges changes:
 
 - **Local files** → one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket template below: one ticket per file, never one combined file.
 - **A real issue tracker (GitHub, Linear, …)** → one issue per ticket, in dependency order (blockers first), so blocking edges can reference real identifiers. Use the platform's native blocking relationship where it has one; otherwise set each ticket's "Blocked by" to its blocking issues. When the work was cut from an existing issue, make each ticket a sub-issue of it, with the operation the tracker doc gives. Apply the `ready-for-agent` triage label unless told otherwise; the tickets are agent-grabbable by construction.

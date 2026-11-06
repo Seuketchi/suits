@@ -8,7 +8,7 @@ Two filters keep the report from becoming generic cleanup advice. Every candidat
 
 ## When to reach for it
 
-You invoke this by typing `/improve-codebase-architecture`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) will not reach for it on its own.
+Type `/improve-codebase-architecture`, or let harvey reach for it when you ask where the code should be deepened. Either way it asks before it starts a sub-agent or writes the report.
 
 It sits outside the build loop: it is not a step in the main loop but something you run periodically to queue up more work to improve the codebase. The four situations it gets used in:
 

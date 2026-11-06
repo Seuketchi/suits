@@ -23,7 +23,8 @@ Something that needs another person and actually stops work now. Failed CI or a 
 ## It's working if
 
 - A multi-step job becomes tickets with blockers and owned files.
-- No two open tickets own the same file without an order.
+- Two open tickets that share a file always have a blocker path between them.
+- A status gives the state against the last one, the baseline, an as-of date and a decision line, and never a percent complete.
 - A blocked or aged item is raised before anyone asks.
 - She skips the tools that do not apply, without comment.
 - A small ask never reaches her.

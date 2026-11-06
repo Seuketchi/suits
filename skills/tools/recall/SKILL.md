@@ -1,6 +1,6 @@
 ---
 name: recall
-description: Search your past Claude Code sessions for how something was done or decided.
+description: Search past Claude Code sessions for how something was done or decided. Use when a past decision or the history of how something came to be matters.
 argument-hint: "What to look for, e.g. 'dio interceptor' or 'why we dropped redux'"
 ---
 

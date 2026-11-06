@@ -14,6 +14,17 @@ Reach for it when you are about to record what an investigation found out. The i
 
 The leading idea is the **claim table**: one fact per row, a status, and the evidence that earns the status (a file:line, a URL, a command and its output). *Absence* is a claim too; "X is never called" is *observed* only when the method says how the search was made complete.
 
+## Common questions
+
+**Is it a tool I run?**
+Rarely. The investigating skills call it themselves when they write their result.
+
+**Where does the file go?**
+`docs/findings/<topic>.md`, with raw output beside it in `docs/findings/<topic>/`.
+
+**What is a claim?**
+One statement with the source that supports it. A claim without one is marked as inferred or not found.
+
 ## It's working if
 
 - The file opens with the question as a question and a two- or three-sentence answer a decision can use as-is.

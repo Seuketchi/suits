@@ -18,6 +18,17 @@ Type `/stocktake`, or the agent reaches for it automatically when a decision wai
 
 The work follows a fixed path: find each entry point (a route, a job, an event handler), trace it through calls, state and data to its effect, check it against the tests that cover it, and read the history where the *why* matters. A gap in the trace is recorded as *unknown*, not guessed.
 
+## Common questions
+
+**Does it change anything?**
+No. It reads, and runs only checks with no side effects. Your working tree stays as it was.
+
+**What if the code and the docs disagree?**
+The code wins. The docs and comments are leads, checked against it.
+
+**What if a question needs the running system?**
+That is an experiment. It hands the question to `test-kitchen` instead of guessing.
+
 ## It's working if
 
 - Every claim in the file cites file:line, and the file names the commit it was read at.

@@ -9,3 +9,4 @@ None yet.
 ## Model-invoked
 
 - **[harvey](./harvey/SKILL.md)**: The senior call: build or not, the budget, validating findings, closing exceptions.
+- **[mike](./mike/SKILL.md)**: Our own system: what the code does today and what was decided before.

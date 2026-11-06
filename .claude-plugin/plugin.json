@@ -8,11 +8,17 @@
   "license": "MIT",
   "skills": [
     "./skills/characters/harvey",
+    "./skills/characters/mike",
     "./skills/tools/codebase-design",
+    "./skills/tools/domain-modeling",
+    "./skills/tools/findings",
     "./skills/tools/grilling",
     "./skills/tools/improve-codebase-architecture",
     "./skills/tools/pitching",
+    "./skills/tools/recall",
     "./skills/tools/reverse-engineer-anything",
-    "./skills/tools/senior"
+    "./skills/tools/senior",
+    "./skills/tools/stocktake",
+    "./skills/tools/test-kitchen"
   ]
 }

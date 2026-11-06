@@ -1,0 +1,71 @@
+/* slides.css: one slide to a page, landscape 16:9, for a deck built from HTML and printed to PDF.
+   Colours and the font read the same custom properties as the document styles (--accent, --ink, --muted, --line, --font),
+   so a project's own tokens, linked before this file, restyle the deck. With none, a flat accent, ink on white and the
+   system sans-serif are used. The accent shows on the title slide, the slide title rule, numbers and the slide number only. */
+
+:root {
+  --c-accent: var(--accent, #1b3a63);
+  --c-ink: var(--ink, #1b1f24);
+  --c-muted: var(--muted, #55606b);
+  --c-line: var(--line, #c4ccd5);
+  --c-font: var(--font, "IBM Plex Sans", "Noto Sans", "DejaVu Sans", Helvetica, Arial, sans-serif);
+}
+
+@page { size: 13.333in 7.5in; margin: 0; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font: 400 20pt/1.4 var(--c-font); color: var(--c-ink); counter-reset: slide fig; }
+
+/* ---- the slide: a page of its own ---- */
+.slide { position: relative; width: 13.333in; height: 7.5in; padding: 15mm 22mm 18mm; overflow: hidden;
+  background: #fff; break-after: page; counter-increment: slide; }
+.slide:last-child { break-after: auto; }
+.slide::after { content: counter(slide); position: absolute; right: 22mm; bottom: 9mm; font-size: 12pt; color: var(--c-muted); }
+
+h1, h2, h3 { margin: 0; font-weight: 600; }
+h2 { font-size: 30pt; line-height: 1.2; max-width: 250mm; margin: 0 0 9mm; padding-bottom: 4mm; border-bottom: 0.8pt solid var(--c-accent); }
+h3 { font-size: 20pt; line-height: 1.3; margin: 0 0 2mm; }
+p, li { max-width: 220mm; }
+p { margin: 0 0 5mm; }
+ul, ol { margin: 0 0 5mm; padding-left: 9mm; }
+li { margin: 0 0 4mm; }
+li::marker { color: var(--c-accent); font-weight: 600; }
+strong { font-weight: 600; }
+.muted { color: var(--c-muted); }
+.small { font-size: 14pt; }
+mark.unverified { background: #ffe08a; color: var(--c-ink); padding: 0 1mm; }   /* a figure not yet confirmed: flat, legible, never decoration */
+
+/* ---- the title slide, and a closing slide that reuses it: a flat band of the accent, left-aligned ---- */
+.cover { background: var(--c-accent); color: #fff; padding-top: 62mm; }
+.cover::after { content: none; }
+.cover h1, .cover h2 { font-size: 44pt; line-height: 1.15; max-width: 240mm; margin: 0 0 8mm; padding: 0; border: 0; color: #fff; }
+.cover p { font-size: 22pt; line-height: 1.35; max-width: 230mm; color: #fff; }
+.cover .by { position: absolute; left: 22mm; bottom: 14mm; margin: 0; font-size: 14pt; }
+
+/* ---- one number, said large ---- */
+.stat { display: flex; align-items: baseline; gap: 14mm; margin: 8mm 0 0; }
+.stat .num { flex: none; font-size: 96pt; line-height: 1; font-weight: 600; color: var(--c-accent); font-variant-numeric: lining-nums; }
+.stat .what { margin: 0; font-size: 24pt; line-height: 1.3; max-width: 170mm; }
+.stat-source { margin-top: 10mm; font-size: 14pt; color: var(--c-muted); }
+
+/* ---- two columns, labelled rows ---- */
+.cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16mm; }
+.cols > * { min-width: 0; }
+.rows { margin: 0; border-top: 0.8pt solid var(--c-ink); }
+.rows > div { display: flex; align-items: baseline; gap: 10mm; padding: 4mm 0; border-bottom: 0.6pt solid var(--c-line); }
+.rows dt { flex: 0 0 52mm; margin: 0; font-size: 16pt; font-weight: 500; color: var(--c-muted); }
+.rows dd { margin: 0; font-size: 20pt; }
+
+/* ---- a picture or a screenshot: no frame, a numbered caption ---- */
+figure { counter-increment: fig; margin: 0; text-align: center; }
+figure img, figure svg { display: inline-block; max-width: 100%; max-height: 110mm; width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; }
+figcaption { margin: 3mm auto 0; font-size: 13pt; font-style: italic; color: var(--c-muted); }
+figcaption::before { content: "Figure " counter(fig) ". "; }
+
+/* ---- the demo slide: what to show and the line to say, with room left for the screen ---- */
+.demo .steps { counter-reset: step; list-style: none; padding: 0; }
+.demo .steps li { counter-increment: step; display: flex; gap: 8mm; align-items: baseline; }
+.demo .steps li::before { content: counter(step); flex: none; width: 10mm; font-weight: 600; color: var(--c-accent); }
+
+/* ---- speaker notes live in the source, beside their slide, and never print ---- */
+.notes { display: none; }

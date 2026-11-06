@@ -1,9 +1,11 @@
 // harvey's SKILL.md keeps what the research found real decision records need (docs/characters/harvey/references.md).
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 const skill = readFileSync("skills/characters/harvey/SKILL.md", "utf8");
+const prep = existsSync("skills/tools/negotiation-prep/SKILL.md") ? readFileSync("skills/tools/negotiation-prep/SKILL.md", "utf8") : "";
+const section = (source, title) => source.split(/^## /m).find((s) => s.startsWith(title)) ?? "";
 
 describe("harvey", () => {
   test("the decision line has every labelled row", () => {
@@ -35,5 +37,42 @@ describe("harvey", () => {
   test("he does not sign off everything", () => {
     assert.match(skill, /does not sign off every request/);
     assert.match(skill, /Exceptions only at the close/);
+  });
+
+  describe("negotiation prep", () => {
+    test("is its own tool with the five rows, and harvey no longer carries them", () => {
+      assert.match(prep, /^name: negotiation-prep$/m);
+      for (const label of ["Our interests", "Their interests", "Alternatives", "Walk-away", "Authority"]) {
+        assert.match(prep, new RegExp(`^${label}: `, "m"), `missing "${label}:"`);
+      }
+      assert.doesNotMatch(skill, /^## Negotiation/m);
+    });
+    test("our interests are ranked and the walk-away point carries an objective criterion", () => {
+      assert.match(prep, /^Our interests: .*ranked/m);
+      assert.match(prep, /^Walk-away: .*objective criterion/m);
+    });
+    test("the alternatives row names ours and guesses theirs, and never states a false one", () => {
+      assert.match(prep, /^Alternatives: .*ours.*(guess|theirs)/m);
+      assert.match(prep, /never state an alternative (you|he|we) (do not|does not) have|truthful/i);
+    });
+    test("anything above his authority goes to the owner", () => {
+      assert.match(prep, /^Authority: .*above .*owner/m);
+    });
+    test("harvey calls it only when a negotiation is the task", () => {
+      const rows = section(skill, "When to call");
+      assert.match(rows, /^\| `\/negotiation-prep` \| a negotiation .*is the task/m);
+    });
+    test("the hand-off table and hard rules name it", () => {
+      assert.match(section(skill, "Working with the others"), /negotiation-prep/);
+      assert.match(section(skill, "Hard rules"), /negotiation-prep.*owner/s);
+    });
+    test("it is wired in: plugin, bucket README and docs page", () => {
+      assert.match(readFileSync(".claude-plugin/plugin.json", "utf8"), /"\.\/skills\/tools\/negotiation-prep"/);
+      assert.match(readFileSync("skills/tools/README.md", "utf8"), /\]\(\.\/negotiation-prep\/SKILL\.md\)/);
+      const page = readFileSync("docs/tools/negotiation-prep.md", "utf8");
+      for (const title of ["What it does", "When to reach for it", "Common questions", "It's working if"]) {
+        assert.match(page, new RegExp(`^## ${title}$`, "m"));
+      }
+    });
   });
 });

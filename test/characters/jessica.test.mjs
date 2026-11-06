@@ -1,10 +1,17 @@
 // jessica's files keep what the research found a plan and a status need (docs/characters/jessica/references.md).
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
-const skill = readFileSync("skills/characters/jessica/SKILL.md", "utf8");
-const artifacts = readFileSync("skills/characters/jessica/ARTIFACTS.md", "utf8");
+const read = (p) => readFileSync(p, "utf8");
+const skill = read("skills/characters/jessica/SKILL.md");
+const TOOLS = ["raid-log", "critical-path", "status-report", "go-live-check"];
+const tool = (name) => (existsSync(`skills/tools/${name}/SKILL.md`) ? read(`skills/tools/${name}/SKILL.md`) : "");
+const section = (source, title) => source.match(new RegExp(`^## ${title}\\s*\\n([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, "m"))?.[1] ?? "";
+const raid = tool("raid-log");
+const goLive = tool("go-live-check");
+const critical = tool("critical-path");
+const status = tool("status-report");
 
 describe("jessica", () => {
   test("the four states are defined, and replan is one of them", () => {
@@ -34,10 +41,73 @@ describe("jessica", () => {
     assert.match(skill, /nice-to-haves to cut before she asks to extend/);
   });
   test("the risk log has owner, raised and review-by columns", () => {
-    assert.match(artifacts, /`owner` \| `status` \| `raised` \| `review-by`/);
+    assert.match(raid, /`owner` \| `status` \| `raised` \| `review-by`/);
   });
   test("the go-live check is capped at 30 lines and lists evidence", () => {
-    assert.match(artifacts, /At most 30 lines/);
-    assert.match(artifacts, /the evidence, and the result/);
+    assert.match(goLive, /At most 30 lines/);
+    assert.match(goLive, /the evidence, and the result/);
+  });
+});
+
+describe("jessica's four tools", () => {
+  test("each is its own skill, named for its folder, with a description", () => {
+    for (const name of TOOLS) {
+      const source = tool(name);
+      assert.match(source, new RegExp(`^---\\nname: ${name}\\ndescription: .+`), `${name}/SKILL.md`);
+    }
+  });
+  test("the artifacts file left jessica's folder", () => {
+    assert.equal(existsSync("skills/characters/jessica/ARTIFACTS.md"), false);
+    assert.doesNotMatch(skill, /ARTIFACTS\.md/);
+    assert.doesNotMatch(skill, /still to build/);
+  });
+  test("each is shipped, listed under Model-invoked, and has a docs page", () => {
+    const plugin = JSON.parse(read(".claude-plugin/plugin.json"));
+    const readme = read("skills/tools/README.md");
+    const modelInvoked = readme.split(/^## /m).find((s) => s.startsWith("Model-invoked")) ?? "";
+    for (const name of TOOLS) {
+      assert.ok(plugin.skills.includes(`./skills/tools/${name}`), `${name} in plugin.json`);
+      assert.match(modelInvoked, new RegExp(`\\]\\(\\./${name}/SKILL\\.md\\)`), `${name} in README`);
+      assert.ok(existsSync(`docs/tools/${name}.md`), `docs/tools/${name}.md`);
+    }
+  });
+  test("jessica's When to call has one row per tool, each with a trigger", () => {
+    const when = section(skill, "When to call");
+    for (const name of TOOLS) assert.match(when, new RegExp(`^\\| \`/${name}\` \\| .{15,}`, "m"), name);
+    assert.match(when, /external dependenc/);
+    assert.match(when, /three or more tickets/);
+    assert.match(when, /a release is next/);
+  });
+  test("the hand-off table and the hard rules name the new tools", () => {
+    assert.match(section(skill, "Working with the others"), /go-live check/);
+    assert.match(section(skill, "Working with the others"), /status report/);
+    const rules = section(skill, "Hard rules");
+    assert.match(rules, /`\/raid-log`/);
+    assert.match(rules, /`\/critical-path`/);
+    assert.match(rules, /`\/go-live-check`/);
+  });
+  test("the risk log: one row shape, a last column by kind, closed rows stay", () => {
+    assert.match(raid, /`id` \| `kind` \| `text`/);
+    for (const kind of ["mitigation", "how and when", "next step", "needed-by"]) assert.match(raid, new RegExp(kind));
+    assert.match(raid, /closed row stays/i);
+    assert.match(raid, /past `review-by`/);
+    assert.match(raid, /`assumed`/);
+  });
+  test("the critical path is computed from blocker edges, with float and warnings", () => {
+    assert.match(critical, /longest path/);
+    assert.match(critical, /latest finish minus the earliest finish/);
+    assert.match(critical, /cycle times/);
+    for (const w of ["cycle", "no blockers and no dependents", "larger than the longest path"]) assert.match(critical, new RegExp(w));
+  });
+  test("the status report has the fixed order, no percent complete", () => {
+    for (const w of ["Decision needed:", "No decision needed", "baseline", "as of", "top three risks", "No percent complete"]) {
+      assert.match(status, new RegExp(w, "i"), w);
+    }
+  });
+  test("the go-live check sizes to the release, blocks on findings, dates its conditions", () => {
+    assert.match(goLive, /first store publication/);
+    assert.match(goLive, /ticket that blocks the release/);
+    assert.match(goLive, /each condition (is )?dated/i);
+    assert.match(goLive, /`human`/);
   });
 });

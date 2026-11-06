@@ -1,10 +1,10 @@
 // louis's files keep what the research found a review needs (docs/characters/louis/references.md).
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 const skill = readFileSync("skills/characters/louis/SKILL.md", "utf8");
-const money = readFileSync("skills/characters/louis/MONEY.md", "utf8");
+const money = readFileSync("skills/tools/money-check/SKILL.md", "utf8");
 
 describe("louis", () => {
   test("a comment starts with one prefix line that carries both rulings", () => {
@@ -35,6 +35,37 @@ describe("louis", () => {
     const rows = money.split("\n").filter((l) => /^\| [a-j] \|/.test(l));
     assert.equal(rows.length, 10);
     for (const r of rows) assert.ok(r.split("|")[3].trim().length > 0, `no worked number: ${r}`);
+  });
+  test("the numbers check is a tool, and leaves louis's folder", () => {
+    assert.ok(!existsSync("skills/characters/louis/MONEY.md"));
+    assert.match(money, /^name: money-check$/m);
+    assert.match(money, /amounts, fees, limits, rates, rounding, currency or balances/);
+    assert.match(money, /Item g is a judgement/);
+  });
+  test("louis calls it by name, only on a money trigger, and links no file in his folder", () => {
+    assert.match(skill, /`\/suits:money-check` \| the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances/);
+    assert.match(skill, /A diff with no money in it skips this/);
+    assert.doesNotMatch(skill, /MONEY\.md/);
+  });
+  test("the hand-off table and the hard rules name the tool", () => {
+    const handoff = skill.split("## Working with the others")[1];
+    assert.match(handoff, /money-check/);
+    const hard = skill.split("## Hard rules")[1].split("##")[0];
+    assert.match(hard, /\/suits:money-check/);
+    assert.match(hard, /which party gains the remainder/);
+  });
+  test("the tool is promoted: plugin.json, tools README and a docs page", () => {
+    assert.match(readFileSync(".claude-plugin/plugin.json", "utf8"), /"\.\/skills\/tools\/money-check"/);
+    assert.match(readFileSync("skills/tools/README.md", "utf8"), /\(\.\/money-check\/SKILL\.md\)/);
+    const page = readFileSync("docs/tools/money-check.md", "utf8");
+    for (const h of ["What it does", "When to reach for it", "Common questions", "It's working if"]) {
+      assert.match(page, new RegExp(`^## ${h}$`, "m"));
+    }
+  });
+  test("his docs page points at the tool, not the old file", () => {
+    const page = readFileSync("docs/characters/louis.md", "utf8");
+    assert.doesNotMatch(page, /MONEY\.md/);
+    assert.match(page, /money-check/);
   });
   test("his voice sample is a defect that is real", () => {
     assert.doesNotMatch(skill, /100\.004 (through|passes)/);

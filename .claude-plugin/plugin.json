@@ -9,6 +9,7 @@
   "skills": [
     "./skills/characters/harvey",
     "./skills/characters/mike",
+    "./skills/characters/rachel",
     "./skills/tools/codebase-design",
     "./skills/tools/domain-modeling",
     "./skills/tools/findings",
@@ -16,8 +17,10 @@
     "./skills/tools/improve-codebase-architecture",
     "./skills/tools/pitching",
     "./skills/tools/recall",
+    "./skills/tools/research",
     "./skills/tools/reverse-engineer-anything",
     "./skills/tools/senior",
+    "./skills/tools/source-finder",
     "./skills/tools/stocktake",
     "./skills/tools/test-kitchen"
   ]

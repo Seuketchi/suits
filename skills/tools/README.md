@@ -14,8 +14,11 @@ None yet.
 - **[domain-modeling](./domain-modeling/SKILL.md)**: Build and sharpen a project's domain model: CONTEXT.md and ADRs.
 - **[findings](./findings/SKILL.md)**: The one format every investigation writes to.
 - **[grilling](./grilling/SKILL.md)**: Question the user about a plan, decision, or idea until every open decision is settled.
+- **[handoff](./handoff/SKILL.md)**: Write the session up as a short document so another session can pick the work up.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual report, then grill through the one you pick.
+- **[morning-brief](./morning-brief/SKILL.md)**: A private daily brief of what is assigned and what needs review, with pending reviews only the owner can see.
 - **[pitching](./pitching/SKILL.md)**: Structure, write and review a pitch for the audience in the room.
+- **[pr](./pr/SKILL.md)**: Write a pull request body: a summary view, evidence, and how hard it is to undo.
 - **[prototype](./prototype/SKILL.md)**: Build a throwaway prototype to answer a design question.
 - **[recall](./recall/SKILL.md)**: Search past sessions for how something was done or decided.
 - **[research](./research/SKILL.md)**: Answer an outside question from primary sources, as a cited findings file.

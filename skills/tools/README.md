@@ -4,7 +4,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 
 ## User-invoked
 
-- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual report, then grill through the one you pick.
+None yet.
 
 ## Model-invoked
 
@@ -13,6 +13,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 - **[domain-modeling](./domain-modeling/SKILL.md)**: Build and sharpen a project's domain model: CONTEXT.md and ADRs.
 - **[findings](./findings/SKILL.md)**: The one format every investigation writes to.
 - **[grilling](./grilling/SKILL.md)**: Question the user about a plan, decision, or idea until every open decision is settled.
+- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual report, then grill through the one you pick.
 - **[pitching](./pitching/SKILL.md)**: Structure, write and review a pitch for the audience in the room.
 - **[recall](./recall/SKILL.md)**: Search past sessions for how something was done or decided.
 - **[research](./research/SKILL.md)**: Answer an outside question from primary sources, as a cited findings file.

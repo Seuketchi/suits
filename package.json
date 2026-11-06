@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "check-skills": "node scripts/check-skills.mjs"
+    "check-skills": "node scripts/check-skills.mjs",
+    "test:characters": "node --test \"test/characters/**/*.test.mjs\""
   }
 }

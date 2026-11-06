@@ -23,6 +23,16 @@ describe("rachel", () => {
     assert.match(skill, /Mike checks her framing/);
     assert.match(skill, /offers the owner a `\/rabbit-hole`/);
   });
+  test("a red flag is the list of cases she tells the owner at once, and it goes to harvey with mike's check", () => {
+    const rule4 = section(skill, "Hard rules").match(/^4\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule4, /design flaw[^\n]*silent for a long time\. Each of these is a red flag\./);
+    assert.match(rule4, /a red flag goes to him with mike's check of its facts/);
+    assert.match(rule4, /Nothing is fixed until the owner decides\./);
+  });
+  test("her docs page says a red flag goes to harvey with mike's check", () => {
+    const doc = readFileSync("docs/characters/rachel.md", "utf8");
+    assert.match(doc, /red flag[^\n]*mike's check/);
+  });
   test("her hand-over keeps typed items for the owner and she assigns none", () => {
     assert.match(skill, /prevent, sweep, redesign, detect or mitigate/);
     assert.match(skill, /She assigns none/);

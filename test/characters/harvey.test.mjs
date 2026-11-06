@@ -31,6 +31,17 @@ describe("harvey", () => {
   test("a finding he did not check is needs more, naming the gap", () => {
     assert.match(skill, /needs more.*what is missing and who fetches it/s);
   });
+  test("a red flag that arrives without mike's check is needs more, and mike fetches it", () => {
+    const rule5 = section(skill, "Hard rules").match(/^5\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule5, /A red flag \([^)]*\) that arrives without mike's check is `needs more`, and mike fetches it/);
+    assert.match(rule5, /does not redo that check/);
+  });
+  test("the bug call waits for rachel's cause and mike's check, and is still made before work starts", () => {
+    const rule1 = section(skill, "Hard rules").match(/^1\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule1, /the bug call \(whether and how to build the fix for a bug\)/);
+    assert.match(rule1, /once rachel's cause and mike's check are in/);
+    assert.match(rule1, /before any work starts/);
+  });
   test("the exceptions at the close are listed", () => {
     assert.match(skill, /three or more functions/);
   });
@@ -53,7 +64,8 @@ describe("harvey", () => {
     });
     test("the alternatives row names ours and guesses theirs, and never states a false one", () => {
       assert.match(prep, /^Alternatives: .*ours.*(guess|theirs)/m);
-      assert.match(prep, /never state an alternative (you|he|we) (do not|does not) have|truthful/i);
+      assert.match(prep, /decline to answer or answer truthfully/);
+      assert.match(prep, /never invent one/);
     });
     test("anything above his authority goes to the owner", () => {
       assert.match(prep, /^Authority: .*above .*owner/m);

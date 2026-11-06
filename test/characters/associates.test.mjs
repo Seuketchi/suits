@@ -4,6 +4,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const skill = readFileSync("skills/characters/associates/SKILL.md", "utf8");
+const doc = readFileSync("docs/characters/associates.md", "utf8");
+const section = (source, title) => source.split(/^## /m).find((s) => s.startsWith(title)) ?? "";
 
 describe("associates", () => {
   test("test-first is grounded in seeing the test fail, not in the order", () => {
@@ -50,6 +52,16 @@ describe("associates", () => {
     assert.match(skill, /12\. \*\*Verify every claim\*\*/);
     assert.match(skill, /against the real system, and give the evidence/);
     assert.match(skill, /unverified, and say how to check it/);
+  });
+  test("a cause raised as a red flag is not fixed until the owner decides, inside rule 2", () => {
+    const rule2 = section(skill, "Hard rules").match(/^2\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule2, /raises a cause as a red flag \([^)]*\), nothing is fixed until the owner decides/);
+  });
+  test("the docs page's working-if section has rules 11 and 12", () => {
+    const working = section(doc, "It's working if");
+    assert.match(working, /each added branch has a test that fails without it/);
+    assert.match(working, /checked against the real system with the evidence given/);
+    assert.match(working, /named as unverified with how to check it/);
   });
   test("the hard rules run 1 to 12 in order", () => {
     const nums = [...skill.matchAll(/^(\d+)\. \*\*/gm)].map((m) => Number(m[1]));

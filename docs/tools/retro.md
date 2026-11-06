@@ -6,7 +6,7 @@ It looks for four signals: items that bounced (logged loops and failed rounds), 
 
 Each finding is classed as navigation, an automated check, a coding standard, a new skill or information access. A signal that fits none of these is reported as a process finding for donna or jessica. Mechanical findings become a proposed check, and judgement calls become a proposed review rule for louis. Each finding quotes the log line or round it comes from, and one that cannot be traced is dropped.
 
-It edits nothing. It writes the findings list as a new file in the notes directory and hands it to donna to present.
+It edits nothing. It writes the findings list as a new file, `notes/retro-<batch>.md`, and hands it to donna to present. If the notes directory is missing, it creates that directory and nothing else.
 
 ## When to reach for it
 
@@ -32,5 +32,5 @@ Only roughly. The logs are free text, so it can only report a line that has no B
 - Every finding quotes the log line or round it comes from.
 - Each finding is classed, and a signal that fits no class is reported as a process finding.
 - Mechanical findings come as a proposed check, and judgement calls as a proposed review rule.
-- The findings list is a new file in the notes directory, and no other file changes.
+- The findings list is a new file, `notes/retro-<batch>.md` (with the notes directory created if it was missing), and no other file changes.
 - You decide what to apply, each with a pick from donna's digest.

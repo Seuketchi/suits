@@ -39,7 +39,7 @@ describe("donna parks work the owner has paused", () => {
     const waiting = briefing.match(/\*\*Waiting on the owner:\*\*[^\n]*/)?.[0] ?? "";
     assert.match(briefing.match(/\*\*Due today\*\*[^\n]*/)?.[0] ?? "", /not parked rows before their resurface date/);
     assert.match(waiting, /not parked rows before their resurface date/);
-    assert.match(read("skills/characters/donna/secretary/MEETING-BRIEF.md"), /Overdue since 4 November"\), not parked rows before their resurface date/);
+    assert.match(read("skills/characters/donna/secretary/MEETING-BRIEF.md"), /An overdue one, parked rows excepted before their date, is flagged first, in plain words \("Overdue since 4 November"\)/);
   });
   test("the action log's Status line and the status report's blocked line carry parked", () => {
     assert.match(read("skills/characters/donna/secretary/MINUTES.md"), /\*\*Status\*\* is `open`, `done`, `dropped` or `parked`/);

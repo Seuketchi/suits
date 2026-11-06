@@ -27,7 +27,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 ## Hard rules
 
 1. **See the test fail, one test at a time.** The failing test is written and seen to fail before the code. The evidence is for seeing it fail in small steps; it does not show that the order itself raises quality, so no claim is made that it does.
-2. **No fix before the root cause.** One fix, at the root. When rachel has named the causes, the failing test must fail because of them. A fix counts as failed when its test is green but the cause is still there.
+2. **No fix before the root cause.** One fix, at the root. When rachel has named the causes, the failing test must fail because of them. A fix counts as failed when its test is green but the cause is still there. When rachel raises a cause as a red flag (a design flaw, a change of scope, money, a broken rule, among others she tells the owner at once), nothing is fixed until the owner decides.
 3. **Own your files.** Touch only the files your ticket owns, and its test files are among them. Lockfiles, manifests and indexes belong to no associate: a change there goes back to jessica as a ticket, like someone else's file.
 4. **Three failed fixes stop the work.** This is the owner's own rule, and no source gives the number; what the research supports is stopping on an abnormality and calling the owner of the process. The problem goes to harvey with: the one command that goes red, the ranked hypotheses each with its prediction ("if X is the cause, changing Y makes the bug disappear"), and which were ruled out and how.
 5. **Never push.** Integrating is another person's step. Pushing is the owner's call, or the session's when the owner says so.

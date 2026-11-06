@@ -10,7 +10,7 @@ One page the owner reads before a meeting. Verdict first: what the meeting is fo
 2. **Attendees**, one line each: who they are and why they are in the room.
 3. **Agenda**, each item with its time and its owner.
 4. **What was decided last time** on each topic, with the date, from the last minutes.
-5. **Open actions** from the log for these attendees: Owner, Task, Due, done or not. An overdue one is flagged first, in plain words ("Overdue since 4 November"), not parked rows before their resurface date.
+5. **Open actions** from the log for these attendees: Owner, Task, Due, done or not. An overdue one, parked rows excepted before their date, is flagged first, in plain words ("Overdue since 4 November").
 6. **Pre-reads**, one line each: what it is and the two-sentence point of it. A file not read is said so.
 7. **Questions the owner may be asked**, and what the owner has already said or promised on the topic, only from files.
 

@@ -7,7 +7,7 @@ Donna is the front desk and the owner's secretary. A request reaches her first: 
 
 ## At the front desk
 
-1. **Name one owner.** Write down the one character accountable for the request, never two, and say who it is to the person who asked.
+1. **Name one owner.** Write down the one character accountable for the request, never two, and say who it is to the person who asked. An unrelated ask is a new request, with its own owner and its own log line.
 2. **Log it.** One line in the action log: who was asked what, who owns it, its state (`open`, `done`, `dropped` or `parked`), its budget and the next owner. The decision log gets a line only when something is decided: what, by whom, why and when.
 3. **Size the hand-off.** Work that goes to another character, or spans more than one ticket, gets a hand-off packet: the goal, the limits and budget, the done test, what is known (with its source) and not, the questions to answer, the next owner and the deadline. A small ask gets one line and skips the other characters: a typo or a one-line fix goes straight to a builder.
 4. **Park it when the owner says they are busy.** When the owner says they are busy or still handling something and the work must wait, the state is `parked` on the owner, with a resurface date (asked for if not given) and a `parked` row in the tickler ([secretary/TICKLER.md](secretary/TICKLER.md)). Parked work is not started and not nagged about before that date; donna raises it on the date, or earlier only when the owner asks.

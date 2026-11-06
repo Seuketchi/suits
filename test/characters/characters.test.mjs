@@ -208,11 +208,21 @@ describe("the voice", () => {
 describe("the READMEs say who calls each tool", () => {
   // A user-invoked tool has no caller: the owner starts it. Both READMEs must list it under User-invoked instead.
   const allTools = readdirSync(join(root, "skills/tools"), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name);
+  const hasSkill = (t) => existsSync(join(root, "skills/tools", t, "SKILL.md"));
   const userInvoked = (t) => /^disable-model-invocation:\s*true$/m.test(frontmatter(read("skills/tools", t, "SKILL.md")));
-  const tools = allTools.filter((t) => !userInvoked(t));
+  // A folder with no SKILL.md fails once, by name, in the test below, not as a bare ENOENT while the tests are being listed.
+  const skills = allTools.filter(hasSkill);
+  const tools = skills.filter((t) => !userInvoked(t));
+
+  for (const tool of allTools) {
+    test(`${tool}: the tool folder has a SKILL.md`, () => {
+      assert.ok(hasSkill(tool), `skills/tools/${tool} has no SKILL.md`);
+    });
+  }
+
   const userBlock = (text) => text.split(/^#{2,3} /m).find((b) => b.startsWith("User-invoked")) ?? "";
 
-  for (const tool of allTools.filter(userInvoked)) {
+  for (const tool of skills.filter(userInvoked)) {
     test(`${tool}: user-invoked, so both READMEs list it under User-invoked and not under Model-invoked`, () => {
       const rootReadme = read("README.md");
       const toolsReadme = read("skills/tools/README.md");

@@ -52,6 +52,27 @@ describe("the slides tool", () => {
     assert.doesNotMatch(all, /\]\([^)]*(characters\/|\.\.\/)/, "a link out of the tool's folder");
   });
 
+  test("it names print.sh and check.sh, with the build as print.sh <deck.html> <deck.pdf> and no link into donna's folder", () => {
+    const build = skill.split("## Build and check")[1]?.split(/^## /m)[0] ?? "";
+    assert.match(build, /`print\.sh <deck\.html> <deck\.pdf>`/);
+    assert.match(build, /`check\.sh <deck\.html> <deck\.pdf> --claims claims\.md`/);
+    assert.doesNotMatch(skill, /\]\([^)]*donna/);
+  });
+
+  test("it keeps a claims ledger, claims.md, and does not copy the ledger format", () => {
+    const build = skill.split("## Build and check")[1]?.split(/^## /m)[0] ?? "";
+    assert.match(build, /claims ledger[^.\n]*`claims\.md`/);
+    assert.doesNotMatch(skill, /\| Claim \| Source/);
+  });
+
+  test("the machine-made-look list is a summary and check.sh is the authority", () => {
+    const look = skill.split("## Leave out the machine-made look")[1]?.split(/^## /m)[0] ?? "";
+    assert.match(look, /This list is a summary; `check\.sh` is the authority on what fails\./);
+    const page = read("docs/tools/slides.md");
+    const answer = page.split("**Why no icons, cards or gradients?**")[1]?.split("\n\n")[0] ?? "";
+    assert.match(answer, /list in the skill is a summary; `check\.sh` is the authority on what fails/i);
+  });
+
   test("it keeps the sources, the build and the speaker notes apart from the PDF", () => {
     assert.match(skill, /notes/i);
     assert.match(skill, /source/i);

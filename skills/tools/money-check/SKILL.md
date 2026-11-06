@@ -1,6 +1,11 @@
+---
+name: money-check
+description: A ten-item check on how a diff or spec handles amounts, fees, limits, rates, rounding, currency or balances, each answered with a file:line. Use only when the work touches money. Skip when it does not.
+---
+
 # The numbers check
 
-Read when the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances. Answer each item `yes`, `no` or `n/a` with `file:line`. A `no` is ruled like any other finding.
+Use only when the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances. A diff with no money in it skips this. Answer each item `yes`, `no` or `n/a` with `file:line`. A `no` is ruled like any other finding.
 
 | | The check | A worked number |
 | --- | --- | --- |

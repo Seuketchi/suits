@@ -28,4 +28,6 @@ It fails before the fix and fails because of the named cause.
 - A bug fix addresses the cause rachel named.
 - Each associate touched only the files its ticket owns.
 - Three failed fixes stopped the work and went to harvey.
+- The diff was checked before delivery: each branch has a test that fails without it, null and stale values are handled, and each catch logs or says why not.
+- Each claim, such as a cause or "X is missing", was checked against the real system with the evidence given, and what could not be checked is named as unverified with how to check it.
 - They skip the tools that do not apply, without comment.

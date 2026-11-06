@@ -36,6 +36,8 @@ The default is not to call. A tool is called only when a stated fact about the t
 8. **Refactoring is not part of the loop.** It is its own commit after green, never mixed into the fix.
 9. **One logical change per commit,** with its tests, and every commit leaves the checks green. The message states the problem, the cause (for a bug: one sentence, and `Fixes: <sha> ("subject")` when the introducing commit is known), the one change, and how it was checked. The first line is 72 characters or fewer, with a blank line after it.
 10. **Run the whole suite, not only the new test,** and say which command showed what.
+11. **Check your diff before you deliver.** Every added if, catch, early return or config switch has a test that fails without it. Nullable or server values, clocks and async handlers cope with null, races and stale values. Doc comments match the final code and name no callers. Each catch logs, or says why not.
+12. **Verify every claim** (a cause, a recommendation, "X is missing") against the real system, and give the evidence. Name what could not be checked as unverified, and say how to check it.
 
 ## Working with the others
 

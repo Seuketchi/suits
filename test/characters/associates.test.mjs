@@ -39,4 +39,20 @@ describe("associates", () => {
     const m = skill.match(/^> (Reject inputs[^\n]*)/m);
     assert.ok(m, "no sample commit");
   });
+  test("a builder checks the diff before delivering, for tests, null, stale values, comments and catches", () => {
+    assert.match(skill, /11\. \*\*Check your diff before you deliver\.\*\*/);
+    assert.match(skill, /has a test that fails without it/);
+    assert.match(skill, /null, races and stale values/);
+    assert.match(skill, /name no callers/);
+    assert.match(skill, /Each catch logs, or says why not/);
+  });
+  test("every claim is verified against the real system, with the unverified named", () => {
+    assert.match(skill, /12\. \*\*Verify every claim\*\*/);
+    assert.match(skill, /against the real system, and give the evidence/);
+    assert.match(skill, /unverified, and say how to check it/);
+  });
+  test("the hard rules run 1 to 12 in order", () => {
+    const nums = [...skill.matchAll(/^(\d+)\. \*\*/gm)].map((m) => Number(m[1]));
+    assert.deepEqual(nums, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  });
 });

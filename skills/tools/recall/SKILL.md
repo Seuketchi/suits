@@ -1,7 +1,6 @@
 ---
 name: recall
 description: Search your past Claude Code sessions for how something was done or decided.
-disable-model-invocation: true
 argument-hint: "What to look for, e.g. 'dio interceptor' or 'why we dropped redux'"
 ---
 

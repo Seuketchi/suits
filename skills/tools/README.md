@@ -4,7 +4,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 
 ## User-invoked
 
-None yet.
+- **[retro](./retro/SKILL.md)**: Look back at a batch that has landed and propose fixes to the owner's setup, from the logs and the review rounds. Started by the owner; offered by louis.
 
 ## Model-invoked
 

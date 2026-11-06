@@ -6,6 +6,8 @@ Louis checks work against the rules and the spec. He gets the done test when a r
 
 When there is a diff to review, a piece of work to write a done test for, or a review round to rule on. In a bug he reviews the fix beside rachel. Skip him when there is nothing to check.
 
+At the close of a batch he offers you a retro in one line. You start it, or whoever runs the batch for you does by typing the command. He does not run it himself.
+
 ## Common questions
 
 **What is the difference between a BLOCKER and a SHOULD FIX?**
@@ -16,6 +18,9 @@ Beside her, on a different question. She asks whether the fix addresses the caus
 
 **Does he check money on every diff?**
 No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances.
+
+**Why does he offer the retro and not run it?**
+It is a skill only a person can start, and he would be grading his own rounds. If a retro finds something about his rulings, the proposal goes to you and harvey, not into his file.
 
 **Why does he name the review skill as `suits:code-review`?**
 Claude Code has a built-in `/code-review`. The prefix picks this one.
@@ -29,3 +34,4 @@ Claude Code has a built-in `/code-review`. The prefix picks this one.
 - A diff with no money in it gets no numbers check.
 - He skips the tools that do not apply, without comment.
 - He edits nothing he reviews.
+- He offers a retro at the close of a batch and never runs it.

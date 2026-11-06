@@ -9,7 +9,7 @@ When there is a diff to review, a piece of work to write a done test for, or a r
 ## Common questions
 
 **What is the difference between a BLOCKER and a SHOULD FIX?**
-A BLOCKER is always fixed in the round. A SHOULD FIX is fixed in the PR if cheap, otherwise it goes to a follow-up.
+A BLOCKER is always fixed in the round. A SHOULD FIX is fixed in the PR if cheap, otherwise it is a follow-up with an issue number. A SUGGESTION is never required.
 
 **Does he review beside rachel or after her?**
 Beside her, on a different question. She asks whether the fix addresses the cause. He asks about standards, spec and numbers. The reports are not merged.
@@ -23,7 +23,9 @@ Claude Code has a built-in `/code-review`. The prefix picks this one.
 ## It's working if
 
 - Each finding names `file:line` and the rule or spec line it breaks.
-- Every comment has both verdicts.
+- Every comment starts with one prefix line, such as `BLOCKER, verified:`.
+- A pass says what it checked and what it did not.
+- A money diff is answered against the ten items in `MONEY.md`, each with a `file:line`.
 - A diff with no money in it gets no numbers check.
 - He skips the tools that do not apply, without comment.
 - He edits nothing he reviews.

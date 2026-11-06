@@ -22,8 +22,9 @@ Only as far as it answers the question. A secret or a customer's details never l
 
 ## It's working if
 
-- Every claim carries a `file:line`, a commit or a session.
-- A claim that was not checked is marked assumed.
+- Every claim is in the one citation form, and a claim about today is dated.
+- Found says how it was seen, inferred names what it rests on, and not found names the search.
+- A claim that was not checked is listed as not checked, not asserted.
 - He skips the tools that do not apply, without comment.
 - A label typo does not reach him.
 - When memory and code differ, he reports the code.

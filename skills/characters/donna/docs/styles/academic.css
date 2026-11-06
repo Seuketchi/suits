@@ -1,0 +1,87 @@
+/* Academic serif: a style layer. Link it AFTER letterhead.css (copied beside the HTML as print.css, with fonts/ next to both):
+     <link rel="stylesheet" href="print.css"><link rel="stylesheet" href="academic.css">
+   Source Serif 4 with real small caps for labels, a crest and the institution centred over one accent rule, section numbers hanging
+   in the margin, marks in a right-hand column under a "Marks" head. It asks only for a crest (the brand's mark) and a name.
+   Same tokens as the base: --accent, --ink, --muted, --line, --tint and --font from the project win; the fallbacks below are this
+   style's own (burgundy). Chrome clips anything drawn outside the page area, so a number that hangs in the margin needs a small @page
+   margin and the rest as body padding. Source Serif 4 has small caps; Plex Sans does not, so the base style uses weight and grey. */
+
+@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-Regular.otf"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-It.otf"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-Semibold.otf"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-SemiboldIt.otf"); font-weight: 600; font-style: italic; }
+@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-Bold.otf"); font-weight: 700; font-style: normal; }
+
+:root {
+  --c-accent: var(--accent, #7a1f2b);  --c-accent-2: var(--accent-2, var(--c-accent));
+  --c-ink: var(--ink, #1c1b1a);  --c-muted: var(--muted, #5b5753);  --c-line: var(--line, #c9c3bc);  --c-tint: var(--tint, #f3efea);
+  --c-font: var(--font, "Source Serif 4", "Noto Serif", "DejaVu Serif", serif);
+}
+@page { margin: 18mm 22mm 22mm 14mm;   /* the left 16mm more is body padding, so hanging numbers stay on the page */
+  @bottom-left  { content: var(--running, ""); padding-left: 16mm; width: 130mm; border-top: 0; font: 400 8.5pt/1 var(--c-font); font-variant-caps: all-small-caps; color: var(--c-muted); }
+  @bottom-right { content: counter(page) " of " counter(pages); border-top: 0; font: 400 8.5pt/1 var(--c-font); color: var(--c-muted); }
+}
+@page cover { margin: 0; }
+body { padding-left: 16mm; font-size: 11pt; line-height: 1.45; font-feature-settings: "kern", "liga"; counter-reset: fig sec; }
+p, li, dd, blockquote { max-width: 135mm; }
+.sc { font-variant-caps: all-small-caps; letter-spacing: 0.02em; }
+.cover { margin-left: -16mm; }                 /* the cover is full bleed: undo the body padding */
+
+/* masthead: crest centred over the institution in small caps, one accent rule */
+.lh { flex-direction: column; align-items: center; gap: 0; text-align: center; padding-bottom: 4mm; border-bottom-width: 1pt; margin-bottom: 8mm; }
+.lh .mark, .lh > img, .lh > svg { height: 15mm; margin: 0 auto 2.5mm; }
+.lh .org { flex: none; padding: 0; }
+.lh .org b { font-size: 14pt; font-weight: 600; font-variant-caps: all-small-caps; letter-spacing: 0.02em; line-height: 1.2; }
+.lh .org span { font-size: 10pt; font-style: italic; margin-top: 0.5mm; }
+.lh address { text-align: center; font-size: 9pt; margin-top: 1.5mm; padding: 0; }
+
+h1 { font-size: 17pt; font-variant-caps: small-caps; letter-spacing: 0.01em; margin-bottom: 4mm; }
+.ref { font-style: italic; margin-top: -2mm; }
+.facts { border-top: 0.5pt solid var(--c-line); margin-bottom: 7mm; }
+.facts dt { flex: 0 0 24mm; font-size: 11pt; font-weight: 400; font-variant-caps: all-small-caps; letter-spacing: 0.02em; color: var(--c-muted); }
+.facts dd { font-size: 11pt; }
+.facts > div { padding: 1.6mm 0; }
+.lead { font-size: 11.5pt; margin-bottom: 7mm; }
+strong { font-weight: 600; }
+.strip { justify-content: center; font-weight: 400; font-style: italic; font-size: 10.5pt; gap: 6mm; padding-bottom: 2mm; border-bottom: 1pt solid var(--c-accent); margin-bottom: 5mm; }
+
+/* sections: the number hangs in the margin, in the accent colour */
+h2 { counter-increment: sec; position: relative; font-size: 12.5pt; margin: 6mm 0 2mm; padding: 0; border: 0; }
+h2::before { content: counter(sec); position: absolute; left: -9mm; top: 0; color: var(--c-accent); font-weight: 600; }
+body.legal h2::before, .signoff h2::before, .cover h2::before { content: none; }
+body.long h2 { margin-top: 0; }
+ul, ol { padding-left: 5.5mm; }
+li::marker { color: var(--c-accent); }
+
+/* handout */
+.header-block { gap: 0 6mm; }
+.field .lbl { font-variant-caps: all-small-caps; letter-spacing: 0.02em; font-weight: 400; font-size: 11pt; }
+.space .lbl { font-variant-caps: all-small-caps; letter-spacing: 0.02em; font-weight: 400; font-size: 10.5pt; }
+.field { font-size: 11pt; }
+.titleblock h1 { font-variant-caps: normal; letter-spacing: 0; font-size: 19pt; text-align: center; margin-bottom: 1mm; }
+.titleblock > p { font-style: italic; color: var(--c-muted); text-align: center; margin-left: auto; margin-right: auto; max-width: none; }
+.eq .tag { font-style: italic; font-size: 9pt; }
+figcaption { max-width: 105mm; }
+.eqs { max-width: 150mm; }
+
+/* problems: the question at the left, the marks in a column at the right under a small-caps head */
+.cols { display: flex; justify-content: space-between; margin: 5mm 0 0; padding: 0 0 1mm; border-bottom: 0.6pt solid var(--c-ink);
+  font-variant-caps: all-small-caps; letter-spacing: 0.02em; color: var(--c-muted); font-size: 10.5pt; }
+.problems { margin-top: 0; }
+.problem { display: grid; grid-template-columns: 8mm 1fr 15mm; padding: 3.2mm 0 0; margin: 0; }
+.problem > * { grid-column: 2; }
+.problem::before { content: counter(prob) "."; position: static; grid-column: 1; grid-row: 1; color: var(--c-accent); }
+.problem > .points { position: static; grid-column: 3; grid-row: 1; text-align: right; font-size: 11pt; font-weight: 600; }
+.problem .part .points { position: absolute; right: -15mm; top: 0; font-size: 11pt; font-weight: 600; }
+.problem > p { margin: 0 0 2mm; max-width: 118mm; }
+.part { padding-right: 0; }
+.space { margin: 1.2mm 0 2.2mm; }
+.space.calc, .space.work, .space.explain { width: 100%; max-width: 134mm; }
+.space.ans { width: 70mm; }
+
+/* tables and the rest keep the base; only the type changes */
+th { background: none; }
+.answer, .signoff { border-top-color: var(--c-accent); }
+.facts dd.subject { font-weight: 600; }
+.notary .head { font-variant-caps: all-small-caps; letter-spacing: 0.02em; font-weight: 600; font-size: 11pt; }
+.sig .cap, .sig .on, .field .of { font-size: 10pt; }

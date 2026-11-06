@@ -1,0 +1,30 @@
+<!-- Flow diagram, two lanes. Edit the text and the boxes; keep it as an SVG file in src/img/ and offer it beside the PDF.
+     To embed it with the document's own colours, paste it inline into the HTML inside a <figure> and let the var() fallbacks pick up the tokens.
+     Rules: at most 6 boxes per lane, a short label each (4 words), one box highlighted: the state the reader is trying to reach. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" width="680" height="360" style="font-family: var(--c-font)" role="img" aria-label="{{What the diagram shows}}">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--c-ink)"/></marker>
+  </defs>
+  <!-- lane headers -->
+  <text x="20"  y="24" font-size="12" font-weight="700" fill="var(--c-ink)">{{Lane one: the reader}}</text>
+  <text x="380" y="24" font-size="12" font-weight="700" fill="var(--c-ink)">{{Lane two: the other side}}</text>
+  <line x1="350" y1="10" x2="350" y2="350" stroke="var(--c-line)" stroke-width="1"/>
+  <!-- lane one -->
+  <rect x="20" y="40"  width="300" height="48" rx="2" fill="var(--c-tint)" stroke="var(--c-line)"/>
+  <text x="170" y="69" font-size="12" text-anchor="middle" fill="var(--c-ink)">{{1. First step}}</text>
+  <rect x="20" y="120" width="300" height="48" rx="2" fill="var(--c-tint)" stroke="var(--c-line)"/>
+  <text x="170" y="149" font-size="12" text-anchor="middle" fill="var(--c-ink)">{{2. Second step}}</text>
+  <rect x="20" y="200" width="300" height="48" rx="2" fill="var(--c-tint)" stroke="var(--c-line)"/>
+  <text x="170" y="229" font-size="12" text-anchor="middle" fill="var(--c-ink)">{{3. Send it}}</text>
+  <!-- lane two -->
+  <rect x="380" y="200" width="280" height="48" rx="2" fill="var(--warn-bg, #fff6e5)" stroke="var(--warn-line, #c77c02)"/>
+  <text x="520" y="229" font-size="12" text-anchor="middle" fill="var(--warn-ink, #6b4400)">{{4. They check it}}</text>
+  <!-- the end state, highlighted -->
+  <rect x="20" y="290" width="640" height="48" rx="2" fill="var(--c-accent)"/>
+  <text x="340" y="319" font-size="13" font-weight="700" text-anchor="middle" fill="#ffffff">{{5. The result the reader wants}}</text>
+  <!-- arrows -->
+  <line x1="170" y1="88"  x2="170" y2="118" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="170" y1="168" x2="170" y2="198" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="320" y1="224" x2="378" y2="224" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M520 248 L520 270 L340 270 L340 288" fill="none" stroke="var(--c-ink)" stroke-width="1.4" marker-end="url(#arrow)"/>
+</svg>

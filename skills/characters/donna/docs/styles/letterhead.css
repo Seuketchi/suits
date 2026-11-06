@@ -1,0 +1,281 @@
+/* Letterhead: the default style of donna's documents. Used when the project has no design system and the user gave no example.
+   Copy this file beside the HTML as print.css, with the fonts/ folder next to it (the @font-face urls are relative), and link it
+   AFTER the project's tokens. The two other styles, academic.css and engineering.css, are layers: link them after this one.
+
+   The look: IBM Plex Sans, a letterhead (mark and name at the left, the office at the right, one accent rule), labelled rows between
+   thin rules, a footer with the document id and page x of y. The accent shows on rules, numbers and the title only. It leaves out on
+   purpose (WRITING.md, "Avoid"): kickers, dot-separated meta lines, hero titles, side bars, pills, rounded cards, shadows, tints behind
+   blocks, gradients. The cover is a flat band of the accent colour.
+
+   Tokens. Every colour and the font read one custom property each, with this style's own value as the fallback, so a :root block (the
+   project's tokens.css, linked before this file) that sets --accent, --ink, --muted, --line, --tint and --font restyles the page
+   without touching a rule. Optional: --accent-2 (the letterhead and cover rule, when the brand has a second colour), --warn-ink,
+   --warn-line, --mark (the red of a screenshot's numbered boxes). The :root block below only forwards those names (--c-accent and so
+   on), so each style layer can change its own fallbacks and a brand still wins. A brand font arrives as an @font-face in tokens.css
+   and is named in --font. Every text colour pair must keep 4.5:1; check.sh measures it.
+   Footer. A document sets --running (a quoted short title: the document id and name) and, for a logo, --footer-logo as a data: URI
+   url(...) plus --footer-pad (the logo's width): Chrome does not resolve relative URLs in @page margin boxes.
+
+   Body classes: none for a document with a cover; "plain" for a memo, letter, handout, form or checklist (smaller headings);
+   "long" starts each h2 on a new page (past about 6 pages); "legal" for a company or legal document (LEGAL.md). */
+
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-Regular.ttf"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-Italic.ttf"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-Medium.ttf"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-SemiBold.ttf"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-Bold.ttf"); font-weight: 700; font-style: normal; }
+
+/* ---- tokens: the project's value if it set one, else this style's own ---- */
+:root {
+  --c-accent: var(--accent, #1b3a63);  --c-accent-2: var(--accent-2, var(--c-accent));
+  --c-ink: var(--ink, #1b1f24);  --c-muted: var(--muted, #55606b);  --c-line: var(--line, #c4ccd5);  --c-tint: var(--tint, #eef1f5);
+  --c-font: var(--font, "IBM Plex Sans", "Noto Sans", "DejaVu Sans", sans-serif);
+}
+
+/* ---- page ---- */
+@page {
+  size: A4;                                    /* Letter for a US reader */
+  margin: 17mm 22mm 22mm;
+  @bottom-left  { content: var(--running, ""); font: 400 8pt/1 var(--c-font); color: var(--c-muted);
+                  border-top: 0.5pt solid var(--c-line); padding-top: 2.5mm; width: 120mm; padding-left: var(--footer-pad, 0);
+                  background: var(--footer-logo, none) no-repeat left center; background-size: auto 6mm; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 400 8pt/1 var(--c-font);
+                  color: var(--c-muted); border-top: 0.5pt solid var(--c-line); padding-top: 2.5mm; }
+}
+@page cover { margin: 0; }                     /* the cover section is printed on this page: full bleed, no footer */
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font: 400 10.5pt/1.5 var(--c-font); color: var(--c-ink); margin: 0; font-variant-numeric: lining-nums; }
+
+/* ---- type scale (body 10.5/1.5, h1 18, h2 15 or 11.5 in plain, h3 12 or 10.5, table 9.5, caption 8.5, footer 8) ---- */
+h1, h2, h3 { font-weight: 600; margin: 0; }
+h1 { font-size: 18pt; line-height: 1.2; color: var(--c-accent); margin: 0 0 1.5mm; }
+h2 { font-size: 15pt; line-height: 1.25; margin: 9mm 0 3.5mm; padding-bottom: 1.8mm; border-bottom: 0.6pt solid var(--c-line); break-after: avoid; }
+h2:first-child { margin-top: 0; }
+h3 { font-size: 12pt; line-height: 1.3; margin: 6mm 0 2mm; break-after: avoid; }
+body.long h2 { break-before: page; margin-top: 0; }
+/* plain: a memo, letter, handout, form or checklist. Small headings, no rule under them. */
+body.plain h2 { font-size: 11.5pt; line-height: 1.3; margin: 6mm 0 2mm; padding: 0; border: 0; }
+body.plain h3 { font-size: 10.5pt; margin: 4mm 0 1.5mm; }
+body.compact h2 { font-size: 12.5pt; margin: 6mm 0 3mm; padding-bottom: 1.5mm; }
+.center { text-align: center; } .center p { margin-left: auto; margin-right: auto; }
+.strip { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 4mm; font-size: 9.5pt; font-weight: 500; }   /* the line along the top of a handout: course left, school right */
+
+/* ---- text: lines stop at about 142mm, 75 to 80 characters; tables, figures and rules run to the margin ---- */
+p, li, dd, blockquote { max-width: 142mm; }
+p { margin: 0 0 3mm; orphans: 3; widows: 3; }
+ul, ol { margin: 0 0 3.5mm; padding-left: 6mm; }
+li { margin: 0 0 1.8mm; break-inside: avoid; }
+li::marker { color: var(--c-accent); font-weight: 600; }
+strong { font-weight: 600; }                   /* a bullet starts with a bold claim, then the detail */
+.lead { font-weight: 600; font-size: 11pt; line-height: 1.45; margin-bottom: 5mm; }
+.ref { margin: 0 0 5mm; font-size: 9pt; color: var(--c-muted); }
+.keep { break-after: avoid; }
+.nowrap { white-space: nowrap; }               /* ids, amounts, dates, phone numbers: never split across lines */
+.muted { color: var(--c-muted); }
+.small { font-size: 9pt; }
+
+/* ---- the letterhead: the sender's mark and name at the left, the office at the right, one rule under both.
+        The mark is an img or an inline svg (the brand's logo); the name, unit and address are the brand's own. ---- */
+.lh { display: flex; align-items: flex-start; gap: 4.5mm; padding-bottom: 5mm; border-bottom: 1.4pt solid var(--c-accent-2); margin: 0 0 8mm; }
+.lh .mark, .lh > img, .lh > svg { flex: none; display: block; height: 13mm; width: auto; max-width: 50mm; }
+.lh .org { flex: 1; padding-top: 0.8mm; }
+.lh .org b { display: block; font-weight: 600; font-size: 14pt; line-height: 1.15; }
+.lh .org span { display: block; font-size: 9.5pt; color: var(--c-muted); margin-top: 0.8mm; }
+.lh address { margin-left: auto; font-style: normal; text-align: right; font-size: 8.5pt; line-height: 1.5; color: var(--c-muted); padding-top: 0.8mm; }
+.lh address b { font-weight: 600; color: var(--c-ink); }
+
+/* ---- labelled rows: the label is plain and muted, the value is the text colour ---- */
+.facts { margin: 0 0 7mm; border-top: 0.6pt solid var(--c-ink); }
+.facts > div { display: flex; align-items: baseline; padding: 2mm 0; border-bottom: 0.5pt solid var(--c-line); }
+.facts dt { flex: 0 0 26mm; margin: 0; font-size: 9pt; font-weight: 500; color: var(--c-muted); }
+.facts dd { margin: 0; font-size: 10.5pt; max-width: none; }
+.facts dd.subject { font-weight: 600; }
+
+/* ---- cover: a section printed on its own full-bleed page. Markup in templates/cover.html. A flat band of the accent. ---- */
+.cover { page: cover; width: 210mm; height: 297mm; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
+.cover-band { flex: 0 0 150mm; padding: 56mm 22mm 0; background: var(--c-accent); color: #fff; }
+.cover-title { font-size: 34pt; line-height: 1.1; font-weight: 600; margin: 0 0 3mm; max-width: 166mm; color: #fff; }
+.cover-sub   { font-size: 20pt; line-height: 1.2; font-weight: 400; margin: 0 0 6mm; max-width: 166mm; }
+.cover-scope { font-size: 12pt; line-height: 1.4; margin: 0; color: rgba(255,255,255,0.92); max-width: 150mm; }
+.cover-logo  { display: block; align-self: flex-start; height: 16mm; width: auto; margin: 16mm 22mm 0; }
+.cover .facts { margin: 14mm 22mm 0; }
+.cover-foot { margin: auto 22mm 13mm; border-top: 1.2pt solid var(--c-accent-2); padding-top: 2.2mm; font-size: 8pt; line-height: 1.4; color: var(--c-muted); max-width: none; }
+
+/* ---- title block: a short document that stays inside the building (templates/cover.html, second part) ---- */
+.titleblock { margin: 0 0 7mm; }
+.titleblock .logo, .logo { display: block; height: 11mm; width: auto; margin: 0 0 6mm; }
+.label { margin: 0 0 1.5mm; font-size: 9.5pt; font-weight: 600; }       /* a bold label over ordinary text: sentence case, ink colour */
+.titleblock .facts { margin-top: 5mm; }
+
+/* ---- the answer first: what the reader can do or decide, before anything else.
+        A bold label over ordinary text between two thin rules: no tint, no side bar, no card. ---- */
+.answer { max-width: 152mm; margin: 0 0 6mm; padding: 3mm 0 2mm; border-top: 0.8pt solid var(--c-ink); border-bottom: 0.6pt solid var(--c-line); break-inside: avoid; }
+.answer p:last-child, .answer ul:last-child, .answer ol:last-child { margin-bottom: 0; }
+.answer .label { margin-bottom: 1.5mm; }
+
+/* ---- a warning, or something not settled: warm ink between two thin warm rules; no fill, no side bar ---- */
+.callout { max-width: 152mm; margin: 4mm 0 5mm; padding: 2.5mm 0; color: var(--warn-ink, #6b4400);
+  border-top: 1pt solid var(--warn-line, #c77c02); border-bottom: 1pt solid var(--warn-line, #c77c02); break-inside: avoid; }
+.callout p { margin: 1.5mm 0; }
+.callout .callout-title { margin-top: 0; font-weight: 600; }
+
+/* ---- an ask: what to send or decide, and why. .ask is numbered; .ask.tick has a box to tick ---- */
+.asks { counter-reset: ask; margin: 0 0 5mm; }
+.ask { counter-increment: ask; display: grid; grid-template-columns: 11mm 1fr; column-gap: 0; max-width: 152mm; padding: 3mm 0; border-top: 0.6pt solid var(--c-line); break-inside: avoid; }
+.ask:last-child { border-bottom: 0.6pt solid var(--c-line); }
+.ask::before { content: counter(ask) "."; grid-row: 1 / span 3; font-size: 10.5pt; font-weight: 600; line-height: 1.5; color: var(--c-accent); }
+.ask.tick::before { content: "\2610"; font-size: 15pt; line-height: 1.1; color: var(--c-ink); }       /* a ballot box: a character, so the printed PDF can be found and made fillable */
+.ask > * { grid-column: 2; margin: 0 0 1.2mm; max-width: none; }
+.ask .what { font-weight: 600; }
+.ask .k { font-weight: 600; margin-right: 0.8mm; }
+.ask .k::after { content: ":"; }
+.ask .due { font-size: 9.5pt; color: var(--c-muted); }
+
+/* ---- a claim not yet checked against its source: it prints highlighted, so it cannot pass for fact ---- */
+mark.unverified { background: #ffe08a; color: var(--c-ink); padding: 0 0.6mm; }
+
+/* ---- a file the reader must open: named exactly, and easy to find on the page ---- */
+.file { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-size: 0.9em; font-weight: 700; white-space: nowrap;
+  background: var(--c-tint); border-bottom: 1.4pt solid var(--c-accent); padding: 0 1.2mm; }
+
+/* ---- what we made, and what is the reader's own ---- */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin: 0 0 5mm; break-inside: avoid; }
+.pair > div { padding: 3mm 0 0; border-top: 1pt solid var(--c-accent); }
+.pair > div.yours { border-top-color: var(--c-ink); }
+.pair h3 { margin: 0 0 2mm; font-size: 10.5pt; }
+.pair ul { margin-bottom: 0; }
+
+/* ---- tables: thin horizontal rules, a rule under the header row, no grid ---- */
+table { width: 100%; border-collapse: collapse; margin: 1mm 0 5mm; font-size: 9.5pt; line-height: 1.4; }
+th, td { padding: 2mm 3mm 2mm 0; text-align: left; vertical-align: top; border-bottom: 0.5pt solid var(--c-line); }
+th { font-weight: 600; background: var(--c-tint); padding-left: 2mm; border-bottom: 0.8pt solid var(--c-ink); }
+td { padding-left: 2mm; }
+tbody th { background: none; border-bottom: 0.5pt solid var(--c-line); }
+td p, th p { max-width: none; margin: 0 0 1.5mm; }
+thead { display: table-header-group; }          /* the header row repeats on each page */
+tr { break-inside: avoid; }
+table { break-inside: avoid; }                  /* a table that fits stays whole; a long one takes class="split" */
+table.split { break-inside: auto; }
+.chosen { background: var(--c-tint); font-weight: 600; }   /* the option a comparison or decision settles on */
+
+/* ---- figures: no frame, no rounded corner, no shadow. The caption number is counted for you ---- */
+body { counter-reset: fig; }
+figure { counter-increment: fig; margin: 4mm 0 6mm; text-align: center; break-inside: avoid; }
+figure img, figure svg { display: inline-block; max-width: 100%; max-height: 165mm; width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; }
+figcaption { max-width: 115mm; margin: 1.8mm auto 0; font-size: 8.5pt; font-style: italic; color: var(--c-muted); }
+figcaption::before { content: "Figure " counter(fig) ". "; }
+figure.annotated { display: grid; grid-template-columns: 100mm 1fr; column-gap: 8mm; align-items: start; text-align: left; }   /* a screen with its numbered key beside it */
+figure.annotated img { width: 100mm; max-height: none; }
+figure.annotated figcaption { grid-column: 1 / span 2; text-align: center; }
+figure.annotated .legend { margin-top: 1mm; }
+.legend { list-style: none; counter-reset: leg; padding: 0; margin: 2mm 0 0; font-size: 9.5pt; text-align: left; }   /* the numbered key beside or under an annotated screen */
+.legend li { counter-increment: leg; margin: 0 0 1mm; }
+.legend li::before { content: counter(leg) "  "; font-weight: 600; color: var(--mark, #b3261e); }
+
+/* ---- fields, boxes and the sign-off block: for a reader who must answer or approve ---- */
+.box { display: inline-block; width: 4.2mm; height: 4.2mm; margin-right: 2mm; border: 1.1pt solid var(--c-ink); background: #fff; vertical-align: -0.8mm; }
+ul.checks { list-style: none; padding: 0; }
+ul.checks li { padding-left: 8mm; position: relative; }
+ul.checks li::before { content: ""; position: absolute; left: 0; top: 0.9mm; width: 4.2mm; height: 4.2mm; border: 1.1pt solid var(--c-ink); background: #fff; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; margin: 0 0 5mm; }
+.field { position: relative; min-height: 8mm; display: flex; align-items: flex-end; padding-bottom: 0.8mm; border-bottom: 0.7pt solid var(--c-ink); font-size: 9.5pt; break-inside: avoid; }
+.field.wide { grid-column: 1 / span 2; }
+.field.tall { min-height: 28mm; }
+.field .lbl { font-weight: 500; color: var(--c-muted); margin-right: 1.5mm; }
+.field .lbl::after { content: ":"; }
+.field .of { margin-left: auto; white-space: nowrap; }
+.signoff { margin: 4mm 0 0; padding-top: 2.5mm; border-top: 0.8pt solid var(--c-ink); break-inside: avoid; }
+.signoff .field { min-height: 12mm; }
+.signoff h2, body.compact .signoff h2 { font-size: 11.5pt; margin: 0 0 3mm; padding: 0; border: 0; }
+
+/* ---- mathematics: write it in MathML (no script, no network); Chrome typesets it and embeds the font ---- */
+math { font-family: "DejaVu Math TeX Gyre", "Latin Modern Math", "STIX Two Math", "Cambria Math", math; font-size: 1.06em; math-style: normal; }
+math[display="block"] { margin: 2mm 0 3mm; }
+.eq { margin: 2mm 0 3mm 8mm; }                  /* a displayed equation: <p class="eq"><math>...</math></p> */
+.eq .tag { margin-left: 8mm; font-size: 9pt; color: var(--c-muted); }
+.units { white-space: nowrap; }
+.eqs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm 6mm; max-width: 152mm; margin: 1mm 0 6mm; }   /* equations side by side, each with its name under it */
+.eqs .eq { margin: 0; }
+.eqs .tag { display: block; margin: 0.5mm 0 0; font-size: 8.5pt; }
+
+/* ---- an assignment or worksheet (KINDS.md): numbered problems, marks in brackets at the right margin, answer spaces sized for handwriting.
+        The real ones (references.md): a number, the question beside it, [marks] at the edge, blank room under it. ---- */
+.cols { display: none; }                         /* a "Problem / Marks" head: shown by the academic and engineering styles */
+.problems { counter-reset: prob; margin-top: 4mm; }
+.problem { counter-increment: prob; position: relative; padding-left: 9mm; margin: 0 0 5mm; break-inside: avoid; }
+.problem.split { break-inside: auto; }           /* a long problem with parts may flow onto the next page */
+.problem::before { content: counter(prob); position: absolute; left: 0; top: 0; font-weight: 600; color: var(--c-accent); }
+.problem p, .problem ol { max-width: 128mm; }
+.problem > p { break-after: avoid; }
+.points { position: absolute; right: 0; top: 0; font-size: 9.5pt; font-weight: 500; white-space: nowrap; }   /* write it as [4] */
+.part { position: relative; padding: 0 22mm 0 8mm; margin: 0 0 2mm; break-after: avoid; }
+.part::before { content: "(" counter(part, lower-alpha) ")"; position: absolute; left: 0; counter-increment: part; font-weight: 400; }
+.problem { counter-reset: part; }
+.space { position: relative; break-inside: avoid; margin: 1.5mm 0 2.5mm; border-bottom: 0.6pt solid var(--c-ink); }
+.space .lbl { position: absolute; left: 0; top: 0.5mm; font-size: 9pt; font-weight: 500; color: var(--c-muted); }
+.space .lbl::after { content: ":"; }
+.space.calc    { height: 24mm; width: 152mm; }  /* a short calculation */
+.space.work    { height: 46mm; width: 152mm; }  /* working: blank, for a sketch or a calculation */
+.space.explain { height: 34mm; width: 152mm; border: 0; }   /* four ruled lines, 7.5mm apart, under the label */
+.space.explain::after { content: ""; position: absolute; left: 0; right: 0; top: 7.25mm; bottom: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='28.35' viewBox='0 0 10 28.35' preserveAspectRatio='none'%3E%3Cline x1='0' y1='14.17' x2='10' y2='14.17' stroke='%23666' stroke-width='0.6'/%3E%3C/svg%3E") 0 0 / 100% 7.5mm repeat-y; }
+.space.ans     { height: 9mm; width: 80mm; }    /* the final answer, with its units */
+.space.half    { width: 82mm; }
+.header-block { display: flex; gap: 0 7mm; margin: 0 0 6mm; }       /* Name ____ Section ____ Date ____ Score ____ along the top, as on a real handout */
+.header-block .field { flex: 1 1 0; }
+.header-block .field.name { flex: 2.2 1 0; }
+
+/* ---- a specification (KINDS.md): numbered requirements and code. R1, R2 count themselves; data-id="R10" keeps an id stable once issued ---- */
+ol.reqs { list-style: none; counter-reset: req; padding: 0; margin: 0 0 5mm; }
+.reqs li { counter-increment: req; position: relative; padding: 2mm 0 2mm 13mm; margin: 0; max-width: none; border-top: 0.5pt solid var(--c-line); }
+.reqs li:last-child { border-bottom: 0.5pt solid var(--c-line); }
+.reqs li::before { content: "R" counter(req); position: absolute; left: 0; top: 2mm; font-weight: 600; color: var(--c-accent); }
+.reqs li[data-id]::before { content: attr(data-id); }
+.reqs li > p { max-width: 142mm; margin: 0 0 1mm; }
+pre { margin: 2mm 0 4mm; padding: 2mm 0; max-width: 152mm; border-top: 0.5pt solid var(--c-line); border-bottom: 0.5pt solid var(--c-line);
+  font: 8.5pt/1.45 "DejaVu Sans Mono", "Noto Sans Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid; }
+code, kbd, samp { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-size: 0.88em; }
+pre code { font-size: inherit; }
+td code, th code { font-size: 0.9em; overflow-wrap: anywhere; }
+
+/* ---- a company or legal document (LEGAL.md): <body class="plain legal">. Numbered articles so a clause can be cited, parties named once,
+        signature lines above the printed name, a review notice at the foot of page 1, and an empty notarial frame that only a notary fills. ---- */
+body.legal { counter-reset: fig art; }
+body.legal h1 { text-align: center; margin: 0 0 1mm; }
+body.legal .subtitle { text-align: center; max-width: none; margin: 0 0 6mm; font-size: 9.5pt; color: var(--c-muted); }
+body.legal .venue { max-width: 150mm; margin: 0 0 3mm; }
+body.legal p { max-width: 150mm; text-align: left; }
+.notice { max-width: none; margin: 0 0 6mm; padding: 2mm 0; font-size: 9pt; color: var(--warn-ink, #6b4400); border-top: 0.8pt solid var(--warn-line, #c77c02); border-bottom: 0.8pt solid var(--warn-line, #c77c02); break-inside: avoid; }
+body.legal .notice p { margin: 0 0 1mm; max-width: 112mm; }
+.notice strong { font-weight: 600; }
+.articles { counter-reset: art; list-style: none; padding: 0; margin: 0 0 4mm; }
+.articles > li { counter-increment: art; position: relative; padding-left: 10mm; margin: 0 0 3mm; max-width: 150mm; }
+.articles > li::before { content: counter(art) "."; position: absolute; left: 0; font-weight: 600; }
+.articles > li > p { max-width: 140mm; margin: 0 0 1.5mm; }
+.articles > li > ol { list-style: none; counter-reset: sub; padding-left: 0; margin: 1.5mm 0 0; }
+.articles > li > ol > li { counter-increment: sub; position: relative; padding-left: 10mm; margin: 0 0 1.5mm; max-width: 150mm; }
+.articles > li > ol > li::before { content: counter(art) "." counter(sub); position: absolute; left: 0; color: var(--c-muted); }
+.articles > li > ol > li::marker { content: ""; }
+.article-title { font-weight: 600; }
+.parties { margin: 0 0 4mm; }
+.parties p { margin: 0 0 2.5mm; }
+.sigs { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm 10mm; margin: 4mm 0 3mm; max-width: none; }
+.sigs.one { grid-template-columns: 1fr 80mm; }
+.sig { break-inside: avoid; }
+.sig .line { height: 11mm; border-bottom: 0.7pt solid var(--c-ink); }
+.sig .name { margin: 1.2mm 0 0; font-weight: 600; max-width: none; }
+.sig .cap { margin: 0; font-size: 9pt; color: var(--c-muted); max-width: none; }
+.sig .on { margin: 0 0 1mm; font-size: 9pt; color: var(--c-muted); max-width: none; }
+.notary { margin: 5mm 0 0; padding: 3mm 4mm 3mm; border: 0.8pt solid var(--c-ink); break-inside: avoid; }   /* a square outline, the one box on a legal page */
+.notary .head { margin: 0 0 3mm; font-weight: 600; font-size: 9.5pt; color: var(--c-muted); max-width: none; }
+body.legal .notary p { max-width: 150mm; }
+.notary .blank { display: inline-block; min-width: 28mm; border-bottom: 0.6pt solid var(--c-ink); height: 4.2mm; vertical-align: bottom; }
+.notary .blank.long { min-width: 56mm; }
+.notary .blank.short { min-width: 11mm; }
+.notary .block { margin: 2.5mm 0 0; font-size: 9pt; line-height: 1.9; color: var(--c-muted); }
+
+/* ---- breaks ---- */
+.page-break { break-before: page; }
+.quote { margin: 0 0 2mm 6mm; max-width: 140mm; font-size: 9.5pt; line-height: 1.4; }   /* a resolution copied word for word into a certificate */
+body.legal h2.doc-title { font-size: 18pt; line-height: 1.2; color: var(--c-accent); text-align: center; margin: 0 0 1mm; padding: 0; border: 0; }   /* the title of a second instrument in the same file */

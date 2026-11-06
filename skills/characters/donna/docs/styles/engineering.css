@@ -1,0 +1,76 @@
+/* Engineering: a style layer. Link it AFTER letterhead.css (copied beside the HTML as print.css, with fonts/ next to it):
+     <link rel="stylesheet" href="print.css"><link rel="stylesheet" href="engineering.css">
+   IBM Plex Sans at 10pt, a ruled title block like a drawing sheet (the label over the value, a document number and a revision),
+   numbered sections hanging in the margin, Q1, Q2 with boxed working and answer areas, a footer with the document id and revision.
+   It needs a real document number and revision from the content, which the memo recipe does not otherwise ask for.
+   Same tokens as the base: --accent, --ink, --muted, --line, --tint and --font from the project win; the fallbacks below are this
+   style's own (teal). A number that hangs in the margin needs a small @page margin and the rest as body padding (Chrome clips). */
+
+:root {
+  --c-accent: var(--accent, #0b5f68);  --c-accent-2: var(--accent-2, var(--c-accent));
+  --c-ink: var(--ink, #1a1e21);  --c-muted: var(--muted, #525c63);  --c-line: var(--line, #b9c3c9);  --c-tint: var(--tint, #eef3f4);
+}
+@page { margin: 16mm 18mm 20mm 12mm;
+  @bottom-left  { margin-left: 18mm; width: 130mm; font-size: 7.5pt; border-top-color: var(--c-ink); padding-top: 2mm; }
+  @bottom-right { font-size: 7.5pt; border-top-color: var(--c-ink); padding-top: 2mm; }
+}
+@page cover { margin: 0; }
+body { padding-left: 18mm; font-size: 10pt; line-height: 1.5; font-variant-numeric: lining-nums tabular-nums; counter-reset: fig sec; }
+.cover { margin-left: -18mm; }                 /* the cover is full bleed: undo the body padding */
+p, li, dd, blockquote { max-width: 140mm; }
+
+/* title block: the firm across the top over a heavy accent rule, then ruled cells with the label over the value */
+.lh { align-items: center; gap: 3mm; padding-bottom: 2.5mm; border-bottom-width: 1.6pt; margin-bottom: 0; }
+.lh .mark, .lh > img, .lh > svg { height: 10mm; }
+.lh .org { padding: 0; }
+.lh .org b { font-size: 12pt; }
+.lh .org span { font-size: 8pt; margin-top: 0.5mm; }
+.lh address { font-size: 8pt; padding: 0; }
+h1 { font-size: 17pt; font-weight: 500; line-height: 1; margin: 4mm 0 3mm; }
+.ref { margin: 0 0 3mm; font-size: 8pt; }
+.facts { display: grid; grid-template-columns: 1.5fr 1fr 0.95fr; border-top: 0; border-bottom: 0.6pt solid var(--c-ink); margin: 0 0 7mm; }
+.facts > div { display: block; padding: 1.6mm 3mm 1.8mm 0; border-bottom: 0.5pt solid var(--c-line); }
+.facts > div:not(:nth-child(3n+1)) { padding-left: 3mm; border-left: 0.5pt solid var(--c-line); }
+.facts > div.wide { grid-column: 1 / -1; border-left: 0; padding-left: 0; }
+.facts > div:last-child { border-bottom: 0; }
+.facts dt { flex: none; font-size: 7.5pt; line-height: 1.2; margin: 0 0 0.6mm; }
+.facts dd { font-size: 10pt; line-height: 1.35; }
+.facts dd.subject { font-size: 11pt; }
+.lead { font-weight: 500; font-size: 10.5pt; margin-bottom: 5mm; }
+.strip { font-weight: 600; font-size: 12pt; padding-bottom: 2.5mm; border-bottom: 1.6pt solid var(--c-accent); margin-bottom: 0; }
+
+h2 { counter-increment: sec; position: relative; font-size: 11pt; margin: 5.5mm 0 2mm; padding: 0; border: 0; }
+h2::before { content: counter(sec); position: absolute; left: -9mm; top: 0; color: var(--c-accent); font-weight: 600; }
+body.legal h2::before, .signoff h2::before, .cover h2::before { content: none; }
+body.long h2 { margin-top: 0; }
+ul, ol { padding-left: 5mm; }
+li { margin-bottom: 1.6mm; }
+
+/* handout: Q1, Q2, the working and answer areas boxed, the marks in a column under a "Marks" head */
+.header-block { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1.1fr; gap: 0; margin: 0 0 6mm; border-top: 0.6pt solid var(--c-ink); border-bottom: 0.6pt solid var(--c-ink); }
+.header-block .field, .header-block .field.name { display: block; flex: none; min-height: 12mm; padding: 1.6mm 3mm 0 0; border-bottom: 0; }
+.header-block .field + .field { padding-left: 3mm; border-left: 0.5pt solid var(--c-line); }
+.field .lbl { display: block; font-size: 7.5pt; line-height: 1.2; margin: 0; }
+.field .lbl::after { content: none; }
+.field .of { display: block; margin-top: 3mm; font-size: 9.5pt; text-align: right; }
+.center { text-align: left; } .center p { margin-left: 0; }
+.center h1 { margin-top: 5mm; }
+.eqs { max-width: none; border-top: 0.5pt solid var(--c-line); border-bottom: 0.5pt solid var(--c-line); padding: 2.5mm 0 0; margin-bottom: 6mm; }
+.eqs .tag { font-size: 8pt; }
+.cols { display: grid; grid-template-columns: 11mm 1fr 14mm; margin-top: 2mm; padding: 0 0 1mm; font-size: 7.5pt; font-weight: 500; color: var(--c-muted); border-bottom: 0.6pt solid var(--c-ink); }
+.cols span:nth-child(2) { grid-column: 2; } .cols span:nth-child(3) { text-align: right; }
+.problems { margin-top: 0; }
+.problem { display: grid; grid-template-columns: 11mm 1fr 14mm; padding: 2.5mm 0 3mm; margin: 0; border-bottom: 0.5pt solid var(--c-line); }
+.problem > * { grid-column: 2; }
+.problem::before { content: "Q" counter(prob); position: static; grid-column: 1; grid-row: 1; }
+.problem > .points { position: static; grid-column: 3; grid-row: 1; text-align: right; font-weight: 600; font-size: 10pt; }
+.problem .part .points { position: absolute; right: -14mm; top: 0; font-weight: 600; font-size: 10pt; }
+.problem > p { margin: 0 0 2mm; max-width: 120mm; }
+.part { padding-right: 0; }
+.space .lbl { left: 1.8mm; top: 1.2mm; font-size: 7.5pt; line-height: 1.2; }
+.space .lbl::after { content: none; }
+.space.calc, .space.work, .space.explain { width: 100%; max-width: 136mm; border: 0.6pt solid var(--c-ink); margin: 0 0 2mm; }
+.space.explain::after { top: 7.5mm; }
+.space.ans { width: 70mm; border: 0.6pt solid var(--c-ink); }
+.space.ans .lbl { top: 50%; transform: translateY(-50%); }
+.space.calc { height: 22mm; }

@@ -8,4 +8,4 @@ None yet.
 
 ## Model-invoked
 
-None yet.
+- [donna](./donna/SKILL.md): the front desk and the owner's secretary. Names the owner, keeps the logs, and drafts documents, emails, briefs and minutes.

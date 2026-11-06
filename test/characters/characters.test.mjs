@@ -58,8 +58,9 @@ describe("characters", () => {
       });
 
       test("names no workflow tool and no team size", () => {
-        assert.doesNotMatch(source, /\b(kitchen|head chef|cooks?|stations?|tickets? board)\b/i);
-        assert.doesNotMatch(source, /\b(six|seven|eight)\s+(characters|people|members)\b/i);
+        const prose = source.replace(/`[^`\n]*`/g, ""); // tool names such as `/test-kitchen` are fine
+        assert.doesNotMatch(prose, /\b(kitchen|head chef|cooks?|stations?|tickets? board)\b/i);
+        assert.doesNotMatch(prose, /\b(six|seven|eight)\s+(characters|people|members)\b/i);
       });
 
       test("has a sample line of 30 words or fewer", () => {

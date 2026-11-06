@@ -6,5 +6,13 @@
   },
   "repository": "https://github.com/Seuketchi/suits",
   "license": "MIT",
-  "skills": []
+  "skills": [
+    "./skills/characters/harvey",
+    "./skills/tools/codebase-design",
+    "./skills/tools/grilling",
+    "./skills/tools/improve-codebase-architecture",
+    "./skills/tools/pitching",
+    "./skills/tools/reverse-engineer-anything",
+    "./skills/tools/senior"
+  ]
 }

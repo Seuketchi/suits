@@ -8,4 +8,4 @@ None yet.
 
 ## Model-invoked
 
-None yet.
+- **[harvey](./harvey/SKILL.md)**: The senior call: build or not, the budget, validating findings, closing exceptions.

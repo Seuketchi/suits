@@ -1,0 +1,10 @@
+{
+  "name": "suits",
+  "description": "A team of specialist skills for Claude Code: a front desk, a project manager, a senior adviser, researchers, a reviewer and builders, each calling the tools it needs and only when the task needs it.",
+  "author": {
+    "name": "Tristan Jadman"
+  },
+  "repository": "https://github.com/Seuketchi/suits",
+  "license": "MIT",
+  "skills": []
+}

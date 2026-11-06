@@ -1,0 +1,43 @@
+# Suits
+
+A team of specialist skills, each with its own job and voice, that call other skills as tools.
+
+## Language
+
+**Character**:
+A skill with a job and a voice that calls tools to do it. Donna, jessica, harvey, mike, rachel, louis and the associates are characters.
+_Avoid_: agent, persona, bot
+
+**Tool**:
+A skill a character calls. It is its own file, shared by every character that needs it.
+_Avoid_: plugin, helper
+
+**Associates**:
+The builders, named as a group because several run at once. Louis supervises them.
+_Avoid_: implementer (the role they fill), developers
+
+**Station**:
+A role a run assigns to a worker, such as planner, researcher, reviewer or implementer. A character is a station's starting skill.
+_Avoid_: job, position
+
+**Owner**:
+The one character accountable for a request, written down by donna when the request arrives. There is never more than one.
+_Avoid_: assignee, stakeholder
+
+**Hand-off packet**:
+What one character passes to the next: the goal, the limits and budget, the done test, what is known and not, the questions to answer, the next owner, and the deadline. A small ask gets one line instead.
+_Avoid_: ticket, brief
+
+**Trigger**:
+The fact about a task that makes a character call a tool. Without a matching trigger the tool is not called.
+_Avoid_: condition, rule
+
+**Action log**:
+The one record of who was asked what, who owns it, its state, its budget and the next owner. Donna is its only writer.
+
+**Decision log**:
+The one record of what was decided, by whom, why, and when. Entries are added and never rewritten. Donna is its only writer.
+
+**Ruling**:
+A verdict on a review comment in two parts: whether it is true (verified, outdated, disputed) and how serious it is (BLOCKER, SHOULD FIX, SUGGESTION).
+_Avoid_: grade, label

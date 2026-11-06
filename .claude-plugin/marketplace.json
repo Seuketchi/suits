@@ -1,0 +1,16 @@
+{
+  "name": "suits",
+  "owner": {
+    "name": "Tristan Jadman"
+  },
+  "description": "A private team of specialist skills for Claude Code, as an installable plugin.",
+  "plugins": [
+    {
+      "name": "suits",
+      "source": "./",
+      "description": "A team of specialist skills for Claude Code: each with its own job and voice, calling the tools it needs and only when the task needs it.",
+      "category": "engineering",
+      "keywords": ["skills", "team", "personal"]
+    }
+  ]
+}

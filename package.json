@@ -1,0 +1,13 @@
+{
+  "name": "suits",
+  "private": true,
+  "description": "A team of specialist skills for Claude Code, each with its own job and voice, calling the tools it needs.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Seuketchi/suits"
+  },
+  "license": "MIT",
+  "scripts": {
+    "check-skills": "node scripts/check-skills.mjs"
+  }
+}

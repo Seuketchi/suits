@@ -1,7 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
-disable-model-invocation: true
+description: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. Use when asked where the code should be deepened and no module is named. Asks before it starts a sub-agent.
 ---
 
 # Improve Codebase Architecture
@@ -12,6 +11,10 @@ Two sources inform the work:
 
 - **Architecture vocabulary.** Call the Skill tool with "codebase-design" for the terms (**module**, **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and principles (the deletion test, "the interface is the test surface", "one adapter = hypothetical seam, two = real"). Use these terms exactly in every suggestion, never "component," "service," "API," or "boundary."
 - **Domain model.** The language in `CONTEXT.md` names good seams. ADRs in `docs/adr/` record decisions this command must not re-litigate.
+
+## Before you start
+
+This skill starts a sub-agent and writes a report. Say so and wait for a yes before either, unless the request already asked for the survey.
 
 ## Process
 

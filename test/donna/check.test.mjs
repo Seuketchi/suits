@@ -37,10 +37,10 @@ before(() => {
 });
 
 let n = 0;
-function run(body, extra = ["--claims", "ok.md"], css = "", links = '<link rel="stylesheet" href="print.css">') {
+function run(body, extra = ["--claims", "ok.md"], css = "", links = '<link rel="stylesheet" href="print.css">', cls = "") {
   const name = `doc${++n}`;
   writeFileSync(join(dir, `${name}.html`), `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>t</title>
-${links}<style>${css}</style></head><body>${body}</body></html>`);
+${links}<style>${css}</style></head><body${cls ? ` class="${cls}"` : ""}>${body}</body></html>`);
   const pdf = spawnSync(join(donna, "scripts/print.sh"), [`${name}.html`, `${name}.pdf`], { cwd: dir, encoding: "utf8" });
   assert.equal(pdf.status, 0, pdf.stderr);
   const r = spawnSync(join(donna, "scripts/check.sh"), [`${name}.html`, `${name}.pdf`, ...extra], { cwd: dir, encoding: "utf8" });
@@ -280,5 +280,46 @@ describe("check.sh", opts, () => {
     assert.equal(r.status, 0, r.stdout + r.stderr);
     const info = spawnSync("pdfcraft-cli", ["info", join(dir, "spaces.pdf")], { encoding: "utf8" }).stdout;
     assert.match(info, /"acroform_fields": 7/, info);
+  });
+
+  // The safety rules of a company or legal draft (LEGAL.md, hard rules 3 and 4).
+  const NOTICE = `<div class="notice"><p><strong>Draft for review by the company&rsquo;s counsel. Not legal advice. Not executed or notarized.</strong> Facts, names and amounts to be confirmed by the signers.</p></div>`;
+  const FRAME = (blank) => `<div class="notary"><p class="head">TO BE COMPLETED BY THE NOTARY PUBLIC</p><p>BEFORE ME, a Notary Public for and in <span class="blank">${blank}</span>, personally appeared the signer.</p></div>`;
+  const LEGAL_BODY = (notice, frame) => `${notice}<h1>Special Power of Attorney</h1><p>${para}</p>${frame}`;
+
+  test("a legal draft with the review notice and an empty notary frame passes", () => {
+    const r = run(LEGAL_BODY(NOTICE, FRAME("")), ["--no-claims"], "", undefined, "plain legal");
+    assert.equal(r.code, 0, r.out);
+    assert.match(r.out, /^PASS legal draft/m);
+  });
+
+  test("a legal draft without the review notice fails", () => {
+    failed(run(LEGAL_BODY("", FRAME("")), ["--no-claims"], "", undefined, "plain legal"), "legal draft");
+  });
+
+  test("a legal draft whose review notice is not above the title fails", () => {
+    failed(run(`<h1>Special Power of Attorney</h1>${NOTICE}<p>${para}</p>${FRAME("")}`, ["--no-claims"], "", undefined, "plain legal"), "legal draft");
+  });
+
+  test("a notary frame with a blank filled in fails", () => {
+    failed(run(LEGAL_BODY(NOTICE, FRAME("Example City")), ["--no-claims"], "", undefined, "plain legal"), "legal draft");
+  });
+
+  test("a document that is not a legal draft is not held to the notice", () => {
+    assert.equal(run(GOOD).code, 0);
+  });
+
+  test("legal.html keeps the review notice and both notary frames empty", () => {
+    const html = readFileSync(join(donna, "templates/legal.html"), "utf8").replace(/<!--[\s\S]*?-->/g, "");
+    assert.match(html, /<div class="notice">[\s\S]*Not legal advice\. Not executed or notarized\./);
+    assert.ok(html.indexOf('class="notice"') < html.indexOf("<h1>"), "the notice comes before the title");
+    const frames = html.match(/<div class="notary[^"]*"[\s\S]*?<\/div>/g) ?? [];
+    assert.equal(frames.length, 2, "one frame for an acknowledgment, one for a jurat");
+    for (const f of frames) assert.match(f, /TO BE COMPLETED BY THE NOTARY PUBLIC/);
+    assert.match(frames.join(""), /SUBSCRIBED AND SWORN/);
+    assert.match(frames.join(""), /free and voluntary act and deed/);
+    const blanks = html.match(/<span class="blank[^"]*">[\s\S]*?<\/span>/g) ?? [];
+    assert.ok(blanks.length > 10);
+    for (const b of blanks) assert.match(b, /^<span class="blank[^"]*"><\/span>$/, "a notary blank stays empty");
   });
 });

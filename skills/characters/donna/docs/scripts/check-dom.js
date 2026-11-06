@@ -1,7 +1,7 @@
 // Injected by check.sh into a copy of the document, run by headless Chrome (--dump-dom).
 // Measures what the HTML says and Chrome computes; writes its JSON into the page, in a pre element with the id donna-check.
 (function () {
-  var res = { headings: [], contrast: [], figures: [], frames: [], bars: [], tropes: [], prose: [], asks: [], files: [], unverified: 0, tokens: [] };
+  var res = { headings: [], contrast: [], figures: [], frames: [], bars: [], tropes: [], prose: [], asks: [], files: [], legal: [], isLegal: false, unverified: 0, tokens: [] };
   var q = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var txt = function (e) { return (e.textContent || "").replace(/\s+/g, " ").trim(); };
 
@@ -136,6 +136,18 @@
     if (!y || !txt(y)) res.asks.push("ask " + (i + 1) + " has no .why (why we need it)");
   });
   res.askCount = q(".ask").length;
+
+  // ---- a company or legal draft (body class "legal"): the review notice leads page 1, and the notary's blanks stay empty ----
+  res.isLegal = document.body.classList.contains("legal");
+  if (res.isLegal) {
+    var notice = document.querySelector(".notice"), title = document.querySelector("h1");
+    if (!notice || !/Not legal advice/i.test(txt(notice)) || !/Not executed or notarized/i.test(txt(notice)))
+      res.legal.push("no review notice (\"Not legal advice. Not executed or notarized.\") in a .notice box");
+    else if (title && (notice.compareDocumentPosition(title) & Node.DOCUMENT_POSITION_PRECEDING))
+      res.legal.push("the review notice comes after the title; it leads page 1");
+    q(".notary .blank").forEach(function (b) { if (txt(b)) res.legal.push("a notary blank is filled in: \"" + txt(b) + "\""); });
+    q(".notary").forEach(function (n) { if (!/TO BE COMPLETED BY THE NOTARY PUBLIC/.test(n.textContent || "")) res.legal.push("a notary frame without \"TO BE COMPLETED BY THE NOTARY PUBLIC\""); });
+  }
 
   // ---- files named for the reader, and claims left marked as unchecked ----
   q(".file:not(.theirs)").forEach(function (f) { res.files.push(txt(f)); });   // .theirs: a file the reader makes or returns, ours to name, not to ship

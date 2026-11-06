@@ -9,6 +9,7 @@
 #   image frames  no border, rounded corner or shadow on an image or icon
 #   side bars    no thick accent bar down one side of a box
 #   tropes        no tracked-uppercase kicker, dot-separated header line, hero title, pill, card, shadow or gradient
+#   legal draft   (body class legal) the review notice leads page 1; every notary blank is empty
 #   prose         no stock opener, AI vocabulary, em-dash pause, exclamation mark, rule of three or closing sentence that repeats its section
 #   asks          every .ask has a .what and a .why
 #   empty pages   no page without text or an image
@@ -92,6 +93,7 @@ prose=$(printf '%s' "$json" | python3 -I -c 'import sys, json; print(json.dumps(
 if printf '%s' "$prose" | grep -q '^FAIL'; then fail prose; printf '%s\n' "$prose" | grep '^FAIL' | sed 's/^FAIL /     /'; else pass "prose ($(info 'len(d["prose"])') blocks read)"; fi
 printf '%s' "$prose" | grep '^NOTE' | sed 's/^NOTE /NOTE prose: /'
 report asks asks asks "$(info 'd["askCount"]') asks"
+[ "$(info '1 if d["isLegal"] else 0')" -eq 1 ] && report "legal draft" legal legal
 
 pages=$(pdfinfo "$pdf" 2>/dev/null | sed -n 's/^Pages: *//p')
 body_h=$(pdfinfo "$pdf" 2>/dev/null | sed -n 's/^Page size: *[0-9.]* x \([0-9]*\).*/\1/p'); body_h=$(( ${body_h:-842} - 62 ))   # above the footer

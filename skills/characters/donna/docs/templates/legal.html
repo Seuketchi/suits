@@ -2,7 +2,7 @@
 <!-- A company or legal document (LEGAL.md). A starter: pick the parts of the kind from LEGAL.md, replace every {{...}}, delete what does not apply.
      Needs print.css (styles/letterhead.css) and fonts/ beside it; add tokens.css when the project has one.
      Rules that hold for every legal kind (LEGAL.md, "Hard rules"): the review notice stays on page 1; the notary's block stays EMPTY under
-     "TO BE COMPLETED BY THE NOTARY PUBLIC"; no signature typed or drawn; no blank except the date and place of signing; no invented fact. -->
+     "TO BE COMPLETED BY THE NOTARY PUBLIC"; one frame kept, by kind (an acknowledgment for a contract, deed or power of attorney, a jurat for a sworn paper); no signature typed or drawn; no blank except the date and place of signing; no invented fact. -->
 <html lang="en"><head><meta charset="utf-8"><title>{{Title of the document}}</title>
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="print.css">
@@ -42,8 +42,18 @@
   <div class="sig"><div class="line"></div><p class="name">{{Printed name}}</p><p class="cap">{{Capacity}}</p></div>
 </div>
 
-<!-- The notary's frame. Only for a paper that is sworn or acknowledged. Leave EVERY blank empty. A sworn paper takes the jurat below;
-     a contract, deed or power of attorney takes an acknowledgment (BEFORE ME ... personally appeared ... free and voluntary act and deed). -->
+<!-- The notary's frames. Both are here, EMPTY, and the draft keeps ONE: an acknowledgment for a contract, deed, MOA or power of attorney (it is
+     never a jurat); a jurat only for a sworn paper (an affidavit, a sworn certificate, a quitclaim if counsel says so). Delete the other frame.
+     Say in "Open points for counsel" which one was kept and why. Leave EVERY blank empty; the check fails a filled one. -->
+<div class="notary">
+  <p class="head">TO BE COMPLETED BY THE NOTARY PUBLIC</p>
+  <p>BEFORE ME, a Notary Public for and in <span class="blank"></span>,<br>this <span class="blank short"></span> day of <span class="blank"></span> 20<span class="blank short"></span>, personally appeared:</p>
+  <p class="block">Name <span class="blank long"></span> ID shown <span class="blank long"></span><br>ID number, issue date and place <span class="blank long"></span></p>
+  <p>known to me, or identified by competent evidence of identity, to be the person who signed the foregoing instrument and who acknowledged to me that it is their free and voluntary act and deed.</p>
+  <p>WITNESS MY HAND AND SEAL on the date and at the place first written above.</p>
+  <p class="block">Notary public <span class="blank long"></span> until 31 December 20<span class="blank short"></span><br>Roll no. <span class="blank short"></span> PTR no. <span class="blank short"></span> IBP no. <span class="blank short"></span><br>Doc. No. <span class="blank short"></span>; Page No. <span class="blank short"></span>; Book No. <span class="blank short"></span>; Series of 20<span class="blank short"></span></p>
+</div>
+
 <div class="notary">
   <p class="head">TO BE COMPLETED BY THE NOTARY PUBLIC</p>
   <p>SUBSCRIBED AND SWORN to before me this <span class="blank short"></span> day of <span class="blank"></span> 20<span class="blank short"></span><br>at <span class="blank"></span>, affiant exhibiting to me <span class="blank long"></span>.</p>

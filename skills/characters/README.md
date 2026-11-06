@@ -9,6 +9,7 @@ None yet.
 ## Model-invoked
 
 - **[associates](./associates/SKILL.md)**: The builders: test first, fix at the root, each owning its own files.
+- **[donna](./donna/SKILL.md)**: The front desk and the owner's secretary: names the owner, keeps the logs, and drafts documents, emails, briefs and minutes.
 - **[harvey](./harvey/SKILL.md)**: The senior call: build or not, the budget, validating findings, closing exceptions.
 - **[jessica](./jessica/SKILL.md)**: The project manager: plans, maps tickets, watches the board and the budget.
 - **[louis](./louis/SKILL.md)**: Strict review against the rules and the spec, with numbers checked.

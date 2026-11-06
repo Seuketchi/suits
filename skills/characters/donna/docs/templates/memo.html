@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Memo (KINDS.md). One page. Shaped like a real internal memo: the sender's letterhead, "Memorandum", labelled rows, then the point.
+     A starter: replace every {{...}}, delete what does not apply. Needs print.css (styles/letterhead.css) and fonts/ beside it,
+     and tokens.css when the project has one (the brand's colours, font and logo). The same markup renders in the academic and
+     engineering styles: link the style's layer after print.css. The engineering style also wants a Document and a Revision row. -->
+<html lang="en"><head><meta charset="utf-8"><title>{{Subject}}</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="print.css">
+<style>:root { --running: "{{Memo number, short title}}"; }</style></head>
+<body class="plain">
+
+<header class="lh">
+  <img class="mark" src="{{logo.svg}}" alt="{{Company}}">
+  <div class="org"><b>{{Company}}</b><span>{{Department or team}}</span></div>
+  <address><b>{{Office or building}}</b><br>{{Street}}<br>{{City}}</address>
+</header>
+
+<h1>Memorandum</h1>
+<p class="ref">{{Reference, e.g. "Reference DC-2026-014"}}</p>
+<dl class="facts">
+  <div><dt>To</dt><dd>{{Name, role}}</dd></div>
+  <div><dt>From</dt><dd>{{Name, role}}</dd></div>
+  <div><dt>Date</dt><dd>{{14 November 2026}}</dd></div>
+  <div><dt>Reply by</dt><dd>{{20 November 2026}}</dd></div>
+  <div class="wide"><dt>Subject</dt><dd class="subject">{{What it decides or asks, in 4 to 10 words}}</dd></div>
+</dl>
+
+<p class="lead">{{The point and what you need from the reader, in the first two sentences. Then one sentence on what happens if they do not reply.}}</p>
+
+<h2>{{Why}}</h2>
+<ul>
+  <li><strong>{{Reason, as a short claim:}}</strong> {{the detail and where it comes from}}.</li>
+  <li><strong>{{Reason:}}</strong> {{...}}</li>
+</ul>
+
+<h2>{{What happens next}}</h2>
+<p>{{Who does what by when, once the reader answers.}}</p>
+
+</body></html>

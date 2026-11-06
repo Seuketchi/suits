@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- Sign-off checklist or request list (KINDS.md). A starter: replace every {{...}}, delete what does not apply.
+     Needs print.css (styles/letterhead.css) and fonts/ beside it; add tokens.css when the project has one. -->
+<html lang="en"><head><meta charset="utf-8"><title>{{Title}}</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="print.css">
+<style>:root { --running: "{{Short title}}"; }</style></head>
+<body class="plain">
+
+<header class="lh">
+  <img class="mark" src="{{logo.svg}}" alt="{{Company}}">
+  <div class="org"><b>{{Company}}</b><span>{{Department or team}}</span></div>
+  <address>{{Street}}<br>{{City}}</address>
+</header>
+
+<h1>{{What we need signed off, in 4 to 8 words}}</h1>
+<p class="ref">For {{Name, Organisation}}. Version {{1.0}}, {{14 November 2026}}.</p>
+
+<div class="answer">
+  <p class="label">What we need</p>
+  <p>{{N}} things from you by <strong>{{20 November 2026}}</strong>, so that {{what happens once they are done}}. Each says what to send or decide, and why. Where we have a proposal, accept it or change it.</p>
+</div>
+
+<div class="asks">
+  <div class="ask tick">
+    <p class="what"><span class="k">Send</span> {{Exactly what, e.g. the signed test results}}: <span class="file">{{exact-file-name.pdf}}</span>.</p>
+    <p class="why"><span class="k">Why</span> {{What we cannot do without it}}.</p>
+  </div>
+  <div class="ask tick">
+    <p class="what"><span class="k">Decide</span> {{The decision, with our proposal, e.g. "The day to switch it on. We propose Monday 23 November."}}</p>
+    <p class="why"><span class="k">Why</span> {{The fact that makes it a decision, from the reader's own material}}.</p>
+    <p class="due">{{Needed by 18 November 2026}}</p>
+  </div>
+  <div class="ask tick">
+    <p class="what"><span class="k">Check</span> {{What to open and what to look for}}: <span class="file">{{exact-file-name.pdf}}</span>.</p>
+    <p class="why"><span class="k">Why</span> {{...}}</p>
+  </div>
+</div>
+
+<div class="pair">
+  <div class="ours"><h3>What we made</h3>
+    <ul><li>{{...}}</li><li>{{...}}</li></ul></div>
+  <div class="yours"><h3>What is yours</h3>
+    <ul><li>{{...}}</li><li>{{...}}</li></ul></div>
+</div>
+
+<div class="signoff">
+  <h2>Sign-off</h2>
+  <p>{{One sentence saying exactly what the signature approves.}}</p>
+  <div class="fields">
+    <div class="field"><span class="lbl">Name</span></div>
+    <div class="field"><span class="lbl">Position</span></div>
+    <div class="field"><span class="lbl">Date</span></div>
+    <div class="field"><span class="lbl">Signature</span></div>
+  </div>
+</div>
+
+</body></html>

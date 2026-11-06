@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- Start every document from this file: copy it to src/doc.html and keep ONE of the two openings.
+     Cover  = the document leaves the building (a client, a bank, a regulator) or runs past about 3 pages.
+     Letterhead = a short internal document: no cover, the sender's letterhead and a title at the top of page 1.
+     Replace every {{...}}. Delete what does not apply; never leave a placeholder, an empty row or a label with no value.
+     Style: print.css is styles/letterhead.css (the default), copied beside this file with fonts/ by scripts/use-style.sh.
+     Academic or engineering: link that style's layer after print.css (the script says which). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{Document title}}</title>
+<link rel="stylesheet" href="tokens.css">   <!-- the project's colours and font: a :root block; delete this line if there is none -->
+<link rel="stylesheet" href="print.css">    <!-- the style, copied beside this file -->
+<style>
+  /* Footer: the document id and short title, and the logo as a data: URI (Chrome does not resolve relative URLs in page margin boxes).
+     base64 -w0 logo.png, then paste. No logo: delete --footer-logo and --footer-pad. */
+  :root { --running: "{{Document id, short title}}"; --footer-logo: url("data:image/png;base64,{{...}}"); --footer-pad: 9mm; }
+</style>
+</head>
+<body>   <!-- <body class="long"> past about 6 pages: every h2 starts a page. <body class="plain"> for a memo, letter, handout, form or checklist -->
+
+<!-- ===== OPENING A: cover. One page, full bleed, a flat band of the accent. It says what this is, who it is for, who made it, when, which version. ===== -->
+<section class="cover">
+  <div class="cover-band">
+    <h1 class="cover-title">{{Title: the thing, in 2 to 5 words}}</h1>
+    <p class="cover-sub">{{Subtitle: what it covers or who it is for}}</p>
+    <p class="cover-scope">{{One line of scope: what is in and what is out}}</p>
+  </div>
+  <img class="cover-logo" src="{{logo.svg}}" alt="{{Company}}">
+  <dl class="facts">
+    <div><dt>Prepared for</dt><dd>{{Reader's name, role, organisation}}</dd></div>
+    <div><dt>Prepared by</dt><dd>{{Author or team, organisation}}</dd></div>
+    <div><dt>Date</dt><dd>{{14 November 2026}}</dd></div>
+    <div><dt>Version</dt><dd>{{1.0}}</dd></div>
+  </dl>
+  <p class="cover-foot">{{Confidentiality in one line, e.g. "Confidential: prepared for X. Do not share outside X."}}</p>
+</section>
+
+<!-- ===== OPENING B: the letterhead and a title, instead of the cover; at the top of page 1. Use <body class="plain">.
+     The mark is the project's logo (img or inline svg); the name, unit and address are the sender's own: leave out an address the
+     sender does not have. No kicker above the title, no line of facts joined by dots: say it as a sentence, or as rows. ===== -->
+<header class="lh">
+  <img class="mark" src="{{logo.svg}}" alt="{{Company}}">
+  <div class="org"><b>{{Company}}</b><span>{{Department or team}}</span></div>
+  <address><b>{{Office or building}}</b><br>{{Street}}<br>{{City}}</address>
+</header>
+<h1>{{Title: the thing, in 2 to 8 words}}</h1>
+<p class="ref">{{Reference or version, e.g. "Reference DC-2026-014" or "Version 1.0"}}</p>
+<dl class="facts">
+  <div><dt>Prepared for</dt><dd>{{Name, role, organisation}}</dd></div>
+  <div><dt>Prepared by</dt><dd>{{Name or team}}</dd></div>
+  <div><dt>Date</dt><dd>{{14 November 2026}}</dd></div>
+</dl>
+
+<!-- Then the answer first: what the reader can do or decide. -->
+<div class="answer">
+  <p class="label">{{Before you start | Decision needed | Bottom line}}</p>   <!-- a bold label, sentence case -->
+  <p>{{The one thing the reader should know or do, in a sentence or two.}}</p>
+</div>
+
+<h2>{{Heading that says what the section tells the reader}}</h2>
+<p>{{...}}</p>
+
+</body>
+</html>

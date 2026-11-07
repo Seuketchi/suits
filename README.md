@@ -6,15 +6,15 @@ A team of Claude Code skills. Each character has its own job and voice and calls
 
 ## The team
 
-| Character | Job |
-| --- | --- |
-| donna | Front desk. Takes the ask, names one owner, writes everything up, reports back. |
-| jessica | Project manager. Plans, maps tickets, tracks risk and status, owns the board. |
-| harvey | Senior judgement. Decides whether to build, validates findings, closes exceptions. |
-| mike | Our own system: what the code does and what was decided before. |
-| rachel | Outside research, and the root-cause audit on a bug. |
-| louis | Strict review against the rules and the spec. |
-| the associates | The builders: test first, one file owner each. |
+| Character | Stands for | Job |
+| --- | --- | --- |
+| donna | **D**oesn't **O**verlook **N**or **N**eglect **A**nything | Front desk. Takes the ask, names one owner, writes everything up, reports back. |
+| jessica | **J**ust **E**nsure **S**chedules **S**tay **I**n **C**heck **A**lways | Project manager. Plans, maps tickets, tracks risk and status, owns the board. |
+| harvey | **H**aggles **A**nd **R**arely **V**acates **E**very **Y**ard | Senior judgement. Decides whether to build, validates findings, closes exceptions. |
+| mike | **M**aybe **I** **K**now **E**verything | Our own system: what the code does and what was decided before. |
+| rachel | **R**arely **A**ccepts **C**laims **H**unting **E**very **L**ead | Outside research, and the root-cause audit on a bug. |
+| louis | **L**et **O**nly **U**nimpeachable **I**tems **S**hip | Strict review against the rules and the spec. |
+| the associates | **A**lways **S**hipping **S**mall **O**bviously **C**orrect **I**ncrements **A**fter **T**esting **E**very **S**tep | The builders: test first, one file owner each. |
 
 The team may grow.
 

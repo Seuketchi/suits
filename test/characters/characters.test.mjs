@@ -188,6 +188,86 @@ describe("skill text", () => {
   });
 });
 
+// The associates are a working team, not a person, so they keep a plain voice with no persona block.
+const NO_PERSONA = new Set(["associates"]);
+const persona = characters.filter((n) => !NO_PERSONA.has(n));
+const voiceLines = (name) => section(read("skills/characters", name, "SKILL.md"), "Voice").split("\n").filter((l) => l.trim());
+const sampleLines = (name) => voiceLines(name).filter((l) => /^(?:>|Sample:)\s*\S/.test(l));
+
+describe("the voice rule in CLAUDE.md", () => {
+  const rule = read("CLAUDE.md").split("\n").find((l) => /\*\*Voice\*\* section/.test(l)) ?? "";
+  test("allows the voice block and no longer calls the voice a thin layer", () => {
+    assert.doesNotMatch(rule, /thin layer/);
+    assert.match(rule, /8 to 12 lines/);
+    assert.match(rule, /two or three sample lines of 30 words or fewer/);
+    assert.match(rule, /yields to every rule/);
+  });
+  test("keeps the limits on the voice", () => {
+    assert.match(rule, /never lengthens an answer: verdict first, short/);
+    assert.match(rule, /speaks only to the owner/);
+    assert.match(rule, /plain professional register/);
+    assert.match(rule, /`file:line` references and blockers/);
+  });
+  test("builds the traits in our own words and gives the associates no persona", () => {
+    assert.match(rule, /no show dialogue, no catchphrases, no actor names/);
+    assert.match(rule, /associates/);
+  });
+});
+
+describe("the voice block", () => {
+  for (const name of persona) {
+    describe(name, () => {
+      test("is the last section of the file", () => {
+        const headings = [...read("skills/characters", name, "SKILL.md").matchAll(/^## (.+)$/gm)].map((m) => m[1]);
+        assert.equal(headings.at(-1), "Voice");
+      });
+      test("is 8 to 12 lines", () => {
+        const n = voiceLines(name).length;
+        assert.ok(n >= 8 && n <= 12, `${n} lines`);
+      });
+      test("gives a stance, three habits, what it cares about, what it will not do and how it disagrees", () => {
+        const lines = voiceLines(name);
+        for (const label of ["Stance", "Habits", "Cares about", "Will not", "Disagrees"]) {
+          assert.ok(lines.some((l) => l.startsWith(`${label}: `)), `no "${label}:" line`);
+        }
+        const habits = lines.find((l) => l.startsWith("Habits: ")).slice("Habits: ".length).replace(/\.$/, "");
+        assert.equal(habits.split(";").filter((h) => h.trim()).length, 3, "not three habits");
+      });
+      test("has two or three sample lines of 30 words or fewer", () => {
+        const samples = sampleLines(name).map((l) => l.replace(/^(?:>|Sample:)\s*"?/, "").replace(/"?\s*$/, ""));
+        assert.ok(samples.length >= 2 && samples.length <= 3, `${samples.length} samples`);
+        for (const s of samples) assert.ok(s.split(/\s+/).length <= 30, `too long: ${s}`);
+      });
+      test("ends on a precedence line: the voice yields to the rules, the format, the numbers and the plain register", () => {
+        const line = voiceLines(name).find((l) => l.startsWith("The voice yields to "));
+        assert.ok(line, "no line starting 'The voice yields to '");
+        assert.match(line, /every rule/);
+        assert.match(line, /hand-over format/);
+        assert.match(line, /numbers/);
+        assert.match(line, /`file:line` references/);
+        assert.match(line, /blockers/);
+        assert.match(line, /plain professional register/);
+        assert.match(line, /anyone but the owner/);
+      });
+      test("labels each line when more than one character speaks", () => {
+        assert.match(section(read("skills/characters", name, "SKILL.md"), "Voice"), /each line is labelled with the character's name/);
+      });
+      test("quotes no show and names no catchphrase", () => {
+        const voice = section(read("skills/characters", name, "SKILL.md"), "Voice");
+        assert.doesNotMatch(voice, /\*Suits\*|catchphrase/i);
+      });
+    });
+  }
+
+  for (const name of NO_PERSONA) {
+    test(`${name} keeps its plain voice with no persona block`, () => {
+      const voice = section(read("skills/characters", name, "SKILL.md"), "Voice");
+      assert.doesNotMatch(voice, /^(Stance|Habits|Cares about|Will not|Disagrees): /m);
+      assert.doesNotMatch(voice, /^The voice yields to /m);
+    });
+  }
+});
+
 describe("the voice", () => {
   for (const name of characters) {
     test(`${name}'s Voice section names a register, what it avoids and a sample line`, () => {

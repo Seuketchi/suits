@@ -31,3 +31,6 @@ jobs:
 
       - name: Listing rules, docs pages, links, plugin validate
         run: npm run check-skills
+
+      - name: Tests
+        run: npm test

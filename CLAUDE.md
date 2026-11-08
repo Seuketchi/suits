@@ -17,7 +17,7 @@ There are no releases or versions: the plugin has no `version`, so Claude Code v
 ## Writing
 
 - Never mention assistants, agents, cooks, kitchens, head chefs, stations, ticket boards or any workflow tool in commits, pull requests, or skill text meant for others. Tool names in code spans (`/test-kitchen`) are fine, and so are the legal terms in donna's `LEGAL.md` ("assistant secretary", an attorney-in-fact's "agent"). A skill that has to tell the model to start a sub-agent is listed with its reason in `WORKFLOW_WORD_ALLOWED` in `test/characters/characters.test.mjs`; do not add to that list without the owner's say.
-- `npm run test:characters` checks both rules above on every `SKILL.md`, and that every character's **Voice** section gives a register, what it avoids, a sample line, and the plain professional register for anyone but the owner.
+- `npm run test:characters` checks both rules above on every `SKILL.md`, that every `/skill` it names ships here (or is in `OFFERED`), and that every character's **Voice** section gives a register, what it avoids, a sample line, and the plain professional register for anyone but the owner.
 - Conventional commits. No attribution lines.
 - Documents and emails a character writes carry no machine-made look: no tracked-caps kickers, hero titles, dot meta lines, side bars or tinted cards. English only.
 

@@ -70,4 +70,4 @@ Other findings go through the normal flow.
 
 ## A thread outside the bug
 
-Do not follow it. Offer the owner a `/rabbit-hole` on it, and carry on.
+Do not follow it. Offer the owner a `/rabbit-hole` on it, when installed, and carry on.

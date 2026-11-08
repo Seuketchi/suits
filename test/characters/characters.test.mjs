@@ -14,6 +14,8 @@ const characters = readdirSync(join(root, "skills/characters"), { withFileTypes:
 
 // Skills a character only offers to the owner, which are not in this repo.
 const OFFERED = new Set(["rabbit-hole"]);
+// Slash words in code spans that are paths, not skills.
+const NOT_A_SKILL = new Set(["tmp"]);
 
 const section = (source, title) => {
   const m = source.match(new RegExp(`^## ${title}\\s*\\n([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, "m"));
@@ -157,6 +159,14 @@ describe("skill text", () => {
   const files = skillFiles("skills");
 
   test("there are skills to scan", () => assert.ok(files.length > characters.length));
+
+  test("names only skills that exist here, or are offered", () => {
+    const missing = files
+      .map((f) => [f, named(read(f)).filter((n) => !OFFERED.has(n) && !NOT_A_SKILL.has(n) && !toolDir(n))])
+      .filter(([, names]) => names.length > 0)
+      .map(([f, names]) => `${f}: ${[...new Set(names)].join(", ")}`);
+    assert.deepEqual(missing, []);
+  });
 
   test("uses no workflow-tool word, except where listed with a reason", () => {
     const offenders = files

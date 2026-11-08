@@ -106,13 +106,17 @@ const TEAM_SIZE = [
   /\b\d+[ -](?:characters|team members|specialists|people|members)\b(?!\s+or\b)(?<!\b(?:under|than|of|to|at most|over|up to)\s\d+\s\w+)/i,
 ];
 
-// What the scan skips: code spans (tool names such as `/test-kitchen`), and the legal terms of art in
-// donna's LEGAL.md, where "assistant secretary" and an attorney-in-fact's "agent" are the right words.
+// What the scan skips: code spans (tool names such as `/test-kitchen`), and, in donna's LEGAL.md only,
+// the legal terms of art, where "assistant secretary" and an attorney-in-fact's "agent" are the right words.
+const LEGAL_FILE = "skills/characters/donna/docs/LEGAL.md";
 const LEGAL_TERMS = /\bassistant secretary\b|\b(?:attorney-in-fact|special power of attorney)\b|\b(?:the|an|as my|and) agent\b/gi;
 // Link targets are skipped too: a path such as `./test-kitchen.md` is a name, not prose.
-const prose = (source) => source.replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(LEGAL_TERMS, "");
+const prose = (source, file = "") => {
+  const text = source.replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]");
+  return file === LEGAL_FILE ? text.replace(LEGAL_TERMS, "") : text;
+};
 
-export const workflowWords = (source) => WORKFLOW_WORDS.filter(([, re]) => re.test(prose(source))).map(([w]) => w);
+export const workflowWords = (source, file) => WORKFLOW_WORDS.filter(([, re]) => re.test(prose(source, file))).map(([w]) => w);
 export const teamSizePhrases = (source) => TEAM_SIZE.flatMap((re) => prose(source).match(new RegExp(re.source, "gi")) ?? []);
 
 // Files that say one of these words on purpose, each with why. Anything not listed fails. An entry
@@ -139,10 +143,15 @@ describe("the scan itself", () => {
       assert.ok(workflowWords(`Say ${word} here.`).length > 0, word);
     }
   });
-  test("skips tool names in code spans and the legal terms of art", () => {
+  test("skips tool names in code spans", () => {
     assert.deepEqual(workflowWords("Run `/test-kitchen` for that."), []);
-    assert.deepEqual(workflowWords("An assistant secretary's certificate."), []);
-    assert.deepEqual(workflowWords("Appoint Maria as my true and lawful attorney-in-fact; the agent signs."), []);
+  });
+  test("skips the legal terms of art in LEGAL.md only", () => {
+    assert.deepEqual(workflowWords("An assistant secretary's certificate.", LEGAL_FILE), []);
+    assert.deepEqual(workflowWords("Appoint Maria as my true and lawful attorney-in-fact; the agent signs.", LEGAL_FILE), []);
+    for (const text of ["Then the agent reads the file.", "Hand it to an agent.", "An assistant secretary signs."]) {
+      assert.ok(workflowWords(text, "skills/tools/pr/SKILL.md").length > 0, text);
+    }
   });
   test("finds a planted team size", () => {
     for (const phrase of ["a team of seven", "the six characters", "a crew of 5", "ten specialists", "7 team members"]) {
@@ -175,14 +184,14 @@ describe("docs pages", () => {
 
   test("use no workflow-tool word, except where listed with a reason", () => {
     const offenders = files
-      .map((f) => [f, workflowWords(read(f))])
+      .map((f) => [f, workflowWords(read(f), f)])
       .filter(([f, words]) => words.length > 0 && !(f in DOCS_WORD_ALLOWED))
       .map(([f, words]) => `${f}: ${words.join(", ")}`);
     assert.deepEqual(offenders, []);
   });
 
   test("list no page that no longer needs its place", () => {
-    const stale = Object.keys(DOCS_WORD_ALLOWED).filter((f) => !files.includes(f) || workflowWords(read(f)).length === 0);
+    const stale = Object.keys(DOCS_WORD_ALLOWED).filter((f) => !files.includes(f) || workflowWords(read(f), f).length === 0);
     assert.deepEqual(stale, []);
   });
 });
@@ -202,14 +211,14 @@ describe("skill text", () => {
 
   test("uses no workflow-tool word, except where listed with a reason", () => {
     const offenders = files
-      .map((f) => [f, workflowWords(read(f))])
+      .map((f) => [f, workflowWords(read(f), f)])
       .filter(([f, words]) => words.length > 0 && !(f in WORKFLOW_WORD_ALLOWED))
       .map(([f, words]) => `${f}: ${words.join(", ")}`);
     assert.deepEqual(offenders, []);
   });
 
   test("lists no file that no longer needs its place", () => {
-    const stale = Object.keys(WORKFLOW_WORD_ALLOWED).filter((f) => !files.includes(f) || workflowWords(read(f)).length === 0);
+    const stale = Object.keys(WORKFLOW_WORD_ALLOWED).filter((f) => !files.includes(f) || workflowWords(read(f), f).length === 0);
     assert.deepEqual(stale, []);
   });
 

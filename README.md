@@ -68,6 +68,6 @@ Each tool is its own skill, and each character calls it only when the task needs
 
 ## Checks
 
-`npm run check-skills` checks the listing rules, the docs pages, the links and `claude plugin validate`. CI runs it on every pull request.
+`npm run check-skills` checks the listing rules, the docs pages, the links and `claude plugin validate`. `npm test` runs the character and donna tests. CI runs both on every pull request.
 
 Rules for working here are in [CLAUDE.md](./CLAUDE.md). The words this repo uses are in [CONTEXT.md](./CONTEXT.md).

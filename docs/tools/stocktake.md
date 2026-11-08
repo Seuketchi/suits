@@ -2,11 +2,11 @@
 
 `stocktake` audits how our own code or system behaves today. It treats the code as the **primary source** and docs, comments and memory as leads to check against it, so every claim in the result cites file:line on a named commit.
 
-It reads and runs nothing with side effects: it changes nothing, and it runs as a background agent so your conversation keeps going.
+It reads and runs nothing with side effects: it changes nothing, and it runs as a background session so your conversation keeps going.
 
 ## When to reach for it
 
-Type `/stocktake`, or the agent reaches for it automatically when a decision waits on what the existing code actually does.
+Type `/stocktake`, or Claude reaches for it automatically when a decision waits on what the existing code actually does.
 
 | What the decision waits on | Reach for |
 | --- | --- |

@@ -6,13 +6,13 @@ It asks in **rounds**. A round is every decision it can ask about yet: the ones 
 
 ## When to reach for it
 
-Type `/grilling`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it on its own when a task fits. It is the only [skill](https://www.aihero.dev/ai-coding-dictionary/skill) in the grilling family that is model-invoked, which is why you rarely type it: usually a skill you *did* type is running it for you.
+Type `/grilling`, or Claude reaches for it on its own when a task fits. It is the only [skill](https://www.aihero.dev/ai-coding-dictionary/skill) in the grilling family that is model-invoked, which is why you rarely type it: usually a skill you *did* type is running it for you.
 
 Typing `/grilling` directly gets you the plain interview and nothing else. Where you want something more than that:
 
 | What you have | Reach for |
 | --- | --- |
-| You aren't working in a working directory | [grill-me](https://aihero.dev/skills-grill-me): the same [session](https://www.aihero.dev/ai-coding-dictionary/session), under a name the agent will never fire by itself |
+| You aren't working in a working directory | [grill-me](https://aihero.dev/skills-grill-me): the same [session](https://www.aihero.dev/ai-coding-dictionary/session), under a name Claude will never fire by itself |
 | You are in a working directory | [grill-with-docs](https://aihero.dev/skills-grill-with-docs): the same session, and it writes `CONTEXT.md` and ADRs as it goes |
 | An effort too big to hold in one session | [banquet](https://aihero.dev/skills-banquet): it charts a map and runs grilling inside the decision tickets |
 | A question that talking cannot settle: how something should look or feel | [sample](https://aihero.dev/skills-prototype): build the throwaway version, then come back |
@@ -20,11 +20,11 @@ Typing `/grilling` directly gets you the plain interview and nothing else. Where
 
 ## Rounds, and who decides
 
-Each round arrives as one table: a row per question, with the agent's pick and a one-clause reason beside it. That lets you answer a round by number ("1 yes, 2 the second option, 3 no, because…") instead of quoting questions back. One rough edge: a recommendation sometimes argues against the question as worded, so agreeing with it means answering "no". When that happens, answer the recommendation and say so.
+Each round arrives as one table: a row per question, with Claude's pick and a one-clause reason beside it. That lets you answer a round by number ("1 yes, 2 the second option, 3 no, because…") instead of quoting questions back. One rough edge: a recommendation sometimes argues against the question as worded, so agreeing with it means answering "no". When that happens, answer the recommendation and say so.
 
-Facts and decisions are split. Facts are the agent's job: when a question needs something it can look up, it sends a [sub-agent](https://www.aihero.dev/ai-coding-dictionary/subagent) to find out instead of asking you, picked by where the fact lives: `stocktake` for our own code, `source` for docs and APIs, `reverse-engineer` for a shipped artifact, `test-kitchen` when only running it can tell (and that one asks before it runs), and only the questions that need that answer wait for it. Decisions are yours, and it waits for them. An agent running `grilling` that answers its own decisions has broken the skill. The session ends when nothing is left open, and it won't act on what you agreed until you confirm you agree.
+Facts and decisions are split. Facts are Claude's job: when a question needs something it can look up, it sends a helper session to find out instead of asking you, picked by where the fact lives: `stocktake` for our own code, `source` for docs and APIs, `reverse-engineer` for a shipped artifact, `test-kitchen` when only running it can tell (and that one asks before it runs), and only the questions that need that answer wait for it. Decisions are yours, and it waits for them. Claude running `grilling` that answers its own decisions has broken the skill. The session ends when nothing is left open, and it won't act on what you agreed until you confirm you agree.
 
-The limit: which questions are askable is the agent's judgement, not a computed graph. It can put two questions in one round and only then see that one answer should have changed the other. Tell it, and it reopens that decision next round.
+The limit: which questions are askable is Claude's judgement, not a computed graph. It can put two questions in one round and only then see that one answer should have changed the other. Tell it, and it reopens that decision next round.
 
 ## What lives here and what lives in the wrappers
 
@@ -54,10 +54,10 @@ Into this skill. Round-based questioning shipped briefly as a separate skill, th
 This is the most common objection to rounds. A round only ever holds questions that don't depend on each other, so no answer in a round can invalidate another question in the same round. Answers still reshape everything downstream: the next round is recomputed, not pre-written. What you lose is smaller than "all questions at once" implies, and larger than nothing: see the limit above.
 
 **It ran out of questions and started building.**
-A confirmation gate exists precisely for this: the skill isn't finished when it runs out of questions, but when you say you agree. Weaker and faster [models](https://www.aihero.dev/ai-coding-dictionary/model) still break it; this is reported most often on lower-effort or non-frontier models, which collapse "interview until shared understanding" into a couple of questions and an outline. If yours does it, the reliable fix is a line in your own `AGENTS.md` or `CLAUDE.md` telling the agent not to implement without permission.
+A confirmation gate exists precisely for this: the skill isn't finished when it runs out of questions, but when you say you agree. Weaker and faster [models](https://www.aihero.dev/ai-coding-dictionary/model) still break it; this is reported most often on lower-effort or non-frontier models, which collapse "interview until shared understanding" into a couple of questions and an outline. If yours does it, the reliable fix is a line in your own `AGENTS.md` or `CLAUDE.md` telling Claude not to implement without permission.
 
 **It answered its own questions instead of asking me.**
-That is a bug in the run, not the intended behaviour, and it was the reason facts and decisions were separated in the skill's text. It shows up most when another skill runs `grilling` inside a resolve-this-ticket frame, where the surrounding task reads as licence to keep moving. The same constraint is why there is no async mode: people have asked for a variant that reads a GitHub issue and posts one consolidated decision memo, and that is a different skill, because a grilling session that nobody answers has produced the agent's opinion rather than yours.
+That is a bug in the run, not the intended behaviour, and it was the reason facts and decisions were separated in the skill's text. It shows up most when another skill runs `grilling` inside a resolve-this-ticket frame, where the surrounding task reads as licence to keep moving. The same constraint is why there is no async mode: people have asked for a variant that reads a GitHub issue and posts one consolidated decision memo, and that is a different skill, because a grilling session that nobody answers has produced Claude's opinion rather than yours.
 
 **Can I cap the number of questions?**
 No, and a cap is deliberately out of scope. Some plans need three questions and some need fifty; a fixed ceiling either truncates the hard case or feels arbitrary on the easy one. Steering in plain language is the intended control: tell it to wrap up, or stop and accept the plan where it stands. If a session is running very long, the cause is usually that the scope was too big; break the work up and grill the pieces.
@@ -66,14 +66,14 @@ No, and a cap is deliberately out of scope. Some plans need three questions and 
 `grill-me` is a one-line skill whose whole body is "run a `/grilling` session", so it needs this skill installed too. The same is true of `grill-with-docs`, which additionally needs [domain-modeling](https://aihero.dev/skills-domain-modeling). Installing the whole set avoids the problem; installing selectively means installing the primitives as well.
 
 **`grill-with-docs` ran, but it never loaded `grilling`.**
-A real and unfixed rough edge, reported across [harnesses](https://www.aihero.dev/ai-coding-dictionary/harness) and models: a skill that names another skill does not reliably cause that skill to load, and `grill-with-docs` names two. The tell is a session that asks everything at once with no recommendations attached: that is the model improvising an interview rather than running this one. Asking the agent directly whether it loaded `grilling` and `domain-modeling` usually recovers it.
+A real and unfixed rough edge, reported across [harnesses](https://www.aihero.dev/ai-coding-dictionary/harness) and models: a skill that names another skill does not reliably cause that skill to load, and `grill-with-docs` names two. The tell is a session that asks everything at once with no recommendations attached: that is the model improvising an interview rather than running this one. Asking Claude directly whether it loaded `grilling` and `domain-modeling` usually recovers it.
 
 ## It's working if
 
-- A round arrives as one table, a row per question with the agent's pick and why, and you can answer the whole round by number.
+- A round arrives as one table, a row per question with Claude's pick and why, and you can answer the whole round by number.
 - Nothing in a round needs another question in the same round answered first.
 - Later rounds ask things the first round could not have asked.
-- It goes and looks facts up (reading files, dispatching a sub-agent) rather than asking you something it could have found out.
+- It goes and looks facts up (reading files, starting a helper session) rather than asking you something it could have found out.
 - Research running in the background does not stall the round; only the questions that depend on it wait.
 - It stops at the end and asks you to confirm the understanding is shared, instead of starting work.
 - Question count stays high while round count stays low.

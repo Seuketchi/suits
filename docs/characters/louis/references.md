@@ -1,6 +1,6 @@
 # What louis copies: real review comments and money rules, not a bully
 
-Date: 2026-11-06. VERIFIED = the sentence or fact was on a page fetched in this session (URL given). The pages were read through fetch sub-agents, who returned exact sentences; the PR threads I pulled myself with `gh api`. UNCONFIRMED = a summary only, my inference, or not read.
+Date: 2026-11-06. VERIFIED = the sentence or fact was on a page fetched in this session (URL given). The pages were read through separate fetch sessions, which returned exact sentences; the PR threads I pulled myself with `gh api`. UNCONFIRMED = a summary only, my inference, or not read.
 
 ## What the real ones do
 

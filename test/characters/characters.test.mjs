@@ -109,7 +109,8 @@ const TEAM_SIZE = [
 // What the scan skips: code spans (tool names such as `/test-kitchen`), and the legal terms of art in
 // donna's LEGAL.md, where "assistant secretary" and an attorney-in-fact's "agent" are the right words.
 const LEGAL_TERMS = /\bassistant secretary\b|\b(?:attorney-in-fact|special power of attorney)\b|\b(?:the|an|as my|and) agent\b/gi;
-const prose = (source) => source.replace(/`[^`\n]*`/g, "").replace(LEGAL_TERMS, "");
+// Link targets are skipped too: a path such as `./test-kitchen.md` is a name, not prose.
+const prose = (source) => source.replace(/`[^`\n]*`/g, "").replace(/\]\([^)\s]*\)/g, "]").replace(LEGAL_TERMS, "");
 
 export const workflowWords = (source) => WORKFLOW_WORDS.filter(([, re]) => re.test(prose(source))).map(([w]) => w);
 export const teamSizePhrases = (source) => TEAM_SIZE.flatMap((re) => prose(source).match(new RegExp(re.source, "gi")) ?? []);
@@ -152,6 +153,37 @@ describe("the scan itself", () => {
     for (const phrase of ["under 60 characters", "72 characters or fewer", "up to three in parallel", "at most 3 associates"]) {
       assert.deepEqual(teamSizePhrases(`Keep it ${phrase}.`), [], phrase);
     }
+  });
+});
+
+// Docs pages that say one of these words on purpose, each with why.
+const DOCS_WORD_ALLOWED = {
+  "docs/characters/rachel/references.md": "cites Richard Cook, the author of How Complex Systems Fail",
+};
+
+const docFiles = (dir) =>
+  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) => {
+    const path = join(dir, e.name);
+    if (e.isDirectory()) return docFiles(path);
+    return e.name.endsWith(".md") ? [path] : [];
+  });
+
+describe("docs pages", () => {
+  const files = docFiles("docs");
+
+  test("there are pages to scan", () => assert.ok(files.length > 0));
+
+  test("use no workflow-tool word, except where listed with a reason", () => {
+    const offenders = files
+      .map((f) => [f, workflowWords(read(f))])
+      .filter(([f, words]) => words.length > 0 && !(f in DOCS_WORD_ALLOWED))
+      .map(([f, words]) => `${f}: ${words.join(", ")}`);
+    assert.deepEqual(offenders, []);
+  });
+
+  test("list no page that no longer needs its place", () => {
+    const stale = Object.keys(DOCS_WORD_ALLOWED).filter((f) => !files.includes(f) || workflowWords(read(f)).length === 0);
+    assert.deepEqual(stale, []);
   });
 });
 

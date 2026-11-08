@@ -6,9 +6,9 @@ Every claim in that table carries one of three statuses, **observed**, **inferre
 
 ## When to reach for it
 
-Type `/findings`, or the agent reaches for it automatically when it is writing up an investigation or reading one into a spec.
+Type `/findings`, or Claude reaches for it automatically when it is writing up an investigation or reading one into a spec.
 
-Reach for it when you are about to record what an investigation found out. The investigating skills (`research`, [stocktake](./stocktake.md), `reverse-engineer-anything` and [test-kitchen](./test-kitchen.md)) call it themselves, so you rarely type it.
+Reach for it when you are about to record what an investigation found out. The investigating skills (`research`, [stocktake](./stocktake.md), `reverse-engineer-anything` and [`test-kitchen`](./test-kitchen.md)) call it themselves, so you rarely type it.
 
 ## Claims, not prose
 

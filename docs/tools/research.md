@@ -2,11 +2,11 @@
 
 `research` answers a question by reading the sources that own the answer, then leaves a cited Markdown file in the repo. It works only from **[primary sources](https://www.aihero.dev/ai-coding-dictionary/primary-source)**: official docs, source code, specs, first-party APIs. It follows every claim back to the source that owns it, so it will not repeat a blog post's account of an API when the API's own docs are reachable.
 
-It does not answer you in the conversation. The output is a file at `docs/findings/<topic>.md`, in the shared findings format, with a link on each claim. That is the point: a document you can react to, hand to another agent, or throw away, rather than an answer that vanishes when the [session](https://www.aihero.dev/ai-coding-dictionary/session) ends.
+It does not answer you in the conversation. The output is a file at `docs/findings/<topic>.md`, in the shared findings format, with a link on each claim. That is the point: a document you can react to, hand to another session, or throw away, rather than an answer that vanishes when the [session](https://www.aihero.dev/ai-coding-dictionary/session) ends.
 
 ## When to reach for it
 
-Type `/research`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task turns into reading legwork.
+Type `/research`, or Claude reaches for it automatically when a task turns into reading legwork.
 
 Reach for it when the next step is *finding something out* from outside the working directory (how a third-party API behaves, what a spec actually says, whether a version claim holds), and you'd rather not stall your own thread doing the reading. What you need decides which skill:
 
@@ -21,19 +21,19 @@ The line between `research` and `grill-with-docs` is the **shelf life of what co
 
 ## Delegated legwork
 
-The defining move is that the reading runs as a **background agent**. You keep working; it goes off, follows each claim to its primary source, writes one Markdown file, and reports back. Research is legwork you delegate, not thinking you outsource: you get a document to grill, plan, or design against, and you still make the call.
+The defining move is that the reading runs as a **background session**. You keep working; it goes off, follows each claim to its primary source, writes one Markdown file, and reports back. Research is legwork you delegate, not thinking you outsource: you get a document to grill, plan, or design against, and you still make the call.
 
-The delegation is unguarded, and the background agent can spawn a further background agent of its own. This is the skill's best-documented rough edge.
+The delegation is unguarded, and the background session can spawn a further background session of its own. This is the skill's best-documented rough edge.
 
 The file lands at `docs/findings/<topic>.md`, in the format the `findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
 
 ## Common questions
 
-**It spawned a second research agent. Is that meant to happen?**
+**It spawned a second research session. Is that meant to happen?**
 
-No. This is an open bug, [issue #530](https://github.com/mattpocock/skills/issues/530). The skill tells its caller to spin up a background agent but does not restrict the agent type, so the agent it spawns is a `general-purpose` one that holds the `Agent` tool and the same instructions, and fires them again. One reporter measured a single research task costing roughly 450k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) across three overlapping runs, with the duplicate finishing half an hour later entirely out of view. It reproduces outside Claude Code too; the same nesting was confirmed in Codex with GPT-5.6-sol. There is no shipped fix. Users have patched their own installed copy with a line telling an agent that is already a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) to do the work itself, which helps but is instruction-level, not structural. Watch your background task list after invoking, and stop the duplicate.
+No. This is an open bug, [issue #530](https://github.com/mattpocock/skills/issues/530). The skill tells its caller to spin up a background session but does not restrict the session type, so the session it starts is a `general-purpose` one that holds the `Agent` tool and the same instructions, and fires them again. One reporter measured a single research task costing roughly 450k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) across three overlapping runs, with the duplicate finishing half an hour later entirely out of view. It reproduces outside Claude Code too; the same nesting was confirmed in Codex with GPT-5.6-sol. There is no shipped fix. Users have patched their own installed copy with a line telling Claude that is already a helper session to do the work itself, which helps but is instruction-level, not structural. Watch your background task list after invoking, and stop the duplicate.
 
-The opposite failure exists as well: if your own global instructions forbid an agent from re-delegating work, the background agent will politely decline the task and the skill quietly does nothing.
+The opposite failure exists as well: if your own global instructions forbid Claude from re-delegating work, the background session will politely decline the task and the skill quietly does nothing.
 
 **Where should the file live, and should I commit it?**
 
@@ -41,25 +41,25 @@ The skill puts the file in `docs/findings/` and has no opinion beyond that on wh
 
 **What counts as a "high-trust" primary source, and who decides?**
 
-The [model](https://www.aihero.dev/ai-coding-dictionary/model) does. The skill names the *kinds* of source that qualify (official docs, source code, specs, first-party APIs), and there is no allowlist, no domain gate, and no verification pass. This was the loudest objection when the skill was first proposed and it has never been answered publicly: "Five research subagents pointed at junk just gives you five confident wrong answers faster. How are you gating what counts as high-trust sources?" The mitigation you actually have is the citation on each claim. Follow two or three of them. If they land on a summary of the thing rather than the thing, the run failed at its one job.
+The [model](https://www.aihero.dev/ai-coding-dictionary/model) does. The skill names the *kinds* of source that qualify (official docs, source code, specs, first-party APIs), and there is no allowlist, no domain gate, and no verification pass. This was the loudest objection when the skill was first proposed and it has never been answered publicly: five research runs pointed at junk only give five confident wrong answers faster, so what decides which sources count as high-trust? The mitigation you actually have is the citation on each claim. Follow two or three of them. If they land on a summary of the thing rather than the thing, the run failed at its one job.
 
 **Does a later session reuse what an earlier run found?**
 
-No. Nothing auto-loads a past research file; it is a document sitting in the repo until a human or a skill points at it. This was raised early as the strongest challenge to the design: "the value's the markdown becoming context the agent re-reads later, not the fetch itself. A write-once dead file is just a fancy search." The shipped skill does not solve it. In practice the file earns its keep by being fed into the next step deliberately: attach it to a spec, quote it into a grilling session, point a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) at it.
+No. Nothing auto-loads a past research file; it is a document sitting in the repo until a human or a skill points at it. This was raised early as the strongest challenge to the design: the value is the Markdown becoming context the model reads again later, not the fetch itself, and a file written once and never read is only a fancy search. The shipped skill does not solve it. In practice the file earns its keep by being fed into the next step deliberately: attach it to a spec, quote it into a grilling session, point a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) at it.
 
-**Why not just ask the agent to go read the docs?**
+**Why not just ask Claude to go read the docs?**
 
 You can, and a two-line prompt saying exactly that was the practice this skill replaced. Two things the skill buys over the prompt: it runs in the background so your session keeps its [context](https://www.aihero.dev/ai-coding-dictionary/context) clean, and the primary-source constraint and the cited-file output come out the same way every time rather than however you happened to phrase it. Against a [harness](https://www.aihero.dev/ai-coding-dictionary/harness)'s own deep-research mode, the difference is the artifact and the source discipline, not the search. If a two-line prompt gets you what you need on a small question, use the two-line prompt.
 
 **When does it stop reading?**
 
-There is no stopping criterion in the skill, and this shows up as two complaints that look opposite but are the same gap: agents that go far too deep, and agents that cover a topic broadly while missing the one specific detail that mattered. One practitioner put it as "deep-research skills are a bit too deep sometimes. And telling an agent to research usually results in missing crucial details." Scoping is on you. A narrow, answerable question (one API, one behaviour, one version claim) comes back far better than "research X".
+There is no stopping criterion in the skill, and this shows up as two complaints that look opposite but are the same gap: runs that go far too deep, and runs that cover a topic broadly while missing the one specific detail that mattered. One practitioner found deep-research skills sometimes go too deep, while a plain request to research usually misses crucial details. Scoping is on you. A narrow, answerable question (one API, one behaviour, one version claim) comes back far better than "research X".
 
 ## It's working if
 
 - Your own session keeps going. If you are sitting watching it read, the delegation didn't happen.
 - Exactly one new background task appears. A second one with a near-identical name is the nesting bug.
-- One new findings file shows up in `docs/findings/`, and the agent tells you the path.
+- One new findings file shows up in `docs/findings/`, and Claude tells you the path.
 - Every claim in it carries a link, and following two at random lands you on an official doc, a spec, or the actual source file, not on someone's write-up of it.
 - You can make the decision you were stuck on from the file alone, without going back to the sources yourself.
 

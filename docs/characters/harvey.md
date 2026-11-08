@@ -21,7 +21,7 @@ He prepares it with `negotiation-prep`: five rows, with anything above his autho
 Only on an artifact you own, have rights to, or named in the request. Otherwise he asks first.
 
 **Why does `improve-codebase-architecture` ask before it runs?**
-It spawns a sub-agent and writes a report, so he checks first.
+It starts a helper session and writes a report, so he checks first.
 
 ## It's working if
 

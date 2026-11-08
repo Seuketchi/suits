@@ -1,7 +1,7 @@
 # What rachel copies: real root-cause reports, not a single culprit
 
 **Verdict: change "the cause" to "causes" (a trigger plus the conditions that let it hurt), and add a fourth question, "why was it not caught earlier"; every real report opened has both, and rachel's SKILL.md has neither.**
-How it was read. VERIFIED (fetch) = a fetch agent opened the page and reported its headings and wording; the output is a model extraction, not raw HTML. VERIFIED (read) = I read the text myself from the downloaded PDF. UNCONFIRMED = not read. No company data was used.
+How it was read. VERIFIED (fetch) = a fetch session opened the page and reported its headings and wording; the output is a model extraction, not raw HTML. VERIFIED (read) = I read the text myself from the downloaded PDF. UNCONFIRMED = not read. No company data was used.
 
 ## What the real ones do
 

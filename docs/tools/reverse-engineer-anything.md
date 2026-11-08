@@ -1,6 +1,6 @@
 ## What it does
 
-`reverse-engineer-anything` is the skill from [morluto/rea](https://github.com/morluto/rea), used unchanged and under its own name. It works out what a shipped artifact does when there is no source: a native binary, a managed build, an Electron or JavaScript bundle, firmware, a packaged app, or a browser target. It uses the REA tools for evidence, and each claim stays tied to what was observed. It can also build an agent environment of a web application from a live instance or a capture.
+`reverse-engineer-anything` is the skill from [morluto/rea](https://github.com/morluto/rea), used unchanged and under its own name. It works out what a shipped artifact does when there is no source: a native binary, a managed build, an Electron or JavaScript bundle, firmware, a packaged app, or a browser target. It uses the REA tools for evidence, and each claim stays tied to what was observed. It can also build an AgentEnv bundle of a web application from a live instance or a capture.
 
 ## When to reach for it
 

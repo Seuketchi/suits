@@ -8,7 +8,7 @@ A change is done when it is merged with a test that proves it. Run `claude plugi
 
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
 
-The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs`, wiring in `register.tsx`, no rules of their own: they read the project's `.claude/suits-rules.json`); run `npm run test:mods` and `claude plugin test .` after changing them.
+The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs` and `readonly.mjs`, wiring in `register.tsx`; they carry no project rules, which they read from the project's `.claude/suits-rules.json`, and one rule of the plugin's own: `readonly.mjs` holds the read-only versions' `Bash` to reading, ADR 0009); run `npm run test:mods` and `claude plugin test .` after changing them.
 
 ## Rules for characters
 

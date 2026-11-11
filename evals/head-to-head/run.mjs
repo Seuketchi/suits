@@ -37,7 +37,7 @@ const ARMS_DIR = process.env.H2H_ARMS_DIR ?? "";
 const arms = JSON.parse(readFileSync(join(HERE, "arms.json"), "utf8").replaceAll("ARMS_DIR", ARMS_DIR));
 
 const EDIT_TOOLS = new Set(["Edit", "Write", "NotebookEdit"]);
-const WRITING_BASH = /(^|[\s;&|])(rm|mv|cp|tee|touch|mkdir|sed\s+-i|git\s+(commit|add|checkout|reset|apply))\b|>>?\s*[^\s&]/;
+const WRITING_BASH = /(^|[\s;&|])(rm|mv|cp|tee|touch|mkdir|sed\s+-i|git\s+(commit|add|checkout|reset|apply))\b|>>?\s*(?!\/dev\/null|&)[^\s&]/;
 
 function snapshot(dir) {
   const h = createHash("sha256");
@@ -186,7 +186,7 @@ if (mode === "run") {
 } else if (mode === "rejudge") {
   // Score the saved answers again with another judge model; the earlier verdicts are kept as judge1.
   const judgeModel = opt("judge-model", "sonnet");
-  for (const f of readdirSync(OUT).filter((x) => x.endsWith(".json")).sort()) {
+  for (const f of readdirSync(OUT).filter((x) => x.endsWith(".json") && x.startsWith(opt("prefix", ""))).sort()) {
     const run = JSON.parse(readFileSync(join(OUT, f), "utf8"));
     if (run.judgeModel === judgeModel) continue;
     const task = tasksFile.tasks.find((t) => t.id === run.task);
@@ -195,6 +195,23 @@ if (mode === "run") {
     Object.assign(run, again, { judgeModel, judge1: prev });
     writeFileSync(join(OUT, f), JSON.stringify(run, null, 2));
     console.log(`${f}: ${prev.score?.toFixed(2)} (${prev.model}) -> ${run.score?.toFixed(2)} (${judgeModel})`);
+  }
+} else if (mode === "recode") {
+  // Re-decide the items that need no model (no_edit, regex, ...) from the saved runs, keeping judge verdicts.
+  for (const f of readdirSync(OUT).filter((x) => x.endsWith(".json")).sort()) {
+    const run = JSON.parse(readFileSync(join(OUT, f), "utf8"));
+    const task = tasksFile.tasks.find((t) => t.id === run.task);
+    const old = run.score;
+    for (const item of task.rubric) {
+      if (item.kind === "no_edit") run.verdicts[item.id] = !run.treeChanged && !run.trace.some((t) => EDIT_TOOLS.has(t.name) || (t.name === "Bash" && WRITING_BASH.test(t.cmd ?? "")));
+      else if (item.kind === "tree_unchanged") run.verdicts[item.id] = !run.treeChanged;
+      else if (item.kind === "regex") run.verdicts[item.id] = new RegExp(item.pattern, "i").test(run.answer);
+      else if (item.kind === "tool_used") run.verdicts[item.id] = run.trace.some((t) => item.tools.includes(t.name));
+    }
+    const scored = task.rubric.filter((i) => !i.info).map((i) => run.verdicts[i.id]);
+    run.score = scored.includes(null) ? null : scored.filter(Boolean).length / scored.length;
+    writeFileSync(join(OUT, f), JSON.stringify(run, null, 2));
+    if (old !== run.score) console.log(`${f}: ${old?.toFixed(2)} -> ${run.score?.toFixed(2)}`);
   }
 } else if (mode === "report") {
   const rows = readdirSync(OUT).filter((f) => f.endsWith(".json")).map((f) => JSON.parse(readFileSync(join(OUT, f), "utf8")));

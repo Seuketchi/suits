@@ -25,6 +25,7 @@ import {
   unreadableRules,
   warnNotes,
 } from './logic.mjs'
+import { checkReadOnly, denyMessage, readOnlyCharacter } from './readonly.mjs'
 
 // Looks for the rules file in the start directory and each parent up to the
 // git root. All the deciding is in logic.mjs; this only reads and shows.
@@ -89,6 +90,39 @@ async function charactersOf($: any): Promise<string[]> {
   return characters
 }
 
+// The type of the subagent a call runs in, from the session's agent list.
+async function agentType($: any, agentId: string): Promise<string | undefined> {
+  return (await $.agent.list()).find((a: { id: string }) => a.id === agentId)?.type
+}
+
+// Why a Bash call from a subagent is refused, or nothing when it may run. A
+// check that fails refuses the call unless the agent's type can be read and is
+// not one of the three: the guard fails closed.
+async function readOnlyDenial(
+  $: any,
+  e: { agentId?: string; command: string },
+): Promise<{ who: string; message: string } | undefined> {
+  if (e.agentId === undefined) return undefined
+
+  try {
+    const who = readOnlyCharacter(await agentType($, e.agentId), $.plugin.name)
+
+    if (who === undefined) return undefined
+
+    const verdict = checkReadOnly(e.command)
+
+    return verdict.allowed ? undefined : { who, message: denyMessage(who, verdict.why as string) }
+  } catch {
+    try {
+      if (readOnlyCharacter(await agentType($, e.agentId), $.plugin.name) === undefined) return undefined
+    } catch {
+      // unreadable again: treated as one of the three
+    }
+
+    return { who: 'a read-only version', message: denyMessage('this version', 'The check could not run, so the command was not allowed') }
+  }
+}
+
 export const register: Register = on => {
   // A broken file, or a bad rule in one, is reported once, then ignored.
   const reported = new Set<string>()
@@ -101,6 +135,22 @@ export const register: Register = on => {
     await update($, checklist, () => next)
 
     return { result: [{ type: 'text', text: checklistText(next, notes) }] }
+  })
+
+  // The read-only versions of louis, mike and rachel run `Bash` to read only
+  // (ADR 0009). The main session and every other subagent are not held here.
+  on('tool.call', { tool: 'Bash' }, async ($, e, next) => {
+    const denial = await readOnlyDenial($, e)
+
+    if (denial === undefined) return next(e)
+
+    try {
+      $.ui.toast(`suits blocked Bash: ${denial.who} is read-only (ADR 0009)`)
+    } catch {
+      // the owner is not told; the call is still refused
+    }
+
+    return { deny: denial.message }
   })
 
   on('tool.call', async ($, e, next) => {

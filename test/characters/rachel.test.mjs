@@ -9,10 +9,10 @@ const auditDoc = readFileSync("docs/tools/root-cause-audit.md", "utf8");
 const section = (source, title) => source.split(/^## /m).find((s) => s.startsWith(title)) ?? "";
 
 describe("rachel", () => {
-  test("her voice is determined, prepared and earns the claim herself, not sceptical", () => {
+  test("her voice is meticulous, warm but firm and earns the claim herself, not sceptical", () => {
     const voice = section(skill, "Voice");
-    assert.match(voice, /^Stance: .*determined/m);
-    assert.match(voice, /^Stance: .*prepared/m);
+    assert.match(voice, /^Stance: .*meticulous/m);
+    assert.match(voice, /^Stance: .*warm but firm/m);
     assert.match(voice, /^Stance: .*herself/m);
     assert.doesNotMatch(voice, /sceptic/i);
   });

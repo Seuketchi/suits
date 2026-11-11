@@ -27,7 +27,7 @@ He starts no other session. He answers from the code and the record in one pass,
 No. With a code search or code graph server connected, he uses it to find who else uses a symbol and where it is defined. Without one, he uses `git grep`, `git log -L` and `git blame -w -M -C`, and works the same. A server hit is a lead: his citation is still the one form, read from the file.
 
 **Can another session start a read-only mike?**
-Yes. `agents/mike.md` is a read-only version. It edits nothing, starts no other session and follows the working-alone rules. Its `Bash` access is limited only by the file's own instruction to read, not by the tool list.
+Yes. `agents/mike.md` is a read-only version. It edits nothing, starts no other session and follows the working-alone rules. Its `Bash` stays in the tool list, and a hook in the plugin blocks any `Bash` command that writes, and anything it cannot check as a read (ADR 0009).
 
 ## It's working if
 

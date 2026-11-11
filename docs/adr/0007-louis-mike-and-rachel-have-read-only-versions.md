@@ -18,11 +18,11 @@ Each of the three has a definition another session can start, in `agents/louis.m
 ## What is enforced, and what is not
 
 - Enforced by the tool list: no file edit through `Edit`, `Write`, `NotebookEdit` or `MultiEdit`, and no other session through `Agent` or `Task`.
-- Not enforced: `Bash`. It stays, because louis and mike need `git` and `gh` to read, and the format cannot limit `Bash` to reading: an entry with a pattern in `disallowedTools` removes the whole tool, and a pattern in `tools` is not documented. The body tells the version to use `Bash` only to read, and says in one line that the file cannot limit it. That sentence is the only limit on `Bash`.
+- Not enforced by the file: `Bash`. A hook holds it to reading (ADR 0009). It stays, because louis and mike need `git` and `gh` to read, and the format cannot limit `Bash` to reading: an entry with a pattern in `disallowedTools` removes the whole tool, and a pattern in `tools` is not documented. The body tells the version to use `Bash` only to read, and says in one line that the file cannot limit it. That sentence is the only limit on `Bash`.
 - Not used: connected servers. Listing `tools` drops every server tool not named, and naming them by wildcard would also admit their write tools. A read-only version uses no server and falls back as ADR 0006 says. The full skill in the owner's own session still uses one.
 
 ## Consequences
 
-- "Edit nothing" and "one pass" hold by construction for these three, except through `Bash`.
+- "Edit nothing" and "one pass" hold by construction for these three; `Bash` is held to reading by the hook of ADR 0009.
 - The definitions have the same names as the skills (`suits:louis` and so on). A hand start of `claude --agent suits:louis` loaded the definition and ran the `suits:louis` skill, so the two do not clash and the files keep the character's name.
 - A character added later that must be read-only gets a file in `agents/` and an entry in the test.

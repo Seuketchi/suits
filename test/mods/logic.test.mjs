@@ -226,10 +226,18 @@ test("the status line names the character, adds helper, and shows helper alone",
   assert.equal(statusFor(undefined, false), undefined);
 });
 
-test("only a skill named suits:<character> is a character", () => {
+test("a plugin skill arrives as suits:<name>, or as a bare name with pluginName suits", () => {
   const characters = ["louis", "donna"];
   assert.equal(characterOf("suits:louis", characters), "louis");
-  assert.equal(characterOf("suits:tdd", characters), undefined);
+  assert.equal(characterOf("suits:louis", characters, "suits"), "louis");
+  assert.equal(characterOf("louis", characters, "suits"), "louis");
   assert.equal(characterOf("louis", characters), undefined);
-  assert.equal(characterOf("other:louis", characters), undefined);
+  assert.equal(characterOf("louis", characters, "other"), undefined);
+  assert.equal(characterOf("other:louis", characters, "suits"), undefined);
+});
+
+test("a tool or an unknown name is no character", () => {
+  const characters = ["louis", "donna"];
+  assert.equal(characterOf("suits:tdd", characters, "suits"), undefined);
+  assert.equal(characterOf("tdd", characters, "suits"), undefined);
 });

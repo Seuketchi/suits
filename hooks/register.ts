@@ -133,6 +133,18 @@ export const register: Register = on => {
     $.ui.toast(HELPER_TOAST)
 
     return { deny: HELPER_DENY }
+  }).catch(async ($, e, next) => {
+    // If the hook broke, ask again, and let the spawn through
+    // only when the switch is off or cannot be read at all.
+    let helper = false
+
+    try {
+      helper = await isHelper($)
+    } catch {
+      // unreadable: treated as off
+    }
+
+    return helper ? { deny: HELPER_DENY } : next(e)
   })
 
   on('prompt.compose', async ($, e, next) => {
@@ -147,7 +159,7 @@ export const register: Register = on => {
 
   // The status line names the working character; a tool skill leaves it be.
   on('skill.prompt', async ($, e, next) => {
-    const character = characterOf(e.skill, await charactersOf($))
+    const character = characterOf(e.skill, await charactersOf($), e.pluginName)
 
     if (character) $.ui.status(statusFor(character, await isHelper($)))
 

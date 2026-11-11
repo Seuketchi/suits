@@ -206,9 +206,12 @@ export function charactersFrom(manifestText) {
     .filter((name) => name !== undefined);
 }
 
-// The character a skill name stands for: `suits:<character>`. A tool is none.
-export function characterOf(skill, characters) {
-  const name = skill.startsWith("suits:") ? skill.slice("suits:".length) : undefined;
+// The character a skill stands for. A plugin skill arrives as `suits:<name>`
+// (checked on a live session, by `/suits:louis` and by the Skill tool); a bare
+// listed name counts when the event says the skill comes from this plugin.
+// A tool is none.
+export function characterOf(skill, characters, pluginName) {
+  const name = skill.startsWith("suits:") ? skill.slice("suits:".length) : pluginName === "suits" ? skill : undefined;
   return name !== undefined && characters.includes(name) ? name : undefined;
 }
 

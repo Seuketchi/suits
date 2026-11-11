@@ -41,8 +41,13 @@ test("the scan catches a rule written into code", () => {
 export const envAccesses = (source) => [...source.matchAll(/\$\.env\b[^;\n]*/g)].map((m) => m[0].trim());
 export const ALLOWED_ENV = '$.env.get("SUITS_HELPER")';
 const doubleQuoted = (use) => use.replace(/'/g, '"');
-export const strayEnv = (source) =>
-  envAccesses(source).filter((use) => !doubleQuoted(use).startsWith(ALLOWED_ENV));
+// One entry per `$.env` that is not the allowed read. Counting occurrences
+// against allowed reads means a second access on the same line fails too.
+export const strayEnv = (source) => {
+  const total = (source.match(/\$\.env\b/g) ?? []).length;
+  const allowed = doubleQuoted(source).split(ALLOWED_ENV).length - 1;
+  return Array.from({ length: total - allowed }, () => "$.env");
+};
 
 test("hooks/ source reads SUITS_HELPER and no other variable", () => {
   let reads = 0;
@@ -54,12 +59,18 @@ test("hooks/ source reads SUITS_HELPER and no other variable", () => {
 });
 
 test("the scan catches any other environment access", () => {
-  assert.deepEqual(strayEnv('const v = await $.env.get("SOME_NAME")'), ['$.env.get("SOME_NAME")']);
-  assert.deepEqual(strayEnv('await $.env.set("SUITS_HELPER", "1")').length, 1);
-  assert.deepEqual(strayEnv(`const k = await $.env.get(name)`).length, 1);
-  assert.deepEqual(strayEnv('const h = await $.env.get("SUITS_HELPER")'), []);
-  assert.deepEqual(strayEnv("const h = await $.env.get('SUITS_HELPER')"), []);
-  assert.deepEqual(strayEnv("const environment = 1"), []);
+  assert.equal(strayEnv('const v = await $.env.get("SOME_NAME")').length, 1);
+  assert.equal(strayEnv('await $.env.set("SUITS_HELPER", "1")').length, 1);
+  assert.equal(strayEnv("const k = await $.env.get(name)").length, 1);
+  assert.equal(strayEnv('const h = await $.env.get("SUITS_HELPER")').length, 0);
+  assert.equal(strayEnv("const h = await $.env.get('SUITS_HELPER')").length, 0);
+  assert.equal(strayEnv("const environment = 1").length, 0);
+});
+
+test("a second access on the same line as the allowed read is caught", () => {
+  assert.equal(strayEnv('const a = [await $.env.get("SUITS_HELPER"), await $.env.get("HOME")]').length, 1);
+  assert.equal(strayEnv('await $.env.get("SUITS_HELPER") && $.env.set("X", "1")').length, 1);
+  assert.equal(strayEnv('await $.env.get("SUITS_HELPER") || await $.env.get("SUITS_HELPER")').length, 0);
 });
 
 test("the README's rules-file example parses", () => {

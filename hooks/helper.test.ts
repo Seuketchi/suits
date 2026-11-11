@@ -6,16 +6,21 @@ const CHARACTERS = JSON.stringify({
 
 // The engine beneath the plugin: the plugin's own manifest, the status lines
 // and toasts it was asked to show, and a spawn that would start.
-function engine(on: any, env: Record<string, string>) {
+function engine(on: any, env: Record<string, string>, failsOnce: { toast?: true; env?: true } = {}) {
+  const failures = { toast: failsOnce.toast ? 1 : 0, env: failsOnce.env ? 1 : 0 }
   const toasts: string[] = []
   const statuses: Array<string | undefined> = []
 
-  on('env.get', (_: unknown, e: { name: string }) => ({ value: env[e.name] }))
+  on('env.get', (_: unknown, e: { name: string }) => {
+    if (failures.env-- > 0) throw new Error('env failed')
+    return { value: env[e.name] }
+  })
   on('fs.read', (_: unknown, e: { path: string }) => {
     if (e.path.endsWith('.claude-plugin/plugin.json')) return { value: CHARACTERS }
     throw new Error('ENOENT')
   })
   on('ui.toast', (_: unknown, e: { text: string }) => {
+    if (failures.toast-- > 0) throw new Error('toast failed')
     toasts.push(e.text)
     return { value: undefined }
   })
@@ -34,7 +39,13 @@ function engine(on: any, env: Record<string, string>) {
 
 const COMPOSE = { model: 'm', promptModel: 'm', surfaces: [], tools: [], outputStyle: null, traits: [] } as const
 const SPAWN = { prompt: 'review this in parallel', description: 'review', subagentType: 'general-purpose' }
-const PLUGIN_PATH = (skill: string) => ({ skill, text: 'body', frontmatter: {}, source: 'plugin' as const })
+const PLUGIN_PATH = (skill: string, pluginName?: string) => ({
+  skill,
+  text: 'body',
+  frontmatter: {},
+  source: 'plugin' as const,
+  ...(pluginName ? { pluginName } : {}),
+})
 
 test('with SUITS_HELPER=1 a new session is denied with the reason and a toast', async ($, on) => {
   const { toasts } = engine(on, { SUITS_HELPER: '1' })
@@ -116,4 +127,29 @@ test('in helper mode with no character yet the status line reads helper', async 
   await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
 
   expect(statuses.at(-1)).toBe('helper')
+})
+
+test('a bare name from the suits plugin is a character too', async ($, on) => {
+  const { statuses } = engine(on, { SUITS_HELPER: '1' })
+
+  await $.skill.prompt(PLUGIN_PATH('louis', 'suits'))
+  await $.skill.prompt(PLUGIN_PATH('louis', 'other'))
+
+  expect(statuses).toEqual(['louis · helper'])
+})
+
+test('a toast that fails once does not let a spawn through', async ($, on) => {
+  engine(on, { SUITS_HELPER: '1' }, { toast: true })
+
+  const out = await $.agent.spawn(SPAWN)
+
+  expect(out.deny).toBe('This session is a helper: do the work yourself in one pass (Working alone).')
+})
+
+test('a switch read that fails once does not let a spawn through', async ($, on) => {
+  engine(on, { SUITS_HELPER: '1' }, { env: true })
+
+  const out = await $.agent.spawn(SPAWN)
+
+  expect(out.deny).toBe('This session is a helper: do the work yourself in one pass (Working alone).')
 })

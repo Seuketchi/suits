@@ -10,8 +10,9 @@
   "scripts": {
     "check-skills": "node scripts/check-skills.mjs",
     "lists": "node scripts/lists.mjs --write",
-    "test": "npm run test:donna && npm run test:characters",
+    "test": "npm run test:donna && npm run test:characters && npm run test:mods",
     "test:characters": "node --test \"test/characters/**/*.test.mjs\"",
+    "test:mods": "node --test \"test/mods/**/*.test.mjs\"",
     "test:donna": "node --test \"test/donna/**/*.test.mjs\""
   }
 }

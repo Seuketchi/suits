@@ -45,3 +45,7 @@ The one record of what was decided, by whom, why, and when. Entries are added an
 **Ruling**:
 A verdict on a review comment in two parts: whether it is true (verified, outdated, disputed) and how serious it is (BLOCKER, SHOULD FIX, SUGGESTION).
 _Avoid_: grade, label
+
+**Rules file**:
+The one file a project keeps at `.claude/suits-rules.json` to list its own `never` and `warn` rules. The hooks read it from the session's start folder up to the git root and hold no rule of their own. With no file they pass every call.
+_Avoid_: config, policy

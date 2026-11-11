@@ -25,12 +25,16 @@ jobs:
           node-version: 24
 
       # Pinned so a new validator rule can't turn every PR red overnight;
-      # bump it on purpose. `plugin validate` needs no login.
+      # bump it on purpose. `plugin validate` and `plugin test` need no login.
+      # 2.1.322 is the build the mod was written and tested against.
       - name: Install the claude CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.301
+        run: npm install -g @anthropic-ai/claude-code@2.1.322
 
       - name: Listing rules, docs pages, links, plugin validate
         run: npm run check-skills
 
       - name: Tests
         run: npm test
+
+      - name: Mod tests against the hook engine
+        run: claude plugin test .

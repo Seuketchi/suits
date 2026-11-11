@@ -60,14 +60,37 @@ Each tool is its own skill, and each character calls it only when the task needs
 - `to-spec`: called by jessica.
 - `to-tickets`: called by jessica.
 
+## Mods
+
+The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that enforce a project's own rules. Suits carries no rules of its own. A project lists them in `.claude/suits-rules.json`, found from the folder the session starts in up to the git root:
+
+```json
+{
+  "never": [
+    { "id": "no-deploy-config", "why": "deploy-config is changed only by its own owners", "tools": ["Edit", "Write", "Bash"], "match": "deploy-config" }
+  ],
+  "warn": [
+    { "id": "one-heavy-test", "why": "two full test runs exhaust the shared test database", "tools": ["Bash"], "match": "\\b(mvn|gradle)\\b.*\\btest\\b" }
+  ]
+}
+```
+
+- `match` is a regular expression tested against the tool call's input: the file path for Edit, Write and Read, the command for Bash, the input as JSON for any other tool. `tools` is optional; left out, the rule covers every tool.
+- A `never` match is refused: the call is denied with `<id>: <why>` and a toast says so. A `warn` match runs, a toast says so, and the `why` is added to the tool's result.
+- `match` runs on every tool call, so keep it simple. A long input is tested after a 4096-character cut, and a pattern that repeats a group that already repeats, such as `(a+)+$`, is refused as a bad rule. That check is not full protection: slow patterns such as `(a|a)+$` or `a+a+a+$` get through and can freeze every tool call, so keep `match` simple.
+- With no rules file, every call passes. A file that is not valid JSON, or that exists but cannot be read, is reported once and none of its rules apply. A single bad rule is reported once and dropped alone; the valid rules in the same file stay in force.
+- If a check itself fails, the call goes through and a toast says it was not checked.
+- `/suits-rules` shows the file and its rules, or says there is none.
+
 ## Layout
 
 - [skills/characters](./skills/characters/README.md): the characters.
 - [skills/tools](./skills/tools/README.md): the tools they call.
+- [hooks](./hooks): the mod, with its decisions in `logic.mjs`.
 - [docs](./docs): one page per skill, and the decisions in [docs/adr](./docs/adr).
 
 ## Checks
 
-`npm run check-skills` checks the listing rules, the docs pages, the links and `claude plugin validate`. `npm test` runs the character and donna tests. CI runs both on every pull request.
+`npm run check-skills` checks the listing rules, the docs pages, the links and `claude plugin validate`. `npm test` runs the character, donna and mod tests; `claude plugin test .` runs the mod against the real hook engine. CI runs both on every pull request.
 
 Rules for working here are in [CLAUDE.md](./CLAUDE.md). The words this repo uses are in [CONTEXT.md](./CONTEXT.md).

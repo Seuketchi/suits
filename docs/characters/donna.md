@@ -18,12 +18,14 @@ Type `/suits:donna`, or ask for any of the above and she is called.
 | A company or legal document, with its hard rules and its 19 kinds | [docs/LEGAL.md](../../skills/characters/donna/docs/LEGAL.md) |
 | An email to paste into your own mail client | [email/EMAIL.md](../../skills/characters/donna/email/EMAIL.md) |
 | A meeting brief, minutes and action log, tickler, daily or weekly brief, records register | [secretary/](../../skills/characters/donna/secretary/) |
+| Open pull requests to sort out, with a recommendation for each and the drafts | [secretary/PR-TRIAGE.md](../../skills/characters/donna/secretary/PR-TRIAGE.md) |
+| A reply to a teammate in chat: a short draft in English or Taglish, never sent | none |
 | A deck or presentation, once the pitch structure is set | the [slides](../tools/slides.md) tool |
 
 ## At the front desk
 
 - **One owner.** She names the one character accountable for the request and says who it is. Never two. An unrelated ask is a new request, with its own owner and its own log line.
-- **Two logs, one writer.** The action log (who was asked what, who owns it, its state, its budget, the next owner) and the decision log (what was decided, by whom, why, when) are hers alone. An entry is added, never rewritten.
+- **Two logs, one writer.** The action log (who was asked what, who owns it, its state, its budget, the next owner) and the decision log (what was decided, by whom, why, when) are hers alone. When the run keeps its own board of tickets, the board is the action log and she writes no action-log line; the decision log is kept in every case. An entry is added, never rewritten.
 - **A packet only when it pays.** Work that goes to another character or spans more than one ticket gets a hand-off packet. A small ask gets one line and skips the other characters.
 - **Reports on change.** She reports when a request's state changes, then once at the end. A request that passes its budget stops and asks.
 
@@ -97,6 +99,12 @@ No, nothing: not a PDF, not an email, not a brief. It names the file, its page c
 
 **What does she do when she works alone?**
 She starts no other session. A request for another character becomes a message to whoever sent the brief, in her hand-over format, naming the character it is for. She reads a pull request with `gh pr diff` or a commit with `git show`, and does the work of a tool herself in one pass instead of starting it somewhere else.
+
+**Does she close the pull requests she recommends closing?**
+No. She lists the open pull requests with `gh pr list`, recommends fold, supersede or keep for each with one line of evidence, and drafts the combined body and the closing comment. She never comments, closes, merges or pushes; you post what you agree with.
+
+**Does she reply to a teammate in Taglish?**
+Only as a short draft in chat, in the language of the thread, and only when you ask or the thread is in it. She never sends it. Documents and emails stay in English.
 
 ## It's working if
 

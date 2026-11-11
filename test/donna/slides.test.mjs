@@ -92,7 +92,7 @@ describe("the slides tool", () => {
 
   test("it leaves donna's secretary files alone", () => {
     const files = readdirSync("skills/characters/donna/secretary").sort();
-    assert.deepEqual(files, ["BRIEFING.md", "MEETING-BRIEF.md", "MINUTES.md", "RECORDS.md", "TICKLER.md"]);
+    assert.deepEqual(files, ["BRIEFING.md", "MEETING-BRIEF.md", "MINUTES.md", "PR-TRIAGE.md", "RECORDS.md", "TICKLER.md"]);
   });
 });
 

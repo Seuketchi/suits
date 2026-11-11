@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { MAX_SUBJECT, NO_FILE_TEXT, decide, describeInput, parseRules, rulesReport, searchDirs, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
+import { HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_SUBJECT, NO_FILE_TEXT, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
 
 const FILE = JSON.stringify({
   never: [
@@ -193,4 +193,51 @@ test("/suits-rules lists the rules that were dropped, and why", () => {
   const text = rulesReport("/p", parsed);
   assert.match(text, /^never\tok\tw\tall\tm$/m);
   assert.match(text, /^ignored\tnever\[0\]/m);
+});
+
+test("SUITS_HELPER unset, 0 and 1 give off, off and on", () => {
+  assert.equal(helperOn(undefined), false);
+  assert.equal(helperOn(""), false);
+  assert.equal(helperOn("0"), false);
+  assert.equal(helperOn(" 0 "), false);
+  assert.equal(helperOn("1"), true);
+  assert.equal(helperOn("yes"), true);
+});
+
+test("the helper texts say what to do and point at Working alone", () => {
+  assert.equal(HELPER_DENY, "This session is a helper: do the work yourself in one pass (Working alone).");
+  assert.equal(HELPER_TOAST, "suits blocked a new session: helper mode");
+  assert.match(HELPER_PROMPT, /Helper mode is on: follow the Working alone section of the character you are running\./);
+});
+
+test("the characters are the folders under skills/characters in plugin.json", () => {
+  const manifest = JSON.stringify({
+    skills: ["./skills/characters/louis", "./skills/characters/donna", "./skills/tools/tdd"],
+  });
+  assert.deepEqual(charactersFrom(manifest), ["louis", "donna"]);
+  assert.deepEqual(charactersFrom("{ nope"), []);
+  assert.deepEqual(charactersFrom("{}"), []);
+});
+
+test("the status line names the character, adds helper, and shows helper alone", () => {
+  assert.equal(statusFor("louis", false), "louis");
+  assert.equal(statusFor("louis", true), "louis · helper");
+  assert.equal(statusFor(undefined, true), "helper");
+  assert.equal(statusFor(undefined, false), undefined);
+});
+
+test("a plugin skill arrives as suits:<name>, or as a bare name with pluginName suits", () => {
+  const characters = ["louis", "donna"];
+  assert.equal(characterOf("suits:louis", characters), "louis");
+  assert.equal(characterOf("suits:louis", characters, "suits"), "louis");
+  assert.equal(characterOf("louis", characters, "suits"), "louis");
+  assert.equal(characterOf("louis", characters), undefined);
+  assert.equal(characterOf("louis", characters, "other"), undefined);
+  assert.equal(characterOf("other:louis", characters, "suits"), undefined);
+});
+
+test("a tool or an unknown name is no character", () => {
+  const characters = ["louis", "donna"];
+  assert.equal(characterOf("suits:tdd", characters, "suits"), undefined);
+  assert.equal(characterOf("tdd", characters, "suits"), undefined);
 });

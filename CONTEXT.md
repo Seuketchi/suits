@@ -49,3 +49,7 @@ _Avoid_: grade, label
 **Rules file**:
 The one file a project keeps at `.claude/suits-rules.json` to list its own `never` and `warn` rules. The hooks read it from the session's start folder up to the git root and hold no rule of their own. With no file they pass every call.
 _Avoid_: config, policy
+
+**Helper mode**:
+The state of a session whose `SUITS_HELPER` variable is set to anything but empty or `0`. The mod then refuses to start any session and adds one line to the system prompt pointing the character at its Working alone section, and the status line reads `<character> · helper`. Whatever starts a helper sets the variable; this plugin only reads it.
+_Avoid_: solo mode, worker mode

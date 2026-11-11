@@ -1,11 +1,18 @@
 import type { Register } from 'claude-code'
 
 import {
+  HELPER_DENY,
+  HELPER_PROMPT,
+  HELPER_TOAST,
   RULES_PATH,
+  characterOf,
+  charactersFrom,
   decide,
+  helperOn,
   parseRules,
   rulesReport,
   searchDirs,
+  statusFor,
   toastFor,
   unreadableRules,
   warnNotes,
@@ -40,6 +47,26 @@ async function findRules($: any): Promise<{ path?: string; parsed: ReturnType<ty
   }
 
   return { parsed: { status: 'missing' } }
+}
+
+// The one switch, read at each event so a value set by another plugin's
+// session.start is seen whatever the load order. This is the only variable
+// the mod reads.
+const isHelper = async ($: any): Promise<boolean> => helperOn(await $.env.get('SUITS_HELPER'))
+
+// The characters, read once from the plugin's own manifest.
+let characters: string[] | undefined
+
+async function charactersOf($: any): Promise<string[]> {
+  if (characters === undefined) {
+    try {
+      characters = charactersFrom(await $.fs.read(`${$.plugin.root}/.claude-plugin/plugin.json`))
+    } catch {
+      return []
+    }
+  }
+
+  return characters
 }
 
 export const register: Register = on => {
@@ -99,7 +126,49 @@ export const register: Register = on => {
     return next(e)
   })
 
+  // A helper starts no session of its own.
+  on('agent.spawn', async ($, e, next) => {
+    if (!(await isHelper($))) return next(e)
+
+    $.ui.toast(HELPER_TOAST)
+
+    return { deny: HELPER_DENY }
+  }).catch(async ($, e, next) => {
+    // If the hook broke, ask again, and let the spawn through
+    // only when the switch is off or cannot be read at all.
+    let helper = false
+
+    try {
+      helper = await isHelper($)
+    } catch {
+      // unreadable: treated as off
+    }
+
+    return helper ? { deny: HELPER_DENY } : next(e)
+  })
+
+  on('prompt.compose', async ($, e, next) => {
+    const composed = await next(e)
+
+    if (!(await isHelper($))) return composed
+
+    return {
+      sections: [...composed.sections, { id: 'suits:helper', text: HELPER_PROMPT, scope: 'session' as const }],
+    }
+  })
+
+  // The status line names the working character; a tool skill leaves it be.
+  on('skill.prompt', async ($, e, next) => {
+    const character = characterOf(e.skill, await charactersOf($), e.pluginName)
+
+    if (character) $.ui.status(statusFor(character, await isHelper($)))
+
+    return next(e)
+  })
+
   on('session.start', async ($, e, next) => {
+    if (await isHelper($)) $.ui.status(statusFor(undefined, true))
+
     await $.command.register({
       name: 'suits-rules',
       description: "Show this project's suits rules file.",

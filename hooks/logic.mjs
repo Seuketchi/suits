@@ -182,3 +182,41 @@ export function rulesReport(path, parsed) {
   const line = (kind, r) => [kind, r.id, r.why, r.tools ? r.tools.join(",") : "all", r.match].join("\t");
   return [path, ...parsed.rules.never.map((r) => line("never", r)), ...parsed.rules.warn.map((r) => line("warn", r)), ...ignored].join("\n");
 }
+
+// Helper mode: the one switch, `SUITS_HELPER`. Any value but empty or 0 turns
+// it on. Whoever starts a session sets it; this plugin only reads it.
+export const helperOn = (value) => value !== undefined && value.trim() !== "" && value.trim() !== "0";
+
+export const HELPER_DENY = "This session is a helper: do the work yourself in one pass (Working alone).";
+export const HELPER_TOAST = "suits blocked a new session: helper mode";
+export const HELPER_PROMPT =
+  "Helper mode is on: follow the Working alone section of the character you are running.";
+
+// The characters, from the folders plugin.json lists under skills/characters.
+export function charactersFrom(manifestText) {
+  let skills;
+  try {
+    skills = JSON.parse(manifestText).skills;
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(skills)) return [];
+  return skills
+    .map((path) => (typeof path === "string" ? path.match(/^\.\/skills\/characters\/([^/]+)\/?$/)?.[1] : undefined))
+    .filter((name) => name !== undefined);
+}
+
+// The character a skill stands for. A plugin skill arrives as `suits:<name>`
+// (checked on a live session, by `/suits:louis` and by the Skill tool); a bare
+// listed name counts when the event says the skill comes from this plugin.
+// A tool is none.
+export function characterOf(skill, characters, pluginName) {
+  const name = skill.startsWith("suits:") ? skill.slice("suits:".length) : pluginName === "suits" ? skill : undefined;
+  return name !== undefined && characters.includes(name) ? name : undefined;
+}
+
+// The status line text; undefined clears it.
+export function statusFor(character, helper) {
+  if (character) return helper ? `${character} · helper` : character;
+  return helper ? "helper" : undefined;
+}

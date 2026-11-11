@@ -153,7 +153,7 @@ const WORKFLOW_WORD_ALLOWED = {
   "skills/tools/diagnosing-bugs/SKILL.md": "a checklist item on a loop that runs unattended",
   "skills/tools/grilling/SKILL.md": "sends a sub-agent to look a fact up",
   "skills/tools/improve-codebase-architecture/SKILL.md": "starts a sub-agent to walk the codebase",
-  "skills/tools/research/SKILL.md": "runs the research in a background agent",
+  "skills/tools/research/SKILL.md": "starts one background agent for broad reading, on sonnet",
   "skills/tools/reverse-engineer-anything/SKILL.md": "ported from morluto/rea, which is about agents and their environments",
   "skills/tools/source-finder/SKILL.md": "an example claim about reinforcement-learning agents",
   "skills/tools/stocktake/SKILL.md": "runs the audit in a background agent",

@@ -22,6 +22,9 @@ No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, c
 **Why does he offer the retro and not run it?**
 It is a skill only a person can start, and he would be grading his own rounds. If a retro finds something about his rulings, the proposal goes to you and harvey, not into his file.
 
+**Why is the verdict always the first line, even when he writes a done test?**
+The verdict is what you act on, so it comes first. A done test written in the same reply goes after it, and the findings follow.
+
 **Why does he name the review skill as `suits:code-review`?**
 Claude Code has a built-in `/code-review`. The prefix picks this one.
 

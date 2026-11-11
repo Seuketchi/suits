@@ -6,6 +6,43 @@ import { existsSync, readFileSync } from "node:fs";
 const skill = readFileSync("skills/characters/louis/SKILL.md", "utf8");
 const money = readFileSync("skills/tools/money-check/SKILL.md", "utf8");
 
+describe("louis puts the verdict on the first line", () => {
+  const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
+  test("the verdict is the first line of every reply, even when a done test is also written", () => {
+    assert.match(handOver, /The verdict is the first line of every reply, before a title, a preface or a done test\./);
+  });
+  test("a done test written in the same reply comes after the verdict", () => {
+    assert.match(handOver, /A done test written in the same reply goes after the verdict/);
+  });
+  test("a finding opens with its prefix line, and file:line comes after it", () => {
+    assert.doesNotMatch(handOver, /each finding with its prefix line and `file:line`/);
+    const at = handOver.indexOf("each finding opens with its prefix line");
+    assert.ok(at >= 0, "the hand-over does not say a finding opens with its prefix line");
+    const sentence = handOver.slice(at).split("\n")[0];
+    assert.ok(sentence.indexOf("prefix line") < sentence.indexOf("`file:line`"), "file:line is named before the prefix line");
+    assert.match(sentence, /, then `file:line`/);
+  });
+  test("the joint-list row says the axes sit under their own headings, as rule 2 does", () => {
+    const row = skill.split("\n").find((l) => l.startsWith("| louis and rachel | donna |")) ?? "";
+    assert.match(row, /one consolidated list, the two axes under their own headings/);
+    assert.doesNotMatch(skill, /side by side/);
+  });
+  test("rule 2 keeps the axes under their own headings, not side by side in one list", () => {
+    const rule = skill.split("\n").find((l) => /^2\. \*\*Two axes/.test(l)) ?? "";
+    assert.match(rule, /under a Standards heading and a Spec heading, each most serious first/);
+    assert.doesNotMatch(rule, /side by side/);
+  });
+  test("the hand-over puts the findings under a Standards heading and a Spec heading, each most serious first", () => {
+    assert.match(handOver, /Then the findings, under a Standards heading and a Spec heading, each most serious first; each finding opens with its prefix line \(such as `BLOCKER, verified:`\), then `file:line`\./);
+    assert.doesNotMatch(handOver, /findings, most serious first/);
+  });
+  test("his docs page says the same, in a Common questions entry", () => {
+    const docs = readFileSync("docs/characters/louis.md", "utf8");
+    const questions = docs.split(/^## Common questions/m)[1]?.split(/^## /m)[0] ?? "";
+    assert.match(questions, /verdict[^\n]*first line/i);
+  });
+});
+
 describe("louis reviews in one pass", () => {
   const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
   test("the code-review row says one pass", () => {
@@ -93,10 +130,10 @@ describe("louis reviews a merge resolution with remerge-diff", () => {
   const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
   const docs = readFileSync("docs/characters/louis.md", "utf8");
 
-  test("the What he does table reads git show --remerge-diff for each conflicted merge, and reads each hunk", () => {
+  test("the What he does table reads git show --remerge-diff for each conflicted merge, and reads each conflicted file", () => {
     assert.match(row, /`git show --remerge-diff <merge>`/);
     assert.match(row, /for each conflicted merge/);
-    assert.match(row, /for each conflicted hunk names what each side meant and whether the result keeps both/);
+    assert.match(row, /for each conflicted file names what each side meant and whether the result keeps both/);
     assert.match(row, /\| none \|$/);
   });
   test("the hand-over names the three per-file verdicts with file:line and the commit each side came from", () => {

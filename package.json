@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "check-skills": "node scripts/check-skills.mjs",
+    "lists": "node scripts/lists.mjs --write",
     "test": "npm run test:donna && npm run test:characters",
     "test:characters": "node --test \"test/characters/**/*.test.mjs\"",
     "test:donna": "node --test \"test/donna/**/*.test.mjs\""

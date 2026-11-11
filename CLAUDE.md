@@ -1,8 +1,8 @@
 ## What this is
 
-A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `test/characters/characters.test.mjs` fails otherwise), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
+A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `npm run lists` writes these and `npm run check-skills` fails when they drift), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
 
-Run `npm run check-skills` after adding, moving or renaming a skill, and `npm test` after changing a skill or a test. CI runs both on every pull request.
+After adding, moving or renaming a skill, run `npm run lists` first, then `npm run check-skills`. The lists in `plugin.json`, the root `README.md` and both bucket `README.md` files are generated from the skill folders and each character's **When to call** table; only the one-line summaries in the bucket READMEs are written by hand. Run `npm test` after changing a skill or a test. CI runs both on every pull request.
 
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
 

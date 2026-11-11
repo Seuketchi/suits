@@ -6,6 +6,8 @@ Jessica is the project manager. She turns a decided request into a plan: a bound
 
 When the work is more than one ticket, has external dependencies, needs a status, or has a release next. Donna sends work to her. A one-line fix or a typo skips her.
 
+At the close of a batch she offers you a retro in one line. You start it, or whoever runs the batch for you does by typing the command. She does not run it herself.
+
 ## Common questions
 
 **Does she decide whether to build?**
@@ -23,6 +25,9 @@ When there is no action log, she tracks from the board of tickets and the decisi
 **Does `to-spec` publish by itself?**
 No. It drafts in chat and publishes only when the request said to. `to-tickets` shows its breakdown for approval first.
 
+**Why does she offer the retro and not run it?**
+It is a skill only a person can start. If a retro proposes a rule for any character, jessica included, the proposal goes to you and harvey, not into that character's file.
+
 **What counts as a blocker?**
 Something that needs another person and actually stops work now. Failed CI or a merge conflict is work to do.
 
@@ -39,4 +44,5 @@ She starts no other session and does not write to the board. The tickets go in h
 - A go-live check lists evidence for each line and leaves the decision to the owner.
 - She skips the tools that do not apply, without comment.
 - She writes to the issue tracker only when the request says to, and never to one you have said is read-only.
+- She offers a retro at the close of a batch and never runs it.
 - A small ask never reaches her.

@@ -17,6 +17,9 @@ What else uses the thing being changed, and whether the current shape was delibe
 **Does he run things?**
 Only through `test-kitchen`, and only against staging, test devices and test data.
 
+**When does he run `reverse-engineer-anything`?**
+Only on an artifact you own, have rights to, or named in the request. Otherwise he asks first.
+
 **Is recalled history safe to repeat?**
 Only as far as it answers the question. A secret or a customer's details never leave a session.
 

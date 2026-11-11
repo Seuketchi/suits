@@ -24,7 +24,7 @@ Each tool is its own skill, and each character calls it only when the task needs
 
 ### User-invoked
 
-- `retro`: started by the owner, offered by louis.
+- `retro`: started by the owner, offered by jessica.
 
 ### Model-invoked
 
@@ -47,9 +47,10 @@ Each tool is its own skill, and each character calls it only when the task needs
 - `raid-log`: called by jessica.
 - `recall`: called by mike.
 - `research`: called by rachel.
-- `reverse-engineer-anything`: called by harvey, mike.
+- `reverse-engineer-anything`: called by mike.
 - `root-cause-audit`: called by rachel.
 - `scrum`: called by donna, jessica.
+- `security-review`: called by louis.
 - `senior`: called by harvey.
 - `slides`: called by donna.
 - `source-finder`: called by rachel.

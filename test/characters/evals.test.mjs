@@ -8,7 +8,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 // One case per character (louis, jessica, donna, mike, rachel, harvey, the associates), and three that check a rule across characters.
-const CHARACTER_CASES = ["louis-one-pass", "working-alone-handoff", "donna-front-desk", "mike-quick-look", "rachel-root-cause", "harvey-decision-line", "associates-test-first"];
+const CHARACTER_CASES = ["louis-one-pass", "louis-security-review", "working-alone-handoff", "donna-front-desk", "mike-quick-look", "rachel-root-cause", "harvey-decision-line", "associates-test-first"];
 const OTHER_CASES = ["research-no-redelegation", "pr-triage-routes-to-donna", "helper-no-session"];
 const CASES = [...CHARACTER_CASES, ...OTHER_CASES];
 const graders = (name) => (existsSync(join("evals", name, "graders")) ? readdirSync(join("evals", name, "graders")).filter((f) => f.endsWith(".md")) : []);

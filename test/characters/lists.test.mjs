@@ -136,6 +136,23 @@ describe("scripts/lists.mjs", () => {
     assert.equal(run(dir, "--check").status, 0);
   });
 
+  test("a tool no character's table names must be user-invoked, so it stops loading every session", () => {
+    const dir = copyRepo();
+    mkdirSync(join(dir, "skills/tools/zeta"));
+    writeFileSync(join(dir, "skills/tools/zeta/SKILL.md"), "---\nname: zeta\ndescription: Does a thing. Use when asked.\n---\n\nBody.\n");
+    for (const mode of ["--check", "--write"]) {
+      const r = run(dir, mode);
+      assert.equal(r.status, 1, `${mode} should fail`);
+      assert.match(r.stderr, /zeta.*called by no character.*disable-model-invocation: true/);
+    }
+    edit(dir, "skills/tools/zeta/SKILL.md", (t) => t.replace("---\n\nBody", "disable-model-invocation: true\n---\n\nBody"));
+    assert.doesNotMatch(run(dir, "--check").stderr, /called by no character/);
+  });
+
+  test("no tool in the repo is called by no character and loaded by the model", () => {
+    assert.equal(run(repo, "--check").status, 0);
+  });
+
   test("a user-invoked tool's started-by fact is written once, in its bucket README line", () => {
     const dir = copyRepo();
     edit(dir, "skills/tools/README.md", (t) => t.replace("Started by the owner; offered by louis.", "Started by the owner; offered by louis and harvey."));

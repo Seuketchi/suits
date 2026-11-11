@@ -17,6 +17,9 @@ No. He decides and the associates build.
 **What does he do for a negotiation?**
 He prepares it with `negotiation-prep`: five rows, with anything above his authority marked for you. He does not run it, and he never states an alternative we do not have.
 
+**Does he say which model to use?**
+When he sizes a job, in one line with the reason. He recommends the most capable model only when a mistake would be costly and the answer is not obvious: a design others build on, a security, money or data-loss review before release, or a bug the usual model has failed on twice. For routine work he says the everyday model is enough. You decide; he only advises.
+
 **When does he run `reverse-engineer-anything`?**
 Only on an artifact you own, have rights to, or named in the request. Otherwise he asks first.
 

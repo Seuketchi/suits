@@ -35,12 +35,19 @@ test("the scan catches a rule written into code", () => {
   assert.equal(ownRule("const none = { never: [], warn: [] }"), false);
 });
 
-test("hooks/ names no real project and no orchestrator", () => {
+// An environment read: the mod reads no variable, so no switch of any
+// orchestrator can reach it.
+export const readsEnv = (source) => /\$\.env\b/.test(source);
+
+test("hooks/ source has no $.env read", () => {
   for (const [name, source] of shipped()) {
-    assert.doesNotMatch(source, /KITCHEN_/, `${name} reads a variable of one orchestrator`);
-    assert.doesNotMatch(source, /kitchen/i, `${name} names an orchestrator`);
-    assert.doesNotMatch(source, /asenso/i, `${name} names a project`);
+    assert.equal(readsEnv(source), false, `${name} reads the environment`);
   }
+});
+
+test("the scan catches an environment read", () => {
+  assert.equal(readsEnv('const v = await $.env.get("SOME_NAME")'), true);
+  assert.equal(readsEnv("const environment = 1"), false);
 });
 
 test("the README's rules-file example parses", () => {

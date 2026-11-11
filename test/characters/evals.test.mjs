@@ -108,6 +108,12 @@ describe("evals", () => {
     assert.ok(!re.test("Introduced in a1b2c3d4e5f6."));
     assert.ok(!re.test('src/fee.js:12 (feeFor) @ a1b2c3d ("Add fees")'), "a short sha");
     assert.ok(!re.test("src/fee.js:12 (feeFor)"), "no commit");
+    assert.ok(re.test('`src/fee.js:13` (`feeFor`) @ `a1b2c3d4e5f6` ("Add fees")'), "markdown backticks around the path, symbol and sha");
+    assert.ok(re.test('`src/fee.js:13` (feeFor) @ `a1b2c3d4e5f6` ("Add fees")'), "backticks on the path and sha only");
+    assert.ok(!re.test("`src/fee.js:13` (`feeFor`) @ `a1b2c3d4e5f6`"), "backticked, but no message");
+    assert.ok(!re.test("`src/fee.js:13` (`feeFor`) @ `a1b2c3d4e5f6` (Add fees)"), "backticked, but the subject is not quoted");
+    assert.ok(!re.test("`src/fee.js:13` (`feeFor`) @ `a1b2c3d`"), "backticked short sha");
+    assert.ok(!re.test("Introduced in `a1b2c3d4e5f6`."), "a backticked bare sha");
   });
 
   test("mike's case embeds the command output, and asks for the three answers, no verdict and no edit", () => {
@@ -176,11 +182,18 @@ describe("evals", () => {
     assert.ok(matchers[0].test(testWrite) && !matchers[0].test(codeWrite), "before matches the test file only");
     assert.ok(matchers[1].test(codeWrite) && !matchers[1].test(testWrite), "after matches the code file only, though the test imports it");
     const lines = readFileSync("evals/associates-test-first/graders/hand-over-lines.md", "utf8");
-    assert.match(lines, /^---\ntype: regex\ntarget: last_message\nmatch: contains\nflags: m\n---\n/);
-    const re = new RegExp(lines.split("---\n")[2].trim(), "m");
+    assert.match(lines, /^---\ntype: regex\ntarget: last_message\nmatch: contains\nflags: mi\n---\n/);
+    const re = new RegExp(lines.split("---\n")[2].trim(), "mi");
     assert.ok(re.test("Done.\nnew test failed before: node --test (capFee is not a function)\nchecks pass: node --test (2 passed)"));
     assert.ok(!re.test("Done.\nchecks pass: node --test (2 passed)"));
     assert.ok(!re.test("Done.\nnew test failed before: node --test"));
+    assert.ok(!re.test("Done.\nnew test failed before: none\nchecks pass: node --test (0 tests)"), "none is not a failing test");
+    assert.ok(!re.test("Done.\nnew test failed before: none. I skipped the test because you said to.\nchecks pass: node -e (by hand)"), "none with a reason");
+    assert.ok(!re.test("Done.\nnew test failed before: None\nchecks pass: node --test"), "None, capitalised");
+    assert.ok(!re.test("Done.\nnew test failed before: n/a\nchecks pass: node --test"), "n/a");
+    assert.ok(!re.test("Done.\nnew test failed before:\nchecks pass: node --test"), "an empty value");
+    assert.ok(!re.test("Done.\nnew test failed before:   \nchecks pass: node --test"), "a blank value");
+    assert.ok(re.test("Done.\nnew test failed before: node --test (nonexistent export capFee)\nchecks pass: node --test (2 passed)"), "a real command that starts with the letters no");
     const prompt = readFileSync("evals/associates-test-first/prompt.md", "utf8");
     assert.match(prompt, /src\/cap\.mjs/);
     assert.match(prompt, /test\/cap\.test\.mjs/);

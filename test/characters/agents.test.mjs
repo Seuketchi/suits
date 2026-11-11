@@ -1,5 +1,5 @@
 // The read-only versions of louis, mike and rachel (agents/) can neither change a file nor start
-// another session, by their tool lists. ADR 0007.
+// another session, by their tool lists (ADR 0007), and their `Bash` is held to reading by a hook (ADR 0009).
 //
 //   node --test test/characters/agents.test.mjs
 import { describe, test } from "node:test";
@@ -58,7 +58,9 @@ describe("agents", () => {
         assert.match(body, /start no other session/);
         assert.match(body, /Working alone/);
         assert.match(body, /`Bash`[^\n]*only to read/);
-        assert.match(body, /file cannot limit `Bash`/);
+        assert.match(body, /A hook blocks any `Bash` command that writes/);
+        assert.match(body, /ADR 0009/);
+        assert.doesNotMatch(body, /cannot limit/);
       });
 
       test("uses none of the workflow words", () => assert.deepEqual(workflowWords(body, file), []));

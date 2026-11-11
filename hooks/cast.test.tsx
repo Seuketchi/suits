@@ -24,12 +24,12 @@ const LOG = `| ID | Owner | Task | Due | Status |
 | A-016 | Ana Reyes | Pay the vendor | | done |
 `
 
-type Engine = { opened: string[]; file: { log: string | undefined }; reads: string[] }
+type Engine = { opened: string[]; file: { log: string | undefined }; reads: string[]; toasts: string[] }
 
 // The engine beneath the plugin: the manifest, the action log (served from
 // `file.log`, absent when undefined) and a bottom for every tool call.
 function engine(on: any, log?: string, files: Record<string, string> = {}): Engine {
-  const seen: Engine = { opened: [], file: { log }, reads: [] }
+  const seen: Engine = { opened: [], file: { log }, reads: [], toasts: [] }
 
   on('fs.read', (_: unknown, e: { path: string }) => {
     if (e.path.endsWith('.claude-plugin/plugin.json')) {
@@ -44,7 +44,10 @@ function engine(on: any, log?: string, files: Record<string, string> = {}): Engi
   })
   on('fs.exists', () => ({ value: false }))
   on('session.cwd', () => ({ value: '/' }))
-  on('ui.toast', () => ({ value: undefined }))
+  on('ui.toast', (_: unknown, e: { text: string }) => {
+    seen.toasts.push(e.text)
+    return { value: undefined }
+  })
   on('env.get', () => ({ value: undefined }))
   on('command.register', () => ({ value: { command: 'x' } }))
   on('tool.register', (_: unknown, e: { name: string }) => ({ value: { name: e.name } }))
@@ -142,7 +145,7 @@ for (const surface of ['terminal', 'desktop'] as const) {
     await ui.unmount()
   })
 
-  test(`${surface}: a call in a subagent loop is credited to the character that loop holds`, async ($, on) => {
+  test(`${surface}: a call in a delegated loop is credited to the character that loop holds`, async ($, on) => {
     engine(on)
     await start($)
     const ui = await $.ui.mount({ ...PANE, surface })
@@ -212,15 +215,46 @@ test('a call the rules hook denies is still denied, and is not put on the board'
   await ui.unmount()
 })
 
-test('a call goes through unchanged when the board cannot be written', async ($, on) => {
+// The board's write always loses to another (a conditional write that never
+// lands), so feeding it rejects; the checklist's and the rest stay up. A hook
+// that merely throws is skipped by the engine and breaks nothing.
+const breakBoard = (on: any) => on('state.set', { plugin: 'suits', key: 'cast' }, () => ({ value: { isSet: false, version: 0 } }))
+
+const WARN = { warn: [{ id: 'one-build', why: 'two builds at once exhaust the shared box', tools: ['Bash'], match: '\\bbuild\\b' }] }
+
+test('a board failure leaves a call untouched: the rules still apply and nothing says the check failed', async ($, on) => {
+  const seen = engine(on, undefined, { '.claude/suits-rules.json': JSON.stringify(WARN) })
+  breakBoard(on)
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+
+  const out = await $.tool.call({ tool: 'Bash', command: 'npm run build' })
+
+  expect(out.deny).toBeUndefined()
+  expect(JSON.stringify(out.result)).toContain('ok')
+  expect(out.context).toEqual(['suits warning: one-build: two builds at once exhaust the shared box'])
+  expect(seen.toasts).toEqual(['suits warning: one-build: two builds at once exhaust the shared box'])
+  expect(seen.toasts.some(t => /rule check failed/.test(t))).toBe(false)
+})
+
+test('a board failure on a Skill call lets it through', async ($, on) => {
   engine(on)
-  on('state.set', () => {
-    throw new Error('boom')
-  })
+  breakBoard(on)
   await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
 
   const out = await $.tool.call({ tool: 'Skill', skill: 'suits:harvey' })
 
   expect(out.deny).toBeUndefined()
   expect(JSON.stringify(out.result)).toContain('ok')
+})
+
+test('a board failure on a suits_checklist call still answers with the checklist', async ($, on) => {
+  const seen = engine(on)
+  breakBoard(on)
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+
+  const out = await $.tool.call({ tool: 'mcp__suits__suits_checklist', steps: ['a', 'b'] })
+
+  expect(JSON.stringify(out.result)).toContain('1. [ ] a')
+  expect(JSON.stringify(out.result)).toContain('0 of 2 done')
+  expect(seen.toasts).toEqual([])
 })

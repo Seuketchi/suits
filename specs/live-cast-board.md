@@ -124,4 +124,4 @@ export function isActionLogPath(path: unknown): boolean
 ## Further notes
 
 - The `Skill` tool's own `tool.call` and the `skill.prompt` it raises can both reach the board; the "a loop already holds it" rule makes the second a no-op. If a live session shows `skill.prompt` arriving before the `tool.call` hook's update, that rule is the one to revisit.
-- A subagent's loop id comes from `tool.call`'s `agentId`; `skill.prompt` carries none. A character a subagent takes through a slash command, not the `Skill` tool, is credited to the main loop.
+- A delegated task's loop id comes from `tool.call`'s `agentId`; `skill.prompt` carries none. A character a delegated task takes through a slash command, not the `Skill` tool, is credited to the main loop.

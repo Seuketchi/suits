@@ -304,8 +304,9 @@ export function castEvent(board, event, characters) {
     return board;
   }
 
-  const holder = board.loops[loop ?? ""];
-  if (holder === undefined) return board;
+  const key = loop ?? "";
+  if (!Object.hasOwn(board.loops, key)) return board;
+  const holder = board.loops[key];
   return { ...board, lastTool: { ...board.lastTool, [holder]: label } };
 }
 
@@ -315,7 +316,7 @@ export function castEvent(board, event, characters) {
 function take(board, character, loop) {
   if (loop === undefined && Object.values(board.loops).includes(character)) return board;
   const into = loop ?? "";
-  if (board.loops[into] === character) return board;
+  if (Object.hasOwn(board.loops, into) && board.loops[into] === character) return board;
   const handoffs =
     board.holder !== "" && board.holder !== character
       ? [...board.handoffs, { from: board.holder, to: character }].slice(-MAX_HANDOFFS)

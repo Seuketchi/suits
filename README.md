@@ -88,7 +88,7 @@ For a job of three or more steps, a character lists the steps with the `suits_ch
 
 ### Cast board
 
-`/suits-cast` opens a pane that shows who holds the work: the character holding it now, the hand-offs so far in order (`harvey → mike`), and the last tool each character called (`Bash`, `Edit`, `/suits:tdd`). It is fed by tool calls and skill prompts as they happen, so it fills as a job runs; a call made by a subagent is credited to the character that subagent holds. The pane opens only when asked, and nothing else opens it.
+`/suits-cast` opens a pane that shows who holds the work: the character holding it now, the hand-offs so far in order (`harvey → mike`), and the last tool each character called (`Bash`, `Edit`, `/suits:tdd`). It is fed by tool calls and skill prompts as they happen, so it fills as a job runs; a call made inside a delegated task is credited to the character holding that task. The pane opens only when asked, and nothing else opens it.
 
 The board is kept for the session only. Nothing is written to disk, and a failure in the board never stops or changes a tool call.
 

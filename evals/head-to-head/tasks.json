@@ -96,7 +96,7 @@
         { "id": "dependencies", "kind": "judge", "text": "States which tickets depend on which, in an order that can be built (nothing depends on a later ticket)." },
         { "id": "thin-first", "kind": "judge", "text": "The first ticket delivers a thin working path end to end (for example a small export that arrives by email), not a layer such as 'database changes' alone." },
         { "id": "requirements-covered", "kind": "judge", "text": "Covers all of: the 200,000-invoice scale, the 24-hour link expiry, and the owner-only permission, each in some ticket." },
-        { "id": "no-edit", "kind": "no_edit" }
+        { "id": "wrote-files", "kind": "no_edit", "info": true }
       ]
     }
   ]

@@ -3,6 +3,7 @@
 //
 //   node evals/head-to-head/run.mjs run    [--arm a,b] [--task t,u] [--runs 3] [--model sonnet]
 //                                          [--max-budget-usd 1.5] [--out DIR] [--dry]
+//   node evals/head-to-head/run.mjs rejudge [--judge-model sonnet] [--out DIR]
 //   node evals/head-to-head/run.mjs report [--out DIR]
 //
 // An arm is a name in arms.json: { "pluginDir": path | null, "env": {...} }. The arm "baseline" has no
@@ -151,9 +152,9 @@ function score(task, run, judgeModel) {
     else if (item.kind === "regex") verdicts[item.id] = new RegExp(item.pattern, "i").test(run.answer);
     else if (item.kind === "tool_used") verdicts[item.id] = run.trace.some((t) => item.tools.includes(t.name));
   }
-  const vals = Object.values(verdicts);
-  const graded = vals.filter((v) => v !== null);
-  return { verdicts, score: graded.length ? graded.filter(Boolean).length / task.rubric.length : null, judgeFailed: vals.includes(null) };
+  // An item marked "info" is recorded but not scored (for example a write that the prompt did not forbid).
+  const scored = task.rubric.filter((i) => !i.info).map((i) => verdicts[i.id]);
+  return { verdicts, score: scored.includes(null) ? null : scored.filter(Boolean).length / scored.length, judgeFailed: scored.includes(null) };
 }
 
 if (mode === "run") {
@@ -181,6 +182,19 @@ if (mode === "run") {
         console.log(`${arm} ${task.id} #${r}: score ${run.score?.toFixed(2)} tokens ${run.tokens.input + run.tokens.output + run.tokens.cacheRead + run.tokens.cacheWrite} ${Math.round(run.wallMs / 1000)}s ${run.error ? "ERROR " + run.error : ""}`);
       }
     }
+  }
+} else if (mode === "rejudge") {
+  // Score the saved answers again with another judge model; the earlier verdicts are kept as judge1.
+  const judgeModel = opt("judge-model", "sonnet");
+  for (const f of readdirSync(OUT).filter((x) => x.endsWith(".json")).sort()) {
+    const run = JSON.parse(readFileSync(join(OUT, f), "utf8"));
+    if (run.judgeModel === judgeModel) continue;
+    const task = tasksFile.tasks.find((t) => t.id === run.task);
+    const prev = { model: run.judgeModel ?? "haiku", verdicts: run.verdicts, score: run.score };
+    const again = score(task, run, judgeModel);
+    Object.assign(run, again, { judgeModel, judge1: prev });
+    writeFileSync(join(OUT, f), JSON.stringify(run, null, 2));
+    console.log(`${f}: ${prev.score?.toFixed(2)} (${prev.model}) -> ${run.score?.toFixed(2)} (${judgeModel})`);
   }
 } else if (mode === "report") {
   const rows = readdirSync(OUT).filter((f) => f.endsWith(".json")).map((f) => JSON.parse(readFileSync(join(OUT, f), "utf8")));

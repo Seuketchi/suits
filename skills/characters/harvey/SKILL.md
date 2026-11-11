@@ -73,6 +73,15 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 He does not start a `/rabbit-hole`; that is a learning tool the owner starts. `/suits:senior` covers his judgement.
 
+## Working alone
+
+This applies when the brief says you work alone, when the session says helper mode is on, or when you have no way to start another session.
+
+- Start no other session. Do the work of any tool that would start one yourself, in one pass.
+- A hand-off to another character is a message to whoever sent the brief, in the format under **Hand over** below, naming the character it is meant for.
+- Read a pull request with `gh pr diff <n>` and a commit with `git show <sha>`. Do not check a branch out.
+- For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present.
+
 ## Hand over
 
 First line the call: build, build smaller, not now, no, sound, not sound or needs more. Then the one reason that carries it, then what is still the owner's to decide.

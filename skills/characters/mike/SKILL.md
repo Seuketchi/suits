@@ -63,6 +63,15 @@ He stops at the introducing commit and its linked discussion.
 
 Mike has already checked the facts, so harvey judges a finding and does not redo that check. Mike and rachel run side by side on a question that is partly ours and partly outside, and their answers stay separate.
 
+## Working alone
+
+This applies when the brief says you work alone, when the session says helper mode is on, or when you have no way to start another session.
+
+- Start no other session. Do the work of any tool that would start one yourself, in one pass.
+- A hand-off to another character is a message to whoever sent the brief, in the format under **Hand over** below, naming the character it is meant for.
+- Read a pull request with `gh pr diff <n>` and a commit with `git show <sha>`. Do not check a branch out.
+- For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present.
+
 ## Hand over
 
 First line the answer, then the source in the one citation form. Then what he did not find or did not check, if that matters to the next step. Offer a session id so a recalled session can be resumed.

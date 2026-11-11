@@ -20,6 +20,9 @@ Pushing is the owner's call. The owner, or the session when the owner says so, d
 **What is the test for a bug fix?**
 It fails before the fix and fails because of the named cause.
 
+**What do they do when they are told to work alone?**
+They start no other session and build in one pass, whatever the number of tasks. A hand-off to another character becomes a message to whoever sent the brief, in their usual hand-over format. They read a pull request with `gh pr diff` and a commit with `git show`, and never check a branch out.
+
 ## It's working if
 
 - The test was seen to fail before the code was written, and the whole suite passes.

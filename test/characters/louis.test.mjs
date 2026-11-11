@@ -6,6 +6,22 @@ import { existsSync, readFileSync } from "node:fs";
 const skill = readFileSync("skills/characters/louis/SKILL.md", "utf8");
 const money = readFileSync("skills/tools/money-check/SKILL.md", "utf8");
 
+describe("louis reviews in one pass", () => {
+  const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
+  test("the code-review row says one pass", () => {
+    assert.match(row, /He asks for its one-pass mode/);
+    assert.doesNotMatch(row, /sub-?agent/i);
+  });
+  test("rule 7 says one pass and starts no other session", () => {
+    const rule = skill.split("\n").find((l) => /^7\. /.test(l)) ?? "";
+    assert.match(rule, /\*\*One pass\.\*\*/);
+    assert.match(rule, /starts no other session/);
+  });
+  test("his file names no sub-agent", () => {
+    assert.doesNotMatch(skill, /sub-?agents?/i);
+  });
+});
+
 describe("louis", () => {
   test("a comment starts with one prefix line that carries both rulings", () => {
     assert.match(skill, /`BLOCKER, verified:`/);

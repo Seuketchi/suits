@@ -53,6 +53,15 @@ The default is not to call. A tool is called only when a stated fact about the t
 | rachel | the owner and harvey | a finding that needs a decision, at the same moment |
 | rachel | harvey | the same finding, to validate, with mike's check of its facts when it is a red flag; he judges it and does not redo that check |
 
+## Working alone
+
+This applies when the brief says you work alone, when the session says helper mode is on, or when you have no way to start another session.
+
+- Start no other session. Do the work of any tool that would start one yourself, in one pass.
+- A hand-off to another character is a message to whoever sent the brief, in the format under **Hand over** below, naming the character it is meant for.
+- Read a pull request with `gh pr diff <n>` and a commit with `git show <sha>`. Do not check a branch out.
+- For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present.
+
 ## Hand over
 
 First line the trigger and the main cause, tagged. Then the other causes and the source of each. Then one typed item per cause for the owner to assign: prevent, sweep, redesign, detect or mitigate. She assigns none. If it needs a decision, say whose it is.

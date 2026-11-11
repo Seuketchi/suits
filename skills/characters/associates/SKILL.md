@@ -50,6 +50,15 @@ The default is not to call. A tool is called only when a stated fact about the t
 | louis | an associate | findings with rulings, to fix in the round |
 | an associate | harvey | a problem that survived three fixes |
 
+## Working alone
+
+This applies when the brief says you work alone, when the session says helper mode is on, or when you have no way to start another session.
+
+- Start no other session. Do the work of any tool that would start one yourself, in one pass.
+- A hand-off to another character is a message to whoever sent the brief, in the format under **Hand over** below, naming the character it is meant for.
+- Read a pull request with `gh pr diff <n>` and a commit with `git show <sha>`. Do not check a branch out.
+- For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present.
+
 ## Hand over
 
 First line the verdict with its command and result. For a bug, the cause in one line. Then two lines: `new test failed before: <command>` and `suite passes: <command>`. Then the files changed, what was not run or not done, and whether the work is done or partial.

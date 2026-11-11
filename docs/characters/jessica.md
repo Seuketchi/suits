@@ -20,6 +20,9 @@ No. It drafts in chat and publishes only when the request said to. `to-tickets` 
 **What counts as a blocker?**
 Something that needs another person and actually stops work now. Failed CI or a merge conflict is work to do.
 
+**What does she do when she works alone?**
+She starts no other session and does not write to the board. The tickets go in her hand-over as a message to whoever sent the brief, in her hand-over format, with the blockers and the files each ticket owns. She reads a pull request with `gh pr diff`.
+
 ## It's working if
 
 - A multi-step job becomes tickets with blockers and owned files.

@@ -28,6 +28,9 @@ The verdict is what you act on, so it comes first. A done test written in the sa
 **Why does he name the review skill as `suits:code-review`?**
 Claude Code has a built-in `/code-review`. The prefix picks this one.
 
+**Can another session start a read-only louis?**
+Yes. The plugin ships `agents/louis.md`, a version of louis another session can start by name. Its tool list has no `Edit`, `Write` or `NotebookEdit`, and none that starts a session, so it edits nothing and starts no other session. It runs the `louis` skill in its one-pass mode. `Bash` stays in the list because he needs `git` and `gh` to read, and the list cannot limit `Bash` to reading: the file tells him to use it only to read, and that sentence is the only limit on it.
+
 **Does he start other sessions to review?**
 No. He runs the review skill in its one-pass mode: Standards, then Spec, both himself, each in its own section. That is also what he does when he works alone, and he reads a pull request with `gh pr diff` or a commit with `git show` without checking a branch out. A hand-off to another character becomes a message to whoever sent the brief, in his hand-over format.
 

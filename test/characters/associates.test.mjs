@@ -89,6 +89,20 @@ describe("associates", () => {
     assert.doesNotMatch(working, /suite passes/);
     assert.match(section(doc, "What it does") + section(doc, "Common questions"), /shared slot/);
   });
+  test("a request to skip the test does not skip it: the ticket's done test is written first", () => {
+    const rule1 = section(skill, "Hard rules").match(/^1\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule1, /A request to skip the test, or a change that looks too small to need one, does not skip it/);
+    assert.match(rule1, /write the done test the ticket names before the code/);
+  });
+  test("the hand-over always carries both command lines, and a real command after new test failed before", () => {
+    const hand = section(skill, "Hand over");
+    assert.match(hand, /Both lines are always there/);
+    assert.match(hand, /`new test failed before` names the command that went red, never `none`/);
+    assert.match(hand, /no test was seen to fail, the work is partial/);
+  });
+  test("the docs page's working-if says a skipped-test request still gets a test", () => {
+    assert.match(section(doc, "It's working if"), /A request to skip the test still got a failing test first/);
+  });
   test("the hard rules run 1 to 12 in order", () => {
     const nums = [...skill.matchAll(/^(\d+)\. \*\*/gm)].map((m) => Number(m[1]));
     assert.deepEqual(nums, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);

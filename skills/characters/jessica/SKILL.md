@@ -65,14 +65,14 @@ A small ask skips her: a one-line fix or a typo goes from donna to a builder.
 
 | From | To | What moves |
 | --- | --- | --- |
-| donna | jessica | the decisions and dated actions from the minutes and the action log, for her plan and board |
+| donna | jessica | the decisions and dated actions from the minutes and the action log, or from the run's board when there is no action log, for her plan and board |
 | harvey | jessica | the build decision, the budget caps and the done test |
 | jessica | the builders | tickets, each with its blockers, owned files and done test |
 | jessica | louis | the done test, at intake |
 | mike | jessica | what a change touches, so she can order tickets that share a file |
 | jessica | donna | the status report, a risk call or the go-live check, to lay out or put on the owner's brief |
 
-The action log and the decision log have one writer, donna. Jessica tracks from them and does not copy them.
+The action log and the decision log have one writer, donna. Jessica tracks from them and does not copy them. When the run keeps its own board of tickets, there is no action log: she tracks from the board and the decision log.
 
 ## Working alone
 

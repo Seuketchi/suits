@@ -26,11 +26,12 @@ describe("retro: the tool", () => {
 
   test("reads the logs, then louis's rulings, then transcripts, in that order", () => {
     const steps = section(skill(), "Inputs");
-    const log = at(steps, /action log and (the )?decision log/i);
+    const log = at(steps, /action log[^\n]*decision log/i);
     const rulings = at(steps, /louis's rulings/i);
     const transcripts = at(steps, /transcripts/i);
     assert.ok(log < rulings && rulings < transcripts, "inputs are out of order");
-    assert.match(steps, /batch's lines only/i);
+    assert.match(steps, /batch's entries only/i);
+    assert.match(steps, /run's board when there was no action log/i);
     assert.match(steps, /prefix lines/i);
     assert.match(steps, /open BLOCKERs/);
     assert.match(steps, /only for an item the first two flagged/i);
@@ -49,13 +50,26 @@ describe("retro: the tool", () => {
     assert.match(section(skill(), "Signals"), /free text[^.]*a missing field can only mean[^.]*no Budget or Next/i);
   });
 
-  test("classes each finding by the five categories and keeps a signal that fits none", () => {
+  test("classes each finding by a category and keeps a signal that fits none", () => {
     const body = section(skill(), "Categories");
-    for (const c of ["navigation", "automated check", "coding standard", "new skill", "information access"]) {
+    for (const c of [
+      "navigation",
+      "automated check",
+      "coding standard",
+      "new skill",
+      "information access",
+      "tool economy",
+      "steering files",
+      "no-ops",
+    ]) {
       assert.match(body, new RegExp(`\\*\\*${c}:?\\*\\*`, "i"), c);
     }
     assert.match(body, /fits none[^.]*process finding[^.]*(donna|jessica)/i);
     assert.match(body, /not dropped/i);
+  });
+
+  test("notes that review, not implementation, enforces the coding standards", () => {
+    assert.match(section(skill(), "Categories"), /review[^.]*enforces[^.]*coding standards[^.]*not implementation/i);
   });
 
   test("quotes the line or round each finding comes from, and drops one it cannot trace", () => {

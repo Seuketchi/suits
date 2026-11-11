@@ -37,7 +37,7 @@ The fact about a task that makes a character call a tool. Without a matching tri
 _Avoid_: condition, rule
 
 **Action log**:
-The one record of who was asked what, who owns it, its state, its budget and the next owner. Donna is its only writer.
+The one record of who was asked what, who owns it, its state, its budget and the next owner. Donna is its only writer, or the run's board, when there is one.
 
 **Decision log**:
 The one record of what was decided, by whom, why, and when. Entries are added and never rewritten. Donna is its only writer.

@@ -14,6 +14,9 @@ No. Harvey decides at the front. She plans what has been decided.
 **Where does she write the plan?**
 On the project's board and in GitHub issues. Not in OpenProject.
 
+**Where does she track when the run keeps a board?**
+When there is no action log, she tracks from the board of tickets and the decision log, and copies neither.
+
 **Does `to-spec` publish by itself?**
 No. It drafts in chat and publishes only when the request said to. `to-tickets` shows its breakdown for approval first.
 

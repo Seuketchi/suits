@@ -1,10 +1,10 @@
 ## What it does
 
-`retro` looks back at a batch of work that has landed and asks what in your setup let its problems happen. It reads the action log and the decision log for the batch, then louis's rulings and rounds, and opens a session transcript only for an item those two flagged. It never sweeps transcripts.
+`retro` looks back at a batch of work that has landed and asks what in your setup let its problems happen. It reads the action log for the batch, or the run's board of tickets when the batch has no action log, then the decision log, then louis's rulings and rounds, and opens a session transcript only for an item those two flagged. It never sweeps transcripts.
 
 It looks for four signals: items that bounced (logged loops and failed rounds), items over budget, decisions that were reversed, and log lines with no Budget or Next. The logs are free text, so a missing field is only ever a line with no Budget or Next, and the tool says so.
 
-Each finding is classed as navigation, an automated check, a coding standard, a new skill or information access. A signal that fits none of these is reported as a process finding for donna or jessica. Mechanical findings become a proposed check, and judgement calls become a proposed review rule for louis. Each finding quotes the log line or round it comes from, and one that cannot be traced is dropped.
+Each finding is classed as navigation, an automated check, a coding standard, a new skill, information access, tool economy, a steering file or a no-op. A signal that fits none of these is reported as a process finding for donna or jessica. Mechanical findings become a proposed check, and judgement calls become a proposed review rule for louis. Each finding quotes the log line or round it comes from, and one that cannot be traced is dropped.
 
 It edits nothing. It writes the findings list as a new file, `notes/retro-<batch>.md`, and hands it to donna to present. If the notes directory is missing, it creates that directory and nothing else.
 
@@ -23,12 +23,15 @@ No. It proposes. Nothing changes until you agree, and each change you accept is 
 **Why does it read the logs before the transcripts?**
 The logs are small and already the record. Transcripts cost the most, and usage is capped, so they are read only for an item the logs flagged.
 
+**What does it read on a batch run from a board?**
+The board of tickets, in place of the action log, when there is no action log. The decision log and louis's rulings are read as usual.
+
 **Can it tell when a field is missing from a log line?**
 Only roughly. The logs are free text, so it can only report a line that has no Budget or Next.
 
 ## It's working if
 
-- It reads the logs first, then louis's rulings, and opens a transcript only for a flagged item.
+- It reads the logs first (or the run's board when there is no action log), then louis's rulings, and opens a transcript only for a flagged item.
 - Every finding quotes the log line or round it comes from.
 - Each finding is classed, and a signal that fits no class is reported as a process finding.
 - Mechanical findings come as a proposed check, and judgement calls as a proposed review rule.

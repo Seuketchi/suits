@@ -8,7 +8,7 @@ ADR 0001 says moved skills are called `suits:<name>`. The skill text and the doc
 
 ## Decision
 
-Every reference to a skill shipped in this repo is written `/suits:<name>`, in all Markdown under `skills/` and `docs/`: the characters, the tools, their reference files, both bucket READMEs and the docs pages. Where a character is told to run another character, that is `/suits:<name>` too. Paths and names that are not skills here (`/tmp`, `/rabbit-hole`) are left as they are, and so is Claude Code's own built-in review command where the `code-review` docs page names it; that page is the one exception the scan lists.
+Every reference to a skill shipped in this repo is written `/suits:<name>`, in all Markdown under `skills/` and `docs/`: the characters, the tools, their reference files, both bucket READMEs and the docs pages. Where a character is told to run another character, that is `/suits:<name>` too. Paths and names that are not skills here (`/tmp`) are left as they are, and so is Claude Code's own built-in review command where the `code-review` docs page names it; that page is the one exception the scan lists.
 
 `test/characters/characters.test.mjs` scans skill text and docs pages and fails on a code span `/<name>` where `<name>` is a skill in this repo, and on the plain form "the `<name>` skill" for the same names. It does not scan other prose that names a skill without a code span. Its self-test plants a bare tool name and sees the scan fire.
 

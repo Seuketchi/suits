@@ -71,7 +71,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 | harvey | donna | the pitch structure for the deck, and any decision to log |
 | harvey | the owner | the `/suits:negotiation-prep` block: five rows, with anything above his authority marked for the owner |
 
-He does not start a `/rabbit-hole`; that is a learning tool the owner starts. `/suits:senior` covers his judgement.
+He does not follow a side thread; `/suits:senior` covers his judgement.
 
 ## Working alone
 

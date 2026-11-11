@@ -12,8 +12,6 @@ const characters = readdirSync(join(root, "skills/characters"), { withFileTypes:
   .filter((e) => e.isDirectory())
   .map((e) => e.name);
 
-// Skills a character only offers to the owner, which are not in this repo.
-const OFFERED = new Set(["rabbit-hole"]);
 // Slash words in code spans that are paths, not skills.
 const NOT_A_SKILL = new Set(["tmp"]);
 
@@ -48,7 +46,7 @@ describe("characters", () => {
       }
 
       test("calls only skills that exist here", () => {
-        const missing = named(source).filter((n) => !OFFERED.has(n) && !toolDir(n));
+        const missing = named(source).filter((n) => !toolDir(n));
         assert.deepEqual([...new Set(missing)], []);
       });
 
@@ -240,12 +238,17 @@ describe("skill text", () => {
 
   test("there are skills to scan", () => assert.ok(files.length > characters.length));
 
-  test("names only skills that exist here, or are offered", () => {
+  test("names only skills that exist here", () => {
     const missing = files
-      .map((f) => [f, named(read(f)).filter((n) => !OFFERED.has(n) && !NOT_A_SKILL.has(n) && !toolDir(n))])
+      .map((f) => [f, named(read(f)).filter((n) => !NOT_A_SKILL.has(n) && !toolDir(n))])
       .filter(([, names]) => names.length > 0)
       .map(([f, names]) => `${f}: ${[...new Set(names)].join(", ")}`);
     assert.deepEqual(missing, []);
+  });
+
+  test("mentions no /rabbit-hole: no skill or docs page offers a tool this repo does not ship", () => {
+    const offenders = [...docFiles("skills"), ...docFiles("docs")].filter((f) => /rabbit-hole/.test(read(f)));
+    assert.deepEqual(offenders, []);
   });
 
   test("names every tool with the suits: prefix", () => {

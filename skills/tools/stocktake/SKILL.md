@@ -5,7 +5,7 @@ description: Audit how our own code or system behaves today, citing file:line fo
 
 A **stocktake** checks what is really on the shelves: how our code, config and data behave now. The code is the primary source; docs, comments and memory are leads to check against it.
 
-Run it in a **background agent**, so the conversation keeps going. Give it the question and this job:
+Run it in a **background agent**, so the conversation keeps going. If you are already a sub-agent, or cannot start one, do the work yourself; never re-delegate. Give it the question and this job:
 
 1. **Find the entry points.** Where does the behaviour start: a route, a screen, a job, an event handler, a migration? Done when each is named with its file:line.
 2. **Trace each one end to end,** through calls, state and data to the effect: the response, the write, the screen, the message. Read config and feature flags on the path, and which environment sets them. Done when the trace has no unexplained hop, or the gap is an *unknown*.

@@ -23,17 +23,17 @@ The line between `research` and `grill-with-docs` is the **shelf life of what co
 
 The defining move is that the reading runs as a **background session**. You keep working; it goes off, follows each claim to its primary source, writes one Markdown file, and reports back. Research is legwork you delegate, not thinking you outsource: you get a document to grill, plan, or design against, and you still make the call.
 
-The delegation is unguarded, and the background session can spawn a further background session of its own. This is the skill's best-documented rough edge.
+The skill is guarded against nesting. If the session that runs it is already a background session, or cannot start one, it does the reading itself and never starts a further session.
 
 The file lands at `docs/findings/<topic>.md`, in the format the `/suits:findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
 
 ## Common questions
 
-**It spawned a second research session. Is that meant to happen?**
+**Can a background session start another one?**
 
-No. This is an open bug, [issue #530](https://github.com/mattpocock/skills/issues/530). The skill tells its caller to spin up a background session but does not restrict the session type, so the session it starts is a `general-purpose` one that holds the `Agent` tool and the same instructions, and fires them again. One reporter measured a single research task costing roughly 450k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) across three overlapping runs, with the duplicate finishing half an hour later entirely out of view. It reproduces outside Claude Code too; the same nesting was confirmed in Codex with GPT-5.6-sol. There is no shipped fix. Users have patched their own installed copy with a line telling Claude that is already a helper session to do the work itself, which helps but is instruction-level, not structural. Watch your background task list after invoking, and stop the duplicate.
+No. The skill says so in its own text: a session that is already a background session, or cannot start one, does the work itself and never starts another. So one research task runs as one background session, and no duplicate runs out of view. Watch your background task list after invoking anyway; there should be exactly one new entry.
 
-The opposite failure exists as well: if your own global instructions forbid Claude from re-delegating work, the background session will politely decline the task and the skill quietly does nothing.
+If your own global instructions forbid starting background sessions, the skill still does the reading in the session it runs in, so it does not quietly do nothing.
 
 **Where should the file live, and should I commit it?**
 

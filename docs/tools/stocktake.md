@@ -2,7 +2,7 @@
 
 `stocktake` audits how our own code or system behaves today. It treats the code as the **primary source** and docs, comments and memory as leads to check against it, so every claim in the result cites file:line on a named commit.
 
-It reads and runs nothing with side effects: it changes nothing, and it runs as a background session so your conversation keeps going.
+It reads and runs nothing with side effects: it changes nothing, and it runs as a background session so your conversation keeps going. If that session is already a background session, or cannot start one, it does the audit itself and never starts another.
 
 ## When to reach for it
 

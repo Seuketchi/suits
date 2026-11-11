@@ -2,9 +2,10 @@
 // Checks this repo's own rules (CLAUDE.md):
 // - every skill under skills/characters and skills/tools has a SKILL.md whose
 //   `name` is its folder and which has a description;
-// - every skill is in plugin.json's `skills`, is listed in its bucket README
-//   under User-invoked or Model-invoked to match `disable-model-invocation`,
-//   and has a docs/<bucket>/<skill>.md page with the four standard sections;
+// - every skill has a docs/<bucket>/<skill>.md page with the four standard
+//   sections;
+// - plugin.json, the root README and both bucket READMEs list the skills as
+//   scripts/lists.mjs would write them (its --check mode);
 // - every character's SKILL.md has a "Voice" and a "When to call" section;
 // - nothing in plugin.json points at a missing skill;
 // - every relative link in a Markdown file resolves.
@@ -16,6 +17,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { drifted } from "./lists.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BUCKETS = ["characters", "tools"];
@@ -43,12 +45,6 @@ function frontmatter(source) {
   };
 }
 
-// The skills linked under a `## <heading>` of a README, by folder name.
-function linkedUnder(readme, heading) {
-  const section = readme.split(/^## /m).find((s) => s.startsWith(heading)) ?? "";
-  return new Set([...section.matchAll(/\]\(\.\/([\w-]+)\/SKILL\.md\)/g)].map((m) => m[1]));
-}
-
 const hasHeading = (source, title) => new RegExp(`^#{2,3} ${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`, "m").test(source);
 
 const plugin = JSON.parse(read(".claude-plugin", "plugin.json"));
@@ -57,7 +53,6 @@ const found = new Set();
 
 for (const bucket of BUCKETS) {
   const bucketDir = join(repo, "skills", bucket);
-  const bucketReadme = read("skills", bucket, "README.md");
   const skills = readdirSync(bucketDir).filter(
     (d) => statSync(join(bucketDir, d)).isDirectory() && tracked(`skills/${bucket}/${d}`),
   );
@@ -73,10 +68,6 @@ for (const bucket of BUCKETS) {
     const meta = frontmatter(source);
     if (meta.name !== skill) problems.push(`${where}: frontmatter name is "${meta.name}", folder is "${skill}"`);
     if (!meta.description) problems.push(`${where}: no description`);
-    if (!shipped.has(where)) problems.push(`${where}: not in plugin.json's skills`);
-
-    const group = meta.userInvoked ? "User-invoked" : "Model-invoked";
-    if (!linkedUnder(bucketReadme, group).has(skill)) problems.push(`${where}: should be under "${group}" in skills/${bucket}/README.md`);
 
     const doc = join("docs", bucket, `${skill}.md`);
     if (!existsSync(join(repo, doc))) {
@@ -95,6 +86,9 @@ for (const bucket of BUCKETS) {
 for (const entry of shipped) {
   if (!found.has(entry)) problems.push(`plugin.json: ${entry} is not a tracked skill folder`);
 }
+
+// The generated lists: plugin.json, the root README and both bucket READMEs.
+for (const file of drifted(repo)) problems.push(`${file}: out of date with the skill folders; run npm run lists`);
 
 // Relative links, outside fenced code blocks.
 function markdownFiles(dir) {

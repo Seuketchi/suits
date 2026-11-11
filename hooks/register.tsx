@@ -1,14 +1,19 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { Checklist } from '../types'
+import type { ActionLog, CastBoard, Checklist } from '../types'
 
 import {
+  ACTION_LOG_PATH,
+  EMPTY_CAST,
   HELPER_DENY,
   HELPER_PROMPT,
   HELPER_TOAST,
   RULES_PATH,
+  actionLogLines,
   applyChecklist,
+  castEvent,
+  castRows,
   characterOf,
   charactersFrom,
   checklistCount,
@@ -17,6 +22,8 @@ import {
   decide,
   paneText,
   helperOn,
+  isActionLogPath,
+  parseActionLog,
   parseRules,
   rulesReport,
   searchDirs,
@@ -57,7 +64,7 @@ async function findRules($: any): Promise<{ path?: string; parsed: ReturnType<ty
   return { parsed: { status: 'missing' } }
 }
 
-// What the pane draws from. The checklist is the job's steps and which are
+// What the panes draw from. The checklist is the job's steps and which are
 // done; the character is the one the last `suits:<character>` skill named.
 // Change a tag when a value's fields change: it declines what an earlier
 // version stored, which outlives a reload.
@@ -66,7 +73,15 @@ const checklist = atom({ plugin: 'suits', key: 'checklist' } as const, { steps: 
 })
 const character = atom({ plugin: 'suits', key: 'character' } as const, '', { shape: 'character-1' })
 
+// The cast board and donna's action log, as the cast pane draws them. The
+// session holds them; nothing is written to disk.
+const cast = atom({ plugin: 'suits', key: 'cast' } as const, EMPTY_CAST as CastBoard, { shape: 'cast-1' })
+const actionLog = atom({ plugin: 'suits', key: 'actionLog' } as const, { status: 'missing' } as ActionLog, {
+  shape: 'action-log-1',
+})
+
 const PANE_ID = 'suits-checklist'
+const CAST_PANE_ID = 'suits-cast'
 const CHECKLIST_TOOL = 'suits_checklist'
 
 // The one switch, read at each event so a value set by another plugin's
@@ -89,6 +104,49 @@ async function charactersOf($: any): Promise<string[]> {
   return characters
 }
 
+// Reads donna's action log from the start folder and each parent up to the git
+// root, nearest first, and keeps what it finds. It only reads. A log that cannot
+// be read counts as none.
+async function readActionLog($: any): Promise<void> {
+  let text: string | undefined
+
+  try {
+    const cwd: string = await $.session.cwd()
+
+    for (const dir of searchDirs(cwd)) {
+      const base = dir === '/' ? '' : dir
+
+      try {
+        text = await $.fs.read(`${base}/${ACTION_LOG_PATH}`)
+      } catch {
+        text = undefined
+      }
+
+      if (text !== undefined || (await $.fs.exists(`${base}/.git`))) break
+    }
+  } catch {
+    text = undefined
+  }
+
+  await update($, actionLog, () => parseActionLog(text))
+}
+
+// Feeds the board. A board failure is the caller's to swallow.
+async function feedCast($: any, event: Parameters<typeof castEvent>[1]): Promise<void> {
+  const next = castEvent(await read($, cast), event, await charactersOf($))
+
+  await update($, cast, () => next)
+}
+
+// A board failure never stops or changes a call.
+async function feedCastSafely($: any, event: Parameters<typeof castEvent>[1]): Promise<void> {
+  try {
+    await feedCast($, event)
+  } catch {
+    // the board is behind by one call; the call goes on
+  }
+}
+
 export const register: Register = on => {
   // A broken file, or a bad rule in one, is reported once, then ignored.
   const reported = new Set<string>()
@@ -96,6 +154,10 @@ export const register: Register = on => {
   const failed = new Set<string>()
 
   on('tool.call', { tool: `mcp__suits__${CHECKLIST_TOOL}` }, async ($, e) => {
+    // This hook answers without `next`, so the generic hook below may not see
+    // the call: it feeds the board itself.
+    await feedCastSafely($, { kind: 'tool', tool: e.tool, loop: e.agentId ?? '' })
+
     const { checklist: next, notes } = applyChecklist(await read($, checklist), e)
 
     await update($, checklist, () => next)
@@ -130,7 +192,15 @@ export const register: Register = on => {
       return { deny: decision.message }
     }
 
+    // The board is fed before the call runs, so the skill prompt a Skill call
+    // raises finds its loop already held. A call refused above is not fed.
+    await feedCastSafely($, e.tool === 'Skill' ? { kind: 'skill', skill: e.skill, loop: e.agentId ?? '' } : { kind: 'tool', tool: e.tool, loop: e.agentId ?? '' })
+
     const ran = await next(e)
+
+    if (ran.deny === undefined && 'file_path' in e && isActionLogPath(e.file_path)) {
+      await readActionLog($).catch(() => undefined)
+    }
 
     // A warning is for a call that ran: not one a hook beneath refused.
     if (ran.deny !== undefined || decision.action !== 'warn') return ran
@@ -194,6 +264,8 @@ export const register: Register = on => {
       await update($, character, () => name)
     }
 
+    await feedCastSafely($, { kind: 'skill', skill: e.skill, pluginName: e.pluginName })
+
     return next(e)
   })
 
@@ -208,6 +280,11 @@ export const register: Register = on => {
       name: 'suits-checklist',
       description: "Open the checklist pane for the job's steps.",
     })
+    await $.command.register({
+      name: 'suits-cast',
+      description: 'Open the cast pane: who holds the work, the hand-offs, and the action log.',
+    })
+    await readActionLog($).catch(() => undefined)
     await $.tool.register({
       name: CHECKLIST_TOOL,
       description:
@@ -236,6 +313,39 @@ export const register: Register = on => {
     const opened = await $.ui.open({ id: PANE_ID, title: 'Checklist' })
 
     return { text: paneText(opened) }
+  })
+
+  // The cast pane opens only when the owner asks for it.
+  on('command.run', { command: 'suits-cast' }, async $ => {
+    await readActionLog($).catch(() => undefined)
+
+    const opened = await $.ui.open({ id: CAST_PANE_ID, title: 'Cast' })
+
+    return { text: paneText(opened, 'Cast') }
+  })
+
+  on('ui.render', { component: 'Pane', requestId: CAST_PANE_ID }, async ($, e) => {
+    const { Box, Text } = $.ui.resolve(e)
+    const rows = castRows(await read($, cast))
+    const log = actionLogLines(await read($, actionLog))
+
+    return (
+      <Box flexDirection="column">
+        {rows.holder ? <Text>Holding: {rows.holder}</Text> : <Text dimColor>No character yet.</Text>}
+        {rows.handoffs.length === 0 && <Text dimColor>No hand-offs yet.</Text>}
+        {rows.handoffs.map(line => (
+          <Text>Hand-offs: {line}</Text>
+        ))}
+        {rows.tools.map(row => (
+          <Text>
+            {row.character}: {row.tool}
+          </Text>
+        ))}
+        {log.map(line => (
+          <Text dimColor={line === 'No action log.' || line === 'No actions yet.'}>{line}</Text>
+        ))}
+      </Box>
+    )
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE_ID }, async ($, e) => {

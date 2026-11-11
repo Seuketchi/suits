@@ -96,16 +96,26 @@ async function agentType($: any, agentId: string): Promise<string | undefined> {
 }
 
 // Why a Bash call from a subagent is refused, or nothing when it may run. A
-// check that fails refuses the call unless the agent's type can be read and is
-// not one of the three: the guard fails closed.
+// call is refused when its subagent is one of the three and the command is not
+// a read, and also when the subagent's type cannot be found or the check fails:
+// the guard fails closed (ADR 0009).
 async function readOnlyDenial(
   $: any,
   e: { agentId?: string; command: string },
 ): Promise<{ who: string; message: string } | undefined> {
   if (e.agentId === undefined) return undefined
 
+  const unchecked = {
+    who: 'a read-only version',
+    message: denyMessage('this version', 'Its type could not be found, so the command was not allowed'),
+  }
+
   try {
-    const who = readOnlyCharacter(await agentType($, e.agentId), $.plugin.name)
+    const type = await agentType($, e.agentId)
+
+    if (type === undefined) return unchecked
+
+    const who = readOnlyCharacter(type, $.plugin.name)
 
     if (who === undefined) return undefined
 
@@ -113,13 +123,7 @@ async function readOnlyDenial(
 
     return verdict.allowed ? undefined : { who, message: denyMessage(who, verdict.why as string) }
   } catch {
-    try {
-      if (readOnlyCharacter(await agentType($, e.agentId), $.plugin.name) === undefined) return undefined
-    } catch {
-      // unreadable again: treated as one of the three
-    }
-
-    return { who: 'a read-only version', message: denyMessage('this version', 'The check could not run, so the command was not allowed') }
+    return unchecked
   }
 }
 

@@ -62,11 +62,20 @@ test('a read command from louis runs', async ($, on) => {
 
 test('a subagent that is not one of the three is not held', async ($, on) => {
   const { ran } = engine(on)
-  for (const agentId of ['h1', 'g1', 'unknown']) {
+  for (const agentId of ['h1', 'g1']) {
     const out = await $.tool.call({ tool: 'Bash', command: 'rm -rf build', agentId })
     expect(out.deny).toBeUndefined()
   }
-  expect(ran.length).toBe(3)
+  expect(ran.length).toBe(2)
+})
+
+test('a subagent the session does not list is denied, not let through', async ($, on) => {
+  const { ran } = engine(on)
+
+  const out = await $.tool.call({ tool: 'Bash', command: 'git log', agentId: 'unknown' })
+
+  expect(out.deny).toContain('ADR 0009')
+  expect(ran).toEqual([])
 })
 
 test('the main session is not held', async ($, on) => {

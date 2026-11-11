@@ -18,7 +18,7 @@ Each of the three has a definition another session can start, in `agents/louis.m
 ## What is enforced, and what is not
 
 - Enforced by the tool list: no file edit through `Edit`, `Write`, `NotebookEdit` or `MultiEdit`, and no other session through `Agent` or `Task`.
-- Not enforced by the file: `Bash`. A hook holds it to reading (ADR 0009). It stays, because louis and mike need `git` and `gh` to read, and the format cannot limit `Bash` to reading: an entry with a pattern in `disallowedTools` removes the whole tool, and a pattern in `tools` is not documented. The body tells the version to use `Bash` only to read, and says in one line that the file cannot limit it. That sentence is the only limit on `Bash`.
+- Not enforced by the file: `Bash`. It stays, because louis and mike need `git` and `gh` to read, and the format cannot limit `Bash` to reading: an entry with a pattern in `disallowedTools` removes the whole tool, and a pattern in `tools` is not documented. A hook in the plugin holds it to reading (ADR 0009). The body tells the version to use `Bash` only to read and says that the hook blocks the rest.
 - Not used: connected servers. Listing `tools` drops every server tool not named, and naming them by wildcard would also admit their write tools. A read-only version uses no server and falls back as ADR 0006 says. The full skill in the owner's own session still uses one.
 
 ## Consequences

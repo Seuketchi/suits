@@ -93,5 +93,10 @@ describe("mike", () => {
       assert.match(q, /`not found` names the command that was run and its paths, exactly as shown/);
       assert.match(q, /never a wider search that was not run/);
     });
+    test("not found also says it was the tree at that commit, not history, and what was left unsearched", () => {
+      const q = quick();
+      assert.match(q, /searched the tree at that commit, not its history, so renames are not in question/);
+      assert.match(q, /nothing outside those paths was searched/);
+    });
   });
 });

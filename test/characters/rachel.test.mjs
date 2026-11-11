@@ -113,6 +113,19 @@ describe("rachel", () => {
       assert.doesNotMatch(typed, /say whose it is/);
       assert.match(typed, /decision[^\n]*(red flag|owner)[^\n]*not in an item/);
     });
+    test("the red flag is one labelled line, the second line of the reply, and says who was charged and for how long", () => {
+      const flag = item(2);
+      assert.match(flag, /one line beginning `Red flag:`/);
+      assert.match(flag, /the second line of the reply/);
+      assert.match(flag, /who paid, what and for how long/);
+    });
+    test("an item says what is missing and never the change to make, one per cause, numbered by its cause", () => {
+      const typed = item(4);
+      assert.match(typed, /numbered by its cause/);
+      assert.match(typed, /none merged and none without a cause/);
+      assert.match(typed, /says what is missing, never the change to make/);
+      assert.match(typed, /no code, no "make X do Y"/);
+    });
     test("the red flag comes before every cause, even where a tool lists the causes first", () => {
       assert.match(item(2), /before the other causes/);
     });

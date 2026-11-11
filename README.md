@@ -61,18 +61,23 @@ Each character's own page lists exactly who it takes work from and hands work to
 
 ### The mod
 
-The plugin also ships a small mod in [hooks](./hooks). It carries no rules of its own: the decisions are in `logic.mjs`, and the wiring is in `register.tsx`.
+The plugin also ships a small mod in [hooks](./hooks). The decisions are in `logic.mjs` and `readonly.mjs`, and the wiring is in `register.tsx`. A project's rules come only from its own rules file. The one rule of the plugin's own holds the read-only versions of louis, mike and rachel to reading.
 
 ```mermaid
 flowchart LR
     rules[(".claude/suits-rules.json<br/>your project's rules")] --> hook
-    call["every tool call"] --> hook{"rules hook"}
+    tc["every tool call"] --> hook{"rules hook"}
     hook -->|"matches a never rule"| deny["call refused<br/>toast: id and why"]
     hook -->|"matches a warn rule"| warn["call runs<br/>toast, and the why is added to the result"]
     hook -->|"no match, or no rules file"| pass["call runs"]
+    tc --> ro["Bash from a read-only version<br/>of louis, mike or rachel"]
+    ro -->|"not a plain read"| deny
     skill["a character skill is used"] --> status["status line names<br/>the working character"]
     steps["suits_checklist tool"] --> pane["/suits-checklist pane<br/>character, steps, n of m done"]
     status --> pane
+    tc --> cast["/suits-cast pane<br/>who holds the work, hand-offs, last tool each"]
+    skill --> cast
+    log[("donna/action-log.md")] -->|"read only, never written"| cast
     env["SUITS_HELPER set"] --> helper["new sessions refused,<br/>character told to work alone"]
 ```
 
@@ -151,9 +156,9 @@ Each tool is its own skill. It is never copied into a character, so improving a 
 ## Mods
 
 <details>
-<summary>Project rules, the checklist pane and helper mode</summary>
+<summary>Project rules, the checklist pane, the cast board and helper mode</summary>
 
-Hooks on tool calls enforce a project's own rules. Suits carries no rules of its own. A project lists them in `.claude/suits-rules.json`, found from the folder the session starts in up to the git root:
+Hooks on tool calls enforce a project's own rules. Apart from the read-only rule for its own read-only versions, Suits carries no rules of its own. A project lists them in `.claude/suits-rules.json`, found from the folder the session starts in up to the git root:
 
 ```json
 {
@@ -204,7 +209,7 @@ Nothing in this plugin sets the variable. Whatever starts a helper sets it: put 
 - [skills/characters](./skills/characters/README.md): the characters.
 - [skills/tools](./skills/tools/README.md): the tools they call.
 - [agents](./agents): the read-only versions of louis, mike and rachel.
-- [hooks](./hooks): the mod, with its decisions in `logic.mjs`.
+- [hooks](./hooks): the mod, with its decisions in `logic.mjs` and `readonly.mjs`.
 - [docs](./docs): one page per skill, and the decisions in [docs/adr](./docs/adr).
 
 ## Checks

@@ -24,7 +24,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 | `/suits:recall` | a past decision or the history of how something came to be matters |
 | `/suits:domain-modeling` | a term in the ask is used in two ways, or `CONTEXT.md` or an ADR needs writing or sharpening |
 | `/suits:test-kitchen` | reading cannot settle it and something must be run. Staging only. |
-| `/suits:reverse-engineer-anything` | the facts live in a shipped build of ours with no source at hand |
+| `/suits:reverse-engineer-anything` | the facts live in a shipped build with no source at hand, and rule 9 below allows it |
 | `/suits:findings` | a finding is long enough to keep. The investigating tools call it themselves. |
 
 The quick look needs no tool. It runs on any small ask that touches code logic. A pure copy change, such as a label typo, skips it.
@@ -49,7 +49,7 @@ Nothing before, between or after them: no analysis of the change, no list of wha
 6. **Edit nothing.** Not code, not records, not the owner's files.
 7. **Staging only.** `/suits:test-kitchen` runs against staging builds, test devices and test data. Never production, customer data or real money.
 8. **Private history.** A recalled session is quoted only as far as it answers the question. A key, a credential or a customer's details never leave it.
-9. **Our own builds only.** He runs `/suits:reverse-engineer-anything` on our own shipped artifacts. For anyone else's, harvey decides.
+9. **Shipped builds.** He runs `/suits:reverse-engineer-anything` only on an artifact the owner owns, has rights to, or named in the request. Otherwise he asks first.
 
 ## If a server is connected
 

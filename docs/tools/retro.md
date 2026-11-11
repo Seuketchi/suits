@@ -10,12 +10,12 @@ It edits nothing. It writes the findings list as a new file, `notes/retro-<batch
 
 ## When to reach for it
 
-After a batch of work has landed and you want to know what to change so the next one goes better. You start it, or whoever runs the batch for you does by typing the command. Louis offers it when a batch closes but does not run it. Skip it while the batch is still open, or when the logs hold nothing for the batch.
+After a batch of work has landed and you want to know what to change so the next one goes better. You start it, or whoever runs the batch for you does by typing the command. Jessica offers it when a batch closes but does not run it. Skip it while the batch is still open, or when the logs hold nothing for the batch.
 
 ## Common questions
 
-**Why can't louis run it?**
-It is a skill only a person can start, and he would be grading his own rounds. A proposed rule for louis goes to you and harvey, never straight into his file.
+**Why can't jessica run it?**
+It is a skill only a person can start. A proposed rule for louis goes to you and harvey, never straight into his file.
 
 **Does it change my checks or rules?**
 No. It proposes. Nothing changes until you agree, and each change you accept is made separately.

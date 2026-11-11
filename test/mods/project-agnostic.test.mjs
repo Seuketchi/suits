@@ -73,6 +73,42 @@ test("a second access on the same line as the allowed read is caught", () => {
   assert.equal(strayEnv('await $.env.get("SUITS_HELPER") || await $.env.get("SUITS_HELPER")').length, 0);
 });
 
+// The mod writes nothing to disk and keeps no store: it reads files through
+// `$.fs.read`, `$.fs.exists`, `$.fs.stat` and `$.fs.list`, and nothing else.
+// Any other `$.fs` method, and any `$.store` use, is a write or a kept state.
+export const READ_FS = ["read", "exists", "stat", "list"];
+const allowedFs = new RegExp(`\\$\\.fs\\.(?:${READ_FS.join("|")})\\(`, "g");
+// One entry per `$.fs` or `$.store` access that is not an allowed read. Counting
+// occurrences against allowed reads means a write on the same line as a read
+// fails too.
+export const strayFs = (source) => {
+  const fs = (source.match(/\$\.fs\b/g) ?? []).length - (source.match(allowedFs) ?? []).length;
+  const store = (source.match(/\$\.store\b/g) ?? []).length;
+  return [...Array.from({ length: fs }, () => "$.fs"), ...Array.from({ length: store }, () => "$.store")];
+};
+
+test("hooks/ source writes nothing to disk and keeps no store", () => {
+  for (const [name, source] of shipped()) {
+    assert.deepEqual(strayFs(source), [], `${name} writes to disk or keeps a store: only $.fs reads are allowed`);
+  }
+});
+
+test("the scan catches a write to disk or a store", () => {
+  assert.equal(strayFs("await $.fs.write(p, t)").length, 1);
+  assert.equal(strayFs("await $.fs.remove(p)").length, 1);
+  assert.equal(strayFs("await $.store.set(k, v)").length, 1);
+  assert.equal(strayFs("await $.fs.read(p); await $.fs.write(p, t)").length, 1);
+  assert.equal(strayFs("await $.fs.mkdir(p)").length, 1);
+});
+
+test("the scan passes the allowed reads", () => {
+  assert.equal(strayFs("await $.fs.read(p)").length, 0);
+  assert.equal(strayFs("await $.fs.exists(p)").length, 0);
+  assert.equal(strayFs("await $.fs.stat(p)").length, 0);
+  assert.equal(strayFs("await $.fs.list(p)").length, 0);
+  assert.equal(strayFs("const files = await $.fs.list(p); await $.fs.read(files[0])").length, 0);
+});
+
 test("the README's rules-file example parses", () => {
   const readme = readFileSync(join(repo, "README.md"), "utf8");
   const mods = readme.split(/^## Mods$/m)[1]?.split(/^## /m)[0];

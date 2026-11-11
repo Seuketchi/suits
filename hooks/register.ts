@@ -55,14 +55,14 @@ export const register: Register = on => {
 
   on('session.start', async ($, e, next) => {
     await $.command.register({
-      name: 'rules',
+      name: 'suits-rules',
       description: "Show this project's suits rules file.",
     })
 
     return next(e)
   })
 
-  on('command.run', { command: 'rules' }, async $ => {
+  on('command.run', { command: 'suits-rules' }, async $ => {
     const { path, parsed } = await findRules($)
 
     return { text: rulesReport(path, parsed) }

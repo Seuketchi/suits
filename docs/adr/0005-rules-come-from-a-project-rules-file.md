@@ -13,7 +13,7 @@ The plugin ships a mod in `hooks/`, and the mod holds no rule of its own. A proj
 - A `never` match is denied with `<id>: <why>`, and the owner sees a toast.
 - A `warn` match runs. The owner sees a toast and the model reads the `why` after the tool's result.
 - With no file, every call passes. A file that cannot be read is reported once and then ignored, so a mistake in the file never stops work.
-- `/rules` shows the file, or says there is none.
+- `/suits-rules` shows the file, or says there is none.
 
 The decisions are pure functions in `hooks/logic.mjs`, tested with `node:test` and no Claude Code install. `hooks/register.ts` only reads the file and calls them, and is tested with `claude plugin test .`. A test fails if `hooks/` carries a rule of its own, or names a project or the tool that starts a session.
 
@@ -22,5 +22,5 @@ The decisions are pure functions in `hooks/logic.mjs`, tested with `node:test` a
 - A project adds, changes or drops a rule by editing its own file. This repo never holds a real project's rules, in code, tests or docs.
 - Hooks fire inside every session the owner's session starts, so the same rules hold there.
 - There is no per-project off switch except the file itself.
-- The command is named `rules`, because a mod registers a bare name; Claude Code shows it as `suits:rules`, but it is typed `/rules`.
+- The command is named `suits-rules`, typed `/suits-rules`: a mod registers a bare name, so the suits name is part of it and it cannot clash with another plugin's `/rules`.
 - CI pins a Claude Code build that reads `hooks.json` modules and runs `claude plugin test .`, which needs no login.

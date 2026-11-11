@@ -111,7 +111,7 @@ test("a warning is told to the model as one line per rule", () => {
   assert.deepEqual(warnNotes({ action: "pass" }), []);
 });
 
-test("/suits:rules shows the path and one line per rule, or says there is no file", () => {
+test("/suits-rules shows the path and one line per rule, or says there is no file", () => {
   const text = rulesReport("/repo/.claude/suits-rules.json", parseRules(FILE));
   assert.match(text, /^\/repo\/\.claude\/suits-rules\.json$/m);
   assert.match(text, /^never\tno-vault\tthe vault is changed only by its owners\tEdit,Write,Bash\tvault\/$/m);

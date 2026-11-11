@@ -28,7 +28,7 @@ function engine(on: any, files: Record<string, string>) {
     toasts.push(e.text)
     return { value: undefined }
   })
-  on('command.register', () => ({ value: { command: 'rules' } }))
+  on('command.register', () => ({ value: { command: 'suits-rules' } }))
   on('session.start', (_: unknown, e: { cwd: string }) => ({ cwd: e.cwd }))
   on('tool.call', () => ({ result: {}, text: 'ran' }))
 
@@ -91,7 +91,7 @@ test('the rules command shows the file, or says there is none', async ($, on) =>
   engine(on, withFile)
   await $.session.start({ cwd: CWD, surface: 'terminal', isInteractive: true })
 
-  const shown = await $.command.run({ command: 'rules' })
+  const shown = await $.command.run({ command: 'suits-rules' })
 
   expect(shown.text).toContain(`${ROOT}/.claude/suits-rules.json`)
   expect(shown.text).toContain('never\tno-vault\tthe vault is changed only by its owners\tEdit,Bash\tvault/')
@@ -102,7 +102,7 @@ test('the rules command with no file says so', async ($, on) => {
   engine(on, {})
   await $.session.start({ cwd: CWD, surface: 'terminal', isInteractive: true })
 
-  const shown = await $.command.run({ command: 'rules' })
+  const shown = await $.command.run({ command: 'suits-rules' })
 
   expect(shown.text).toBe('No suits rules file here (.claude/suits-rules.json). The rule hooks are off.')
 })

@@ -107,7 +107,7 @@ export function warnNotes(decision) {
   return decision.action === "warn" ? decision.hits.map((h) => `suits warning: ${h.message}`) : [];
 }
 
-// The text of `/suits:rules`. `path` is where the file was found.
+// The text of `/suits-rules`. `path` is where the file was found.
 export function rulesReport(path, parsed) {
   if (parsed.status === "missing") return NO_FILE_TEXT;
   if (parsed.status === "broken") {

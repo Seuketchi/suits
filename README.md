@@ -78,7 +78,7 @@ The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that
 - `match` is a regular expression tested against the tool call's input: the file path for Edit, Write and Read, the command for Bash, the input as JSON for any other tool. `tools` is optional; left out, the rule covers every tool.
 - A `never` match is refused: the call is denied with `<id>: <why>` and a toast says so. A `warn` match runs, a toast says so, and the `why` is added to the tool's result.
 - With no rules file, every call passes. A file that cannot be read is reported once and then ignored.
-- `/rules` shows the file and its rules, or says there is none. Claude Code lists it as `suits:rules`.
+- `/suits-rules` shows the file and its rules, or says there is none.
 
 ## Layout
 

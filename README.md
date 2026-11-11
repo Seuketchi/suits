@@ -86,6 +86,14 @@ The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that
 
 For a job of three or more steps, a character lists the steps with the `suits_checklist` tool: `steps` sets the list, `done` marks step numbers (from 1) done. `/suits-checklist` opens a pane that shows the working character, each step as done or left, and "n of m done". The pane opens only when asked, and it seats at any width. Nothing else opens it.
 
+### Cast board
+
+`/suits-cast` opens a pane that shows who holds the work: the character holding it now, the hand-offs so far in order (`harvey → mike`), and the last tool each character called (`Bash`, `Edit`, `/suits:tdd`). It is fed by tool calls and skill prompts as they happen, so it fills as a job runs; a call made by a subagent is credited to the character that subagent holds. The pane opens only when asked, and nothing else opens it.
+
+The board is kept for the session only. Nothing is written to disk, and a failure in the board never stops or changes a tool call.
+
+When the project has `donna/action-log.md`, the pane also shows a count by status and the actions that are still open or parked, and it reads the file again when a tool call edits it. The log is looked for from the folder the session starts in up to the git root, nearest first, at that path only. The mod reads it and never writes it.
+
 ### Helper mode
 
 A session that must do its work alone, with no new session started, is a helper. One variable turns helper mode on: `SUITS_HELPER`, any value but empty or `0`. It is the only variable the mod reads, and it is read at each event, not once at start.

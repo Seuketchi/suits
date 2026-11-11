@@ -102,6 +102,20 @@ describe("rachel", () => {
     test("a named cause that does not account for what was reported says what it leaves out", () => {
       assert.match(item(1), /does not account for/);
     });
+    test("the first line is the trigger and the main cause: no label, greeting or caveat before it, and only the three tags", () => {
+      const first = item(1);
+      assert.match(first, /The reply's first line is the trigger and the main cause/);
+      assert.match(first, /no label, greeting or caveat before it/);
+      assert.match(first, /Tags are found, not found or inferred and no other/);
+    });
+    test("a decision is the owner's and goes in the red flag, not in an item", () => {
+      const typed = item(4);
+      assert.doesNotMatch(typed, /say whose it is/);
+      assert.match(typed, /decision[^\n]*(red flag|owner)[^\n]*not in an item/);
+    });
+    test("the red flag comes before every cause, even where a tool lists the causes first", () => {
+      assert.match(item(2), /before the other causes/);
+    });
     test("a red flag is the second thing she writes, with harvey and the owner's decision", () => {
       const flag = item(2);
       assert.match(flag, /red flag/);

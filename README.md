@@ -1,10 +1,21 @@
-# Suits
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
+    <img src="docs/assets/logo.svg" alt="Suits" width="360">
+  </picture>
+</h1>
 
-**S**ome **U**nusually **I**ntelligent **T**eam **S**pecialists.
+<p align="center"><b>S</b>ome <b>U</b>nusually <b>I</b>ntelligent <b>T</b>eam <b>S</b>pecialists.</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
+  <a href="https://github.com/Seuketchi/suits/actions/workflows/ci.yml"><img src="https://github.com/Seuketchi/suits/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin-d4a03a.svg" alt="Claude Code plugin">
+</p>
 
 A set of specialist skills for Claude Code. Each character has its own job and voice, and calls shared tools only when a task needs them. Ask for something and donna names the one character who owns it.
 
-## Quick start
+## 🚀 Quick start
 
 ```text
 /plugin marketplace add Seuketchi/suits
@@ -19,7 +30,7 @@ Start a new session so the slash commands register. Then ask, in plain words:
 
 Not sure who to ask? Ask donna. She names the owner.
 
-## How it works
+## 🧭 How it works
 
 A request reaches donna, the front desk. She names one owner and writes the request down. The owner calls a tool only when a stated fact about the task matches that tool's trigger. The default is not to call.
 
@@ -59,7 +70,7 @@ flowchart TD
 
 Each character's own page lists exactly who it takes work from and hands work to.
 
-### The mod
+### 🧩 The mod
 
 The plugin also ships a small mod in [hooks](./hooks). The decisions are in `logic.mjs` and `readonly.mjs`, and the wiring is in `register.tsx`. A project's rules come only from its own rules file. The one rule of the plugin's own holds the read-only versions of louis, mike and rachel to reading.
 
@@ -81,17 +92,17 @@ flowchart LR
     env["SUITS_HELPER set"] --> helper["new sessions refused,<br/>character told to work alone"]
 ```
 
-## The team
+## 👔 The team
 
 | Character | Role | Call them for |
 | --- | --- | --- |
-| **donna** | Front desk and secretary | A request that needs an owner and a record; documents, emails, briefs, minutes, decks, a pull request body. Drafts and tracks; never sends or signs. |
-| **jessica** | Project manager | A plan, tickets with blockers and owned files, a status report, risks, go-live readiness. |
-| **harvey** | Senior judgement | Whether to build, the budget, a pitch or negotiation, validating a finding that changes scope, money or a rule. |
-| **mike** | Our own system | What the code does today and what was decided before. |
-| **rachel** | Outside research | An external fact, a literature question, or a bug's root cause before anyone looks for the line to change. |
-| **louis** | Strict review | A diff to check against the rules and the spec, with numbers checked; rules on every review comment. |
-| **the associates** | The builders | Implementing a ticket or fixing a bug, test first, each owning its own files. |
+| <img src="docs/assets/icons/donna.svg" width="32" align="absmiddle"> **donna** | Front desk and secretary | A request that needs an owner and a record; documents, emails, briefs, minutes, decks, a pull request body. Drafts and tracks; never sends or signs. |
+| <img src="docs/assets/icons/jessica.svg" width="32" align="absmiddle"> **jessica** | Project manager | A plan, tickets with blockers and owned files, a status report, risks, go-live readiness. |
+| <img src="docs/assets/icons/harvey.svg" width="32" align="absmiddle"> **harvey** | Senior judgement | Whether to build, the budget, a pitch or negotiation, validating a finding that changes scope, money or a rule. |
+| <img src="docs/assets/icons/mike.svg" width="32" align="absmiddle"> **mike** | Our own system | What the code does today and what was decided before. |
+| <img src="docs/assets/icons/rachel.svg" width="32" align="absmiddle"> **rachel** | Outside research | An external fact, a literature question, or a bug's root cause before anyone looks for the line to change. |
+| <img src="docs/assets/icons/louis.svg" width="32" align="absmiddle"> **louis** | Strict review | A diff to check against the rules and the spec, with numbers checked; rules on every review comment. |
+| <img src="docs/assets/icons/associates.svg" width="32" align="absmiddle"> **the associates** | The builders | Implementing a ticket or fixing a bug, test first, each owning its own files. |
 
 <details>
 <summary>What the names stand for</summary>
@@ -110,7 +121,7 @@ flowchart LR
 
 The team may grow.
 
-## The tools
+## 🧰 The tools
 
 Each tool is its own skill. It is never copied into a character, so improving a tool improves every character that calls it. The one-line description of each is in [skills/tools](./skills/tools/README.md).
 
@@ -204,7 +215,7 @@ Nothing in this plugin sets the variable. Whatever starts a helper sets it: put 
 
 </details>
 
-## Layout
+## 🗺️ Layout
 
 - [skills/characters](./skills/characters/README.md): the characters.
 - [skills/tools](./skills/tools/README.md): the tools they call.
@@ -212,7 +223,7 @@ Nothing in this plugin sets the variable. Whatever starts a helper sets it: put 
 - [hooks](./hooks): the mod, with its decisions in `logic.mjs` and `readonly.mjs`.
 - [docs](./docs): one page per skill, and the decisions in [docs/adr](./docs/adr).
 
-## Checks
+## ✅ Checks
 
 `npm run check-skills` checks the listing rules, the docs pages, the links and `claude plugin validate`. `npm test` runs the character, donna and mod tests; `claude plugin test .` runs the mod against the real hook engine. CI runs both on every pull request.
 

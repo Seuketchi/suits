@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-labelledby="t">
+  <title id="t">rachel</title>
+  <circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 10L30 24H18Z" fill="#d4a03a" stroke="#d4a03a" stroke-width="2"/>
+    <path d="M24 38L30 24H18Z"/>
+    <circle cx="24" cy="24" r="1.5" fill="#5f82b8"/>
+  </g>
+</svg>

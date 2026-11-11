@@ -1,6 +1,6 @@
 ---
 type: tool_used
 tool: Skill
-input_match: '"skill"\s*:\s*"(?:suits:)?mike"'
+input_match: '"skill"\s*:\s*"suits:mike"'
 min: 1
 ---

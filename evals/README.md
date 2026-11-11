@@ -14,9 +14,11 @@ Cases that check what a skill does, not what its text says: a case for each char
 | `research-no-redelegation` | `/suits:research`, told to work alone, does the reading itself and writes its findings file. |
 | `pr-triage-routes-to-donna` | a pull request triage ask goes to donna, who drafts the comments and posts nothing. |
 | `helper-no-session` | a session with `SUITS_HELPER=1`, told to review in parallel, starts no other session and reviews in one pass. It needs `SUITS_HELPER=1` in the environment of the command that runs it. |
-| `trigger-louis`, `trigger-mike`, `trigger-rachel`, `trigger-jessica`, `trigger-donna` | each character is picked from a natural request that names no skill: a diff to look over, a question about how our code behaves, a double-charge bug before anyone patches it, a decided feature to plan, a vendor email to draft. The grader is `tool_used: Skill` for that character. |
+| `trigger-louis`, `trigger-mike`, `trigger-rachel`, `trigger-jessica`, `trigger-donna` | each character is picked from a natural request that names no skill: a diff to look over, a question about how our transfer fee works, a double-charge bug before anyone patches it, a decided feature to plan, a vendor email to draft. The grader is `tool_used: Skill` for `suits:<character>`; the harness reports plugin skills by their namespaced name. |
 | `trigger-none-js-question`, `trigger-none-unit-convert` | a plain question that needs no character calls no skill at all (`arm: both`, `min: 0`, `max: 0`). |
-| `trigger-louis-loads-tools` | louis, called by name and handed a diff that touches money, loads `code-review` and `money-check` through the Skill tool. Run it with a changed way of naming the tools to compare how often they load. |
+| `trigger-none-copy-typo`, `trigger-none-no-diff` | near misses aimed at the descriptions' Skip lines: a one-string copy typo (mike's "pure copy change") and a request with no code to check (louis's "nothing to check"). No skill is called. |
+| `trigger-louis-loads-tools` | not a natural-request case: its prompt copies `louis-one-pass` and names louis. It checks that louis loads `code-review` and `money-check` through the Skill tool, to compare two ways of naming a tool (see below). |
+| `trigger-louis-loads-tools-skill-wording` | the same prompt and graders with one sentence added to the prompt that asks for the `Call the Skill tool with "suits:code-review"` form. It approximates arm B below from the prompt side, so no plugin copy is needed. |
 
 Run them from the repo root. Unset `SUITS_HELPER` first, so that a shell started inside a helper run does not put every case in helper mode, and add `--ablation with-without` to also run each case without the plugin and see what the model does on its own:
 
@@ -39,3 +41,12 @@ env -u SUITS_HELPER claude plugin eval . --case 'trigger-*' --ablation none --no
 ```
 
 A case that scores below 1 is a finding about the skill's description, not a reason to loosen the grader.
+
+### Comparing how a character names its tools
+
+`trigger-louis-loads-tools` measures how often louis loads a tool. Run it on two plugin copies that differ in one edit, using `--runs 10` or more, because three runs cannot tell two close rates apart:
+
+- **Arm A** is the plugin as committed: louis's `SKILL.md` names the tools as `/suits:code-review` and `/suits:money-check` (lines 13, 16, 18, 27 and 28).
+- **Arm B** is a copy of the plugin where, in those same five table cells and nowhere else in `skills/characters/louis/SKILL.md`, `` `/suits:code-review` `` is replaced by `Call the Skill tool with "suits:code-review"`, and `` `/suits:money-check` `` by `Call the Skill tool with "suits:money-check"`.
+
+`trigger-louis-loads-tools-skill-wording` is the prompt-side version of arm B and runs on the committed plugin. A difference of one or two runs is noise.

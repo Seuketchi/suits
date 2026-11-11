@@ -29,7 +29,7 @@ A mode every character has for a session that cannot, or is told not to, start a
 _Avoid_: solo mode, helper mode (that is the name the session uses when it asks for this mode)
 
 **Read-only version**:
-A definition in `agents/` that another session can start for louis, mike or rachel. Its tool list has no way to edit a file or start another session. `Bash` stays, and the file cannot limit it to reading.
+A definition in `agents/` that another session can start for louis, mike or rachel. Its tool list has no way to edit a file or start another session. `Bash` stays, and a hook blocks any command in it that writes.
 _Avoid_: sub-agent, read-only agent
 
 **Hand-off packet**:

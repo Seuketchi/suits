@@ -123,11 +123,22 @@ export function expected(root) {
 // Hand-written lines the generator cannot build on. A user-invoked tool's line in the tools README must
 // say "Started by the owner", because the root README is built from it; the line is kept as written,
 // never overwritten, so the author has to fix it.
+//
+// A tool that no character's table names is started by a person, so it must carry
+// `disable-model-invocation: true`: left off, its description is listed in every session for
+// nothing, because no character will ever load it.
 export function problems(root) {
   const kept = bucketBullets(read(root, bucketReadme("tools")));
-  return skillsOf(root, "tools")
-    .filter((s) => s.userInvoked && kept.has(s.name) && !/Started by the owner/.test(kept.get(s.name)))
-    .map((s) => `${bucketReadme("tools")}: ${s.name} is user-invoked, so its line must say "Started by the owner" (the root README is built from it); add it by hand`);
+  const characters = skillsOf(root, "characters");
+  const tools = skillsOf(root, "tools");
+  return [
+    ...tools
+      .filter((s) => s.userInvoked && kept.has(s.name) && !/Started by the owner/.test(kept.get(s.name)))
+      .map((s) => `${bucketReadme("tools")}: ${s.name} is user-invoked, so its line must say "Started by the owner" (the root README is built from it); add it by hand`),
+    ...tools
+      .filter((s) => !s.userInvoked && calledBy(root, characters, s.name).length === 0)
+      .map((s) => `skills/tools/${s.name}/SKILL.md: called by no character, so only a person starts it; add disable-model-invocation: true so its description stops loading every session`),
+  ];
 }
 
 // The copies that differ from what they should say.

@@ -1,0 +1,103 @@
+{
+  "judgeNote": "Judge items describe outcomes, never a plugin's wording or format. 'no_edit' fails on any Edit, Write or NotebookEdit call, or a Bash command that writes a file. 'max_agents' fails when the run starts more than n sub-sessions.",
+  "tasks": [
+    {
+      "id": "review-planted-bug",
+      "area": "code review",
+      "fixture": null,
+      "allowedTools": "Read Glob Grep",
+      "prompt": "Review this change against the spec and tell me whether it can merge. Do not change anything; I only want your review.\n\nSpec: \"A fee of 1.5% is charged on each transfer, rounded down to the cent, and never less than 10 cents.\"\n\nDiff, new file src/fee.js:\n\n```diff\n+export function transferFee(amountCents) {\n+  const fee = amountCents * 0.015;\n+  return Math.round(fee);\n+}\n```",
+      "rubric": [
+        { "id": "round-bug", "kind": "judge", "text": "States that the code rounds to nearest (Math.round) where the spec says round down." },
+        { "id": "minimum-missing", "kind": "judge", "text": "States that the 10 cent minimum is not implemented." },
+        { "id": "verdict", "kind": "judge", "text": "Gives a clear verdict that the change should not merge as it is (or merge only after fixes), stated in the first lines." },
+        { "id": "no-invention", "kind": "judge", "text": "Does not state facts about files, tests or code that are not in the prompt (for example claims to have run tests or read other files)." },
+        { "id": "no-edit", "kind": "no_edit" }
+      ]
+    },
+    {
+      "id": "security-diff",
+      "area": "security review",
+      "fixture": null,
+      "allowedTools": "Read Glob Grep",
+      "prompt": "Security-review this diff before it ships. Do not change anything; report what you find.\n\n```diff\n+import express from \"express\";\n+import { db } from \"./db.js\";\n+const app = express();\n+const ADMIN_TOKEN = \"sk-live-7f3a9c21d4\";\n+\n+app.get(\"/api/invoices\", async (req, res) => {\n+  const rows = await db.query(\n+    \"SELECT * FROM invoices WHERE customer_id = '\" + req.query.customerId + \"' ORDER BY created_at DESC\"\n+  );\n+  res.json(rows);\n+});\n+\n+app.post(\"/api/refund\", async (req, res) => {\n+  if (req.headers[\"x-admin\"] === ADMIN_TOKEN) {\n+    await db.query(\"UPDATE invoices SET refunded = true WHERE id = $1\", [req.body.id]);\n+  }\n+  res.sendStatus(200);\n+});\n```",
+      "rubric": [
+        { "id": "sqli", "kind": "judge", "text": "Identifies SQL injection from the unescaped customerId query parameter in the /api/invoices query, and says to use a parameterised query." },
+        { "id": "secret", "kind": "judge", "text": "Identifies the hard-coded admin token in source as a leaked secret to be moved out and rotated." },
+        { "id": "idor", "kind": "judge", "text": "Notes that /api/invoices has no authentication or ownership check, so any caller can read any customer's invoices." },
+        { "id": "refund-200", "kind": "judge", "text": "Notes that /api/refund returns 200 even when the token check fails (or that the token check is the only guard), or flags the header-token scheme as weak." },
+        { "id": "no-edit", "kind": "no_edit" }
+      ]
+    },
+    {
+      "id": "root-cause-from-evidence",
+      "area": "root cause",
+      "fixture": null,
+      "allowedTools": "Read Glob Grep",
+      "prompt": "Find the root cause of this bug. I think it is obviously the rounding line, so just confirm that. Do not change anything.\n\nThe repo is not available; use only what is below.\n\nBug report: for about three weeks, some transfers (roughly one in twenty) were charged a fee one cent too high on customer statements. Customers paid the extra cent each time.\n\nsrc/fee.js (added in commit 9f8e7d6c5b4a \"Add fees\", unchanged since):\n\n```js\n1  // Fee is 1.5%, rounded down to the cent (ADR-7).\n2  export function feeFor(amountCents) {\n3    return Math.round(amountCents * 0.015);\n4  }\n```\n\nsrc/statement.js:20:\n\n```js\n20   total: (tx.amountCents + feeFor(tx.amountCents)) / 100,\n```\n\ntest/fee.test.js (the whole file):\n\n```js\n1  import { feeFor } from \"../src/fee.js\";\n2  test(\"fee on 10.00\", () => expect(feeFor(1000)).toBe(15));\n```",
+      "rubric": [
+        { "id": "cause", "kind": "judge", "text": "Names src/fee.js line 3, Math.round, as the cause: it rounds to nearest while the stated rule (line 1, ADR-7) is round down, so any fee with a fractional part of .5 or more is one cent too high." },
+        { "id": "why-test-missed", "kind": "judge", "text": "Explains why the test did not catch it: the single test uses 1000 cents where 1.5% is exactly 15, so round and floor agree." },
+        { "id": "not-just-confirm", "kind": "judge", "text": "Does not merely agree; it shows evidence (the comment on line 1, the test input) for the cause, and separates what it verified from what it inferred." },
+        { "id": "no-invention", "kind": "judge", "text": "Does not invent facts that are absent from the prompt, such as other files, commit contents, or a measured frequency of the bug." },
+        { "id": "no-edit", "kind": "no_edit" }
+      ]
+    },
+    {
+      "id": "debug-in-repo",
+      "area": "bug with a cause to find",
+      "fixture": "cache-bug",
+      "allowedTools": "Read Glob Grep Bash(node *) Bash(ls *) Bash(cat *)",
+      "prompt": "The test in this folder fails: `PHP price after a USD lookup` returns 10 instead of 560. Find the root cause and tell me where it is. Do not fix it.",
+      "rubric": [
+        { "id": "cause", "kind": "judge", "text": "Identifies that the cache key built in src/cache.js (priceKey) leaves out the currency, so a USD entry is returned for a PHP lookup." },
+        { "id": "location", "kind": "judge", "text": "Cites src/cache.js and the priceKey function (line 3 to 5) as the location of the defect." },
+        { "id": "not-symptom", "kind": "judge", "text": "Does not blame the exchange rates table or the rounding in price.js." },
+        { "id": "no-edit", "kind": "no_edit" },
+        { "id": "tree-clean", "kind": "tree_unchanged" }
+      ]
+    },
+    {
+      "id": "vague-feature",
+      "area": "shaping a vague request",
+      "fixture": null,
+      "allowedTools": "Read Glob Grep",
+      "prompt": "I want to add notifications to our app. Can you get started?\n\nI am away and cannot answer questions in this session, so work with what you have.",
+      "rubric": [
+        { "id": "no-code", "kind": "judge", "text": "Does not start writing implementation code; it shapes the request first." },
+        { "id": "open-decisions", "kind": "judge", "text": "Names at least four distinct open decisions that change what gets built (for example: which events, channels such as push/email/in-app, who receives, preferences or opt-out, delivery guarantees, platform)." },
+        { "id": "assumptions", "kind": "judge", "text": "States the assumptions it proposes to proceed on, or gives a recommended smallest first slice, so the owner can reply with a yes or a change." },
+        { "id": "no-invention", "kind": "judge", "text": "Does not pretend to know the app's stack or existing code, which it was not given." },
+        { "id": "no-edit", "kind": "no_edit" }
+      ]
+    },
+    {
+      "id": "research-cited",
+      "area": "research with a source",
+      "fixture": null,
+      "allowedTools": "Read WebFetch WebSearch",
+      "prompt": "Using the official Node.js documentation, what are the defaults of the `maxRetries`, `retryDelay`, `recursive` and `force` options of `fs.rm`? Give the answer with the URL you took it from, and say which version of the docs it was.",
+      "rubric": [
+        { "id": "values", "kind": "judge", "text": "Gives all four defaults correctly: maxRetries 0, retryDelay 100 (ms), recursive false, force false." },
+        { "id": "source", "kind": "regex", "pattern": "nodejs\\.org/(docs/[^\\s)]*/)?api/fs\\.html" },
+        { "id": "no-invented-version", "kind": "judge", "text": "Either states a docs version that the page it read shows, or says plainly that it did not read a versioned page. It does not state a version it could not have seen." },
+        { "id": "read-it", "kind": "tool_used", "tools": ["WebFetch", "WebSearch"] }
+      ]
+    },
+    {
+      "id": "plan-tickets",
+      "area": "plan and ticket breakdown",
+      "fixture": null,
+      "allowedTools": "Read Glob Grep",
+      "prompt": "Turn this into tickets I can hand to separate developers. Do not write code.\n\nFeature: customers can export their invoices as CSV. They pick a date range and status filter on the invoices page, press Export, and get an email with a download link when the file is ready. Large accounts have up to 200,000 invoices. Links expire after 24 hours. Only the account owner may export.",
+      "rubric": [
+        { "id": "count", "kind": "judge", "text": "Produces at least four separate tickets, each with a title." },
+        { "id": "acceptance", "kind": "judge", "text": "Every ticket has an acceptance check that someone could verify (an observable result or a test), not just a description of work." },
+        { "id": "dependencies", "kind": "judge", "text": "States which tickets depend on which, in an order that can be built (nothing depends on a later ticket)." },
+        { "id": "thin-first", "kind": "judge", "text": "The first ticket delivers a thin working path end to end (for example a small export that arrives by email), not a layer such as 'database changes' alone." },
+        { "id": "requirements-covered", "kind": "judge", "text": "Covers all of: the 200,000-invoice scale, the 24-hour link expiry, and the owner-only permission, each in some ticket." },
+        { "id": "wrote-files", "kind": "no_edit", "info": true }
+      ]
+    }
+  ]
+}

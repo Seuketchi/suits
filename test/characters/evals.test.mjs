@@ -10,6 +10,8 @@ import { join } from "node:path";
 // One case per character (louis, jessica, donna, mike, rachel, harvey, the associates), and three that check a rule across characters.
 const CHARACTER_CASES = ["louis-one-pass", "louis-security-review", "working-alone-handoff", "donna-front-desk", "mike-quick-look", "rachel-root-cause", "harvey-decision-line", "associates-test-first"];
 const OTHER_CASES = ["research-no-redelegation", "pr-triage-routes-to-donna", "helper-no-session"];
+// Trigger cases ask in plain words, with no slash command, and check which skill the model picks (or that it picks none).
+const TRIGGER_CASES = ["trigger-donna", "trigger-jessica", "trigger-louis", "trigger-louis-loads-tools", "trigger-louis-loads-tools-skill-wording", "trigger-mike", "trigger-rachel", "trigger-none-copy-typo", "trigger-none-js-question", "trigger-none-no-diff", "trigger-none-unit-convert"];
 const CASES = [...CHARACTER_CASES, ...OTHER_CASES];
 const graders = (name) => (existsSync(join("evals", name, "graders")) ? readdirSync(join("evals", name, "graders")).filter((f) => f.endsWith(".md")) : []);
 
@@ -33,8 +35,8 @@ describe("evals", () => {
   }
 
   test("there are no other case folders than the ones listed", () => {
-    const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results").map((e) => e.name).sort();
-    assert.deepEqual(dirs, [...CASES].sort());
+    const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results" && e.name !== "head-to-head").map((e) => e.name).sort();
+    assert.deepEqual(dirs, [...CASES, ...TRIGGER_CASES].sort());
   });
 
   test("louis's case keeps him read-only and in one pass", () => {

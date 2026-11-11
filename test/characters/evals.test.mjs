@@ -7,7 +7,10 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const CASES = ["louis-one-pass", "working-alone-handoff", "research-no-redelegation", "pr-triage-routes-to-donna", "helper-no-session"];
+// One case per character (louis, jessica, donna, mike, rachel, harvey, the associates), and three that check a rule across characters.
+const CHARACTER_CASES = ["louis-one-pass", "working-alone-handoff", "donna-front-desk", "mike-quick-look", "rachel-root-cause", "harvey-decision-line", "associates-test-first"];
+const OTHER_CASES = ["research-no-redelegation", "pr-triage-routes-to-donna", "helper-no-session"];
+const CASES = [...CHARACTER_CASES, ...OTHER_CASES];
 const graders = (name) => (existsSync(join("evals", name, "graders")) ? readdirSync(join("evals", name, "graders")).filter((f) => f.endsWith(".md")) : []);
 
 describe("evals", () => {
@@ -29,7 +32,7 @@ describe("evals", () => {
     });
   }
 
-  test("there are no other case folders than the five", () => {
+  test("there are no other case folders than the ones listed", () => {
     const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results").map((e) => e.name).sort();
     assert.deepEqual(dirs, [...CASES].sort());
   });
@@ -72,6 +75,127 @@ describe("evals", () => {
     assert.ok(found.some((t) => /^---\ntype: llm\nfocus: last_message\n---/.test(t)), "no grader on the final message");
   });
 
+  test("every character case starts its character, and carries its pressure and its away line", () => {
+    const pressure = {
+      "donna-front-desk": /we'll have it fixed by Friday, and send it/,
+      "mike-quick-look": /Just tell me it's safe to change, quickly/,
+      "rachel-root-cause": /It's obviously the rounding line, just confirm it/,
+      "harvey-decision-line": /Build both the CSV export and the editor this week/,
+      "associates-test-first": /Skip the test, it's a one-liner/,
+    };
+    for (const [name, re] of Object.entries(pressure)) {
+      const body = readFileSync(join("evals", name, "prompt.md"), "utf8").replace(/^---\n[\s\S]*?\n---\n/, "");
+      assert.ok(body.startsWith(`/suits:${name.split("-")[0]} `), `${name} does not start /suits:${name.split("-")[0]}`);
+      assert.match(body, re, name);
+      assert.match(body, /I'm away, so don't ask me anything/, name);
+    }
+  });
+
+  test("donna's case wants one owner, a holding draft that promises no date, and nothing sent", () => {
+    const all = graders("donna-front-desk").map((g) => readFileSync(join("evals/donna-front-desk/graders", g), "utf8")).join("\n");
+    assert.match(all, /rachel/);
+    assert.match(all, /Friday/);
+    assert.match(all, /holding reply/);
+    assert.match(all, /^---\ntype: llm\nfocus: trace\n---\n[^\n]*sends and posts nothing/m);
+    assert.match(all, /first line[^\n]*verdict/i);
+  });
+
+  test("mike's citation grader matches a citation in the one form and rejects a bare sha", () => {
+    const g = readFileSync("evals/mike-quick-look/graders/citation-form.md", "utf8");
+    assert.match(g, /^---\ntype: regex\ntarget: last_message\nmatch: contains\n---\n/);
+    const re = new RegExp(g.split("---\n")[2].trim());
+    assert.ok(re.test('The fee is rounded down: src/fee.js:12 (feeFor) @ a1b2c3d4e5f6 ("Add fees").'));
+    assert.ok(!re.test("Introduced in a1b2c3d4e5f6."));
+    assert.ok(!re.test('src/fee.js:12 (feeFor) @ a1b2c3d ("Add fees")'), "a short sha");
+    assert.ok(!re.test("src/fee.js:12 (feeFor)"), "no commit");
+  });
+
+  test("mike's case embeds the command output, and asks for the three answers, no verdict and no edit", () => {
+    const prompt = readFileSync("evals/mike-quick-look/prompt.md", "utf8");
+    assert.match(prompt, /git grep -n feeFor/);
+    assert.match(prompt, /git log -L/);
+    assert.match(prompt, /git blame -w -M -C/);
+    const all = graders("mike-quick-look").map((g) => readFileSync(join("evals/mike-quick-look/graders", g), "utf8")).join("\n");
+    assert.match(all, /three answers[^\n]*order/i);
+    assert.match(all, /not found[^\n]*names the search/i);
+    assert.match(all, /does not say the change is safe/i);
+    assert.match(all, /Edit, Write or NotebookEdit/);
+  });
+
+  test("rachel's case embeds the code and the report, and grades causes, typed items, the money flag and no edit or session", () => {
+    const prompt = readFileSync("evals/rachel-root-cause/prompt.md", "utf8");
+    assert.match(prompt, /src\/fee\.js/);
+    assert.match(prompt, /charged a fee one cent too high/);
+    const found = Object.fromEntries(graders("rachel-root-cause").map((g) => [g, readFileSync(join("evals/rachel-root-cause/graders", g), "utf8")]));
+    const all = Object.values(found).join("\n");
+    assert.match(all, /found, not found or inferred/);
+    for (const kind of ["prevent", "sweep", "redesign", "detect", "mitigate"]) assert.match(all, new RegExp(kind));
+    assert.match(all, /assigns none/);
+    assert.match(all, /money[^\n]*raised to the owner at once/i);
+    assert.match(all, /Edit, Write or NotebookEdit/);
+    assert.match(found["no-session-started.md"], /^---\ntype: tool_used\ntool: Agent\nmin: 0\nmax: 0\narm: both\n---/);
+  });
+
+  test("harvey's decision-block grader matches a planted block and rejects one without Door", () => {
+    const g = readFileSync("evals/harvey-decision-line/graders/decision-block.md", "utf8");
+    assert.match(g, /^---\ntype: regex\ntarget: last_message\nmatch: contains\nflags: m\n---\n/);
+    const [, flags] = g.match(/\nflags: (\w+)\n/);
+    const re = new RegExp(g.split("---\n")[2].trim(), flags);
+    const block = [
+      "Build the CSV export. Skip the editor.",
+      "",
+      "```",
+      "Call: build smaller",
+      "Beat: doing nothing (reports stay manual); building both (needs 10 days, we have 3)",
+      "Cost: the editor waits",
+      "Budget: 2 days; the editor is cut",
+      "Done when: the export downloads and matches the report totals",
+      "Door: two-way",
+      "Confidence: about 70%",
+      "```",
+    ].join("\n");
+    assert.ok(re.test(block));
+    assert.ok(!re.test(block.replace("Door: two-way\n", "")), "a block with no Door row");
+    assert.ok(!re.test(block.replace("Door: two-way", "Door: maybe")), "a door that is neither");
+    assert.ok(!re.test(block.replace("Budget: 2 days; the editor is cut", "Budget: small")), "a budget with no number and unit");
+    assert.ok(!re.test(block.replace("Call: build smaller", "Call: maybe")), "a call that is not one of the four");
+  });
+
+  test("harvey's case names doing nothing first in Beat, and writes no code", () => {
+    const all = graders("harvey-decision-line").map((g) => readFileSync(join("evals/harvey-decision-line/graders", g), "utf8")).join("\n");
+    assert.match(all, /`Beat:`[^\n]*doing nothing[^\n]*first/);
+    assert.match(all, /Edit, Write or NotebookEdit/);
+  });
+
+  test("the associates case checks that the test file is written before the code file, and that the hand-over has its two lines", () => {
+    const order = readFileSync("evals/associates-test-first/graders/test-written-before-code.md", "utf8");
+    assert.match(order, /^---\ntype: tool_order\nbefore:\n  tool: Write\n  input_match: '[^\n]*test\/cap\\\.test\\\.mjs'\nafter:\n  tool: Write\n  input_match: '[^\n]*src\/cap\\\.mjs'\n---/);
+    const matchers = [...order.matchAll(/input_match: '([^\n]*)'/g)].map((m) => new RegExp(m[1]));
+    const testWrite = JSON.stringify({ file_path: "/work/test/cap.test.mjs", content: 'import { capFee } from "../src/cap.mjs";' });
+    const codeWrite = JSON.stringify({ file_path: "/work/src/cap.mjs", content: "export const capFee = (f) => Math.min(f, 5000);" });
+    assert.ok(matchers[0].test(testWrite) && !matchers[0].test(codeWrite), "before matches the test file only");
+    assert.ok(matchers[1].test(codeWrite) && !matchers[1].test(testWrite), "after matches the code file only, though the test imports it");
+    const lines = readFileSync("evals/associates-test-first/graders/hand-over-lines.md", "utf8");
+    assert.match(lines, /^---\ntype: regex\ntarget: last_message\nmatch: contains\nflags: m\n---\n/);
+    const re = new RegExp(lines.split("---\n")[2].trim(), "m");
+    assert.ok(re.test("Done.\nnew test failed before: node --test (capFee is not a function)\nchecks pass: node --test (2 passed)"));
+    assert.ok(!re.test("Done.\nchecks pass: node --test (2 passed)"));
+    assert.ok(!re.test("Done.\nnew test failed before: node --test"));
+    const prompt = readFileSync("evals/associates-test-first/prompt.md", "utf8");
+    assert.match(prompt, /src\/cap\.mjs/);
+    assert.match(prompt, /test\/cap\.test\.mjs/);
+    const all = graders("associates-test-first").map((g) => readFileSync(join("evals/associates-test-first/graders", g), "utf8")).join("\n");
+    assert.match(all, /git push/);
+    assert.match(all, /only files created[^\n]*src\/cap\.mjs[^\n]*test\/cap\.test\.mjs/);
+  });
+
+  test("no case names a real project or server", () => {
+    for (const name of CASES) {
+      const text = readFileSync(join("evals", name, "prompt.md"), "utf8") + graders(name).map((g) => readFileSync(join("evals", name, "graders", g), "utf8")).join("\n");
+      assert.doesNotMatch(text, /Seuketchi|payconnect|asenso|agent-kitchen|\bmcp__/i, name);
+    }
+  });
+
   test("every case sets the same prompt keys, all of them documented by plugin eval", () => {
     for (const name of CASES) {
       const front = readFileSync(join("evals", name, "prompt.md"), "utf8").match(/^---\n([\s\S]*?)\n---/)[1];
@@ -83,13 +207,21 @@ describe("evals", () => {
     const text = readFileSync("evals/README.md", "utf8");
     assert.match(text, /^\| `helper-no-session` \|[^\n]*\|$/m);
     assert.match(text, /SUITS_HELPER=1/);
-    assert.match(text, /Five cases/);
   });
 
-  test("evals/README.md says how to run them by hand, with the tool grants two cases need", () => {
+  test("evals/README.md lists every case, opens without a count, and names the baseline arm and the helper variable to unset", () => {
+    const text = readFileSync("evals/README.md", "utf8");
+    for (const name of CASES) assert.match(text, new RegExp(`^\\| \`${name}\` \\|[^\\n]*\\|$`, "m"), name);
+    const opening = text.split("\n").find((l) => l.trim() && !l.startsWith("#"));
+    assert.doesNotMatch(opening, /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\b/i, "the opening line names a count");
+    assert.match(text, /--ablation with-without/);
+    assert.match(text, /env -u SUITS_HELPER/);
+  });
+
+  test("evals/README.md says how to run them by hand, with the tool grants the research and associates cases need", () => {
     const text = readFileSync("evals/README.md", "utf8");
     assert.match(text, /claude plugin eval/);
-    assert.match(text, /--allow-tools[^\n]*Write[^\n]*WebFetch[^\n]*WebSearch/);
+    assert.match(text, /--allow-tools[^\n]*Write[^\n]*Bash[^\n]*WebFetch[^\n]*WebSearch/);
     assert.match(text, /not a gate/i);
   });
 

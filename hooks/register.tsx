@@ -1,12 +1,19 @@
+import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
+
+import type { Checklist } from '../types'
 
 import {
   HELPER_DENY,
   HELPER_PROMPT,
   HELPER_TOAST,
   RULES_PATH,
+  applyChecklist,
   characterOf,
   charactersFrom,
+  checklistCount,
+  checklistRows,
+  checklistText,
   decide,
   helperOn,
   parseRules,
@@ -49,6 +56,18 @@ async function findRules($: any): Promise<{ path?: string; parsed: ReturnType<ty
   return { parsed: { status: 'missing' } }
 }
 
+// What the pane draws from. The checklist is the job's steps and which are
+// done; the character is the one the last `suits:<character>` skill named.
+// Change a tag when a value's fields change: it declines what an earlier
+// version stored, which outlives a reload.
+const checklist = atom({ plugin: 'suits', key: 'checklist' } as const, { steps: [], done: [] } as Checklist, {
+  shape: 'checklist-1',
+})
+const character = atom({ plugin: 'suits', key: 'character' } as const, '', { shape: 'character-1' })
+
+const PANE_ID = 'suits-checklist'
+const CHECKLIST_TOOL = 'suits_checklist'
+
 // The one switch, read at each event so a value set by another plugin's
 // session.start is seen whatever the load order. This is the only variable
 // the mod reads.
@@ -74,6 +93,14 @@ export const register: Register = on => {
   const reported = new Set<string>()
   // A check that failed is told once per cause.
   const failed = new Set<string>()
+
+  on('tool.call', { tool: `mcp__suits__${CHECKLIST_TOOL}` }, async ($, e) => {
+    const { checklist: next, notes } = applyChecklist(await read($, checklist), e)
+
+    await update($, checklist, () => next)
+
+    return { result: [{ type: 'text', text: checklistText(next, notes) }] }
+  })
 
   on('tool.call', async ($, e, next) => {
     const { path, parsed } = await findRules($)
@@ -159,9 +186,12 @@ export const register: Register = on => {
 
   // The status line names the working character; a tool skill leaves it be.
   on('skill.prompt', async ($, e, next) => {
-    const character = characterOf(e.skill, await charactersOf($), e.pluginName)
+    const name = characterOf(e.skill, await charactersOf($), e.pluginName)
 
-    if (character) $.ui.status(statusFor(character, await isHelper($)))
+    if (name) {
+      $.ui.status(statusFor(name, await isHelper($)))
+      await update($, character, () => name)
+    }
 
     return next(e)
   })
@@ -173,6 +203,23 @@ export const register: Register = on => {
       name: 'suits-rules',
       description: "Show this project's suits rules file.",
     })
+    await $.command.register({
+      name: 'suits-checklist',
+      description: "Open the checklist pane for the job's steps.",
+    })
+    await $.tool.register({
+      name: CHECKLIST_TOOL,
+      description:
+        'Keeps the checklist of a job of three or more steps, shown in a pane the owner can open. Call it with `steps` (a list of short strings) to set the list, which clears what was done, and with `done` (step numbers counted from 1) to mark steps done; numbers add to those already done. Both may be sent in one call.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          steps: { type: 'array', items: { type: 'string' }, description: 'The steps, in order. Replaces the list.' },
+          done: { type: 'array', items: { type: 'integer' }, description: 'Step numbers, from 1, to mark done.' },
+        },
+      },
+      isDeferred: false,
+    })
 
     return next(e)
   })
@@ -181,5 +228,31 @@ export const register: Register = on => {
     const { path, parsed } = await findRules($)
 
     return { text: rulesReport(path, parsed) }
+  })
+
+  // The pane opens only when the owner asks for it.
+  on('command.run', { command: 'suits-checklist' }, async $ => {
+    await $.ui.open({ id: PANE_ID, title: 'Checklist' })
+
+    return { text: 'Checklist pane opened.' }
+  })
+
+  on('ui.render', { component: 'Pane', requestId: PANE_ID }, async ($, e) => {
+    const { Box, Text } = $.ui.resolve(e)
+    const list = await read($, checklist)
+    const who = await read($, character)
+
+    return (
+      <Box flexDirection="column">
+        <Text>{who ? who : 'No character yet.'}</Text>
+        {list.steps.length === 0 && <Text dimColor>No steps yet.</Text>}
+        {checklistRows(list).map(row => (
+          <Text dimColor={row.isDone}>
+            {row.number}. {row.isDone ? 'done' : 'left'} {row.text}
+          </Text>
+        ))}
+        <Text>{checklistCount(list)}</Text>
+      </Box>
+    )
   })
 }

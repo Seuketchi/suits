@@ -22,7 +22,7 @@ export const ownRule = (source) =>
 
 test("hooks/ holds no rule of its own", () => {
   const files = shipped();
-  assert.ok(files.length >= 3, "expected hooks.json, register.ts and logic.mjs");
+  assert.ok(files.length >= 3, "expected hooks.json, register.tsx and logic.mjs");
   for (const [name, source] of files) {
     assert.equal(ownRule(source), false, `${name} carries a rule: rules come only from the rules file`);
   }

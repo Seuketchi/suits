@@ -1,5 +1,5 @@
 // The decisions of the rules hooks, as pure functions: no `$`, no file reads.
-// `register.ts` reads the rules file and asks these what to do. Every rule
+// `register.tsx` reads the rules file and asks these what to do. Every rule
 // comes from the project's own rules file; none is written here.
 
 export const RULES_PATH = ".claude/suits-rules.json";
@@ -219,4 +219,51 @@ export function characterOf(skill, characters, pluginName) {
 export function statusFor(character, helper) {
   if (character) return helper ? `${character} · helper` : character;
   return helper ? "helper" : undefined;
+}
+
+// The checklist behind the `suits_checklist` tool and the pane. Steps are
+// numbered from 1, as the pane shows them.
+export const EMPTY_CHECKLIST = { steps: [], done: [] };
+export const MAX_STEPS = 50;
+export const MAX_STEP_LENGTH = 200;
+
+// `current` is { steps, done }; `input` is what the model sent: `steps` sets the
+// list (and clears what was done), `done` adds step numbers to those done.
+// Anything it cannot use is left out and named in `notes`.
+export function applyChecklist(current, input) {
+  const notes = [];
+  let { steps, done } = current;
+
+  if (input.steps !== undefined) {
+    const valid = Array.isArray(input.steps) && input.steps.length > 0 && input.steps.every((s) => typeof s === "string" && s.trim() !== "");
+    if (valid) {
+      if (input.steps.length > MAX_STEPS) notes.push(`only the first ${MAX_STEPS} steps are kept`);
+      steps = input.steps.slice(0, MAX_STEPS).map((s) => s.trim().slice(0, MAX_STEP_LENGTH));
+      done = [];
+    } else {
+      notes.push('"steps" must be a non-empty list of non-empty strings; the list is unchanged');
+    }
+  }
+
+  if (input.done !== undefined) {
+    const numbers = Array.isArray(input.done) ? input.done : [input.done];
+    const bad = numbers.filter((n) => !(Number.isInteger(n) && n >= 1 && n <= steps.length));
+    if (bad.length > 0) notes.push(`ignored ${bad.join(", ")}: a step number is a whole number from 1 to ${steps.length}`);
+    const good = numbers.filter((n) => Number.isInteger(n) && n >= 1 && n <= steps.length);
+    done = [...new Set([...done, ...good])].sort((a, b) => a - b);
+  }
+
+  return { checklist: { steps, done }, notes };
+}
+
+export const checklistCount = ({ steps, done }) => `${done.length} of ${steps.length} done`;
+
+export const checklistRows = ({ steps, done }) =>
+  steps.map((text, i) => ({ number: i + 1, text, isDone: done.includes(i + 1) }));
+
+// What the tool answers: the list as text, the count, and any notes.
+export function checklistText(checklist, notes) {
+  if (checklist.steps.length === 0) return "No steps yet. Call with steps to set them.";
+  const lines = checklistRows(checklist).map((r) => `${r.number}. [${r.isDone ? "x" : " "}] ${r.text}`);
+  return [...lines, checklistCount(checklist), ...notes].join("\n");
 }

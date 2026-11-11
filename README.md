@@ -82,6 +82,10 @@ The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that
 - If a check itself fails, the call goes through and a toast says it was not checked.
 - `/suits-rules` shows the file and its rules, or says there is none.
 
+### Checklist
+
+For a job of three or more steps, a character lists the steps with the `suits_checklist` tool: `steps` sets the list, `done` marks step numbers (from 1) done. `/suits-checklist` opens a pane that shows the working character, each step as done or left, and "n of m done". The pane opens only when asked, and it seats at any width. Nothing else opens it.
+
 ### Helper mode
 
 A session that must do its work alone, with no new session started, is a helper. One variable turns helper mode on: `SUITS_HELPER`, any value but empty or `0`. It is the only variable the mod reads, and it is read at each event, not once at start.

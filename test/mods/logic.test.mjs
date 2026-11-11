@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_SUBJECT, NO_FILE_TEXT, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
+import { EMPTY_CHECKLIST, HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_STEPS, MAX_STEP_LENGTH, MAX_SUBJECT, NO_FILE_TEXT, applyChecklist, checklistCount, checklistRows, checklistText, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
 
 const FILE = JSON.stringify({
   never: [
@@ -240,4 +240,68 @@ test("a tool or an unknown name is no character", () => {
   const characters = ["louis", "donna"];
   assert.equal(characterOf("suits:tdd", characters, "suits"), undefined);
   assert.equal(characterOf("tdd", characters, "suits"), undefined);
+});
+
+test("setting the steps replaces the list and clears what was done", () => {
+  const first = applyChecklist(EMPTY_CHECKLIST, { steps: ["write the test", "make it pass"] });
+  assert.deepEqual(first.checklist, { steps: ["write the test", "make it pass"], done: [] });
+  const marked = applyChecklist(first.checklist, { done: [1] });
+  assert.deepEqual(marked.checklist.done, [1]);
+  const reset = applyChecklist(marked.checklist, { steps: ["a", "b", "c"] });
+  assert.deepEqual(reset.checklist, { steps: ["a", "b", "c"], done: [] });
+});
+
+test("steps and done in one call set the list, then mark", () => {
+  const { checklist } = applyChecklist(EMPTY_CHECKLIST, { steps: ["a", "b", "c"], done: [1, 2] });
+  assert.deepEqual(checklist, { steps: ["a", "b", "c"], done: [1, 2] });
+});
+
+test("done adds step numbers, counted from 1, and a repeat changes nothing", () => {
+  const base = { steps: ["a", "b", "c"], done: [2] };
+  assert.deepEqual(applyChecklist(base, { done: [1] }).checklist.done, [1, 2]);
+  assert.deepEqual(applyChecklist(base, { done: [2, 2] }).checklist.done, [2]);
+});
+
+test("a step number that is not a step is ignored, and the result says so", () => {
+  const out = applyChecklist({ steps: ["a", "b"], done: [] }, { done: [0, 3, 1.5, "x", 2] });
+  assert.deepEqual(out.checklist.done, [2]);
+  assert.match(out.notes.join("\n"), /0, 3, 1\.5, x/);
+});
+
+test("bad steps are ignored and the list stays", () => {
+  const base = { steps: ["a"], done: [1] };
+  for (const steps of ["a", [1], [""], [], null]) {
+    const out = applyChecklist(base, { steps });
+    assert.deepEqual(out.checklist, base, JSON.stringify(steps));
+    assert.ok(out.notes.length > 0, JSON.stringify(steps));
+  }
+});
+
+test("a long list and a long step are cut", () => {
+  const steps = Array.from({ length: MAX_STEPS + 5 }, (_, i) => `step ${i + 1} ${"x".repeat(500)}`);
+  const { checklist, notes } = applyChecklist(EMPTY_CHECKLIST, { steps });
+  assert.equal(checklist.steps.length, MAX_STEPS);
+  assert.ok(checklist.steps.every((s) => s.length <= MAX_STEP_LENGTH));
+  assert.ok(notes.length > 0);
+});
+
+test("the count reads 'n of m done'", () => {
+  assert.equal(checklistCount({ steps: ["a", "b", "c"], done: [1, 3] }), "2 of 3 done");
+  assert.equal(checklistCount(EMPTY_CHECKLIST), "0 of 0 done");
+});
+
+test("the rows number the steps and mark each done or left", () => {
+  assert.deepEqual(checklistRows({ steps: ["a", "b"], done: [2] }), [
+    { number: 1, text: "a", isDone: false },
+    { number: 2, text: "b", isDone: true },
+  ]);
+});
+
+test("the tool's answer lists the steps and the count", () => {
+  const text = checklistText({ steps: ["a", "b"], done: [1] }, ["ignored 9"]);
+  assert.match(text, /^1\. \[x\] a$/m);
+  assert.match(text, /^2\. \[ \] b$/m);
+  assert.match(text, /^1 of 2 done$/m);
+  assert.match(text, /ignored 9/);
+  assert.equal(checklistText(EMPTY_CHECKLIST, []), "No steps yet. Call with steps to set them.");
 });

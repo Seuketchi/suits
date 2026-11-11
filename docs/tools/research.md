@@ -23,7 +23,7 @@ The line between `research` and `grill-with-docs` is the **shelf life of what co
 
 The defining move is that the reading runs as a **background session**. You keep working; it goes off, follows each claim to its primary source, writes one Markdown file, and reports back. Research is legwork you delegate, not thinking you outsource: you get a document to grill, plan, or design against, and you still make the call.
 
-The skill is guarded against nesting. If the session that runs it is already a background session, or cannot start one, it does the reading itself and never starts a further session.
+The skill tells the session not to nest. If the session that runs it is already a background session, or cannot start one, it does the reading itself and never starts a further session.
 
 The file lands at `docs/findings/<topic>.md`, in the format the `/suits:findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
 

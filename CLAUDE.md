@@ -6,6 +6,8 @@ After adding, moving or renaming a skill, run `npm run lists` first, then `npm r
 
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
 
+The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs`, wiring in `register.ts`, no rules of their own: they read the project's `.claude/suits-rules.json`); run `npm run test:mods` and `claude plugin test .` after changing them.
+
 ## Rules for characters
 
 - A character calls tools as `/skill`-style prose ("Run the `/tdd` skill"), never copies a tool's text and never links across skill folders. A tool's shared reference material lives inside the tool that owns it.

@@ -100,6 +100,7 @@ Nothing in this plugin sets the variable. Whatever starts a helper sets it: put 
 
 - [skills/characters](./skills/characters/README.md): the characters.
 - [skills/tools](./skills/tools/README.md): the tools they call.
+- [agents](./agents): the read-only versions of louis, mike and rachel.
 - [hooks](./hooks): the mod, with its decisions in `logic.mjs`.
 - [docs](./docs): one page per skill, and the decisions in [docs/adr](./docs/adr).
 

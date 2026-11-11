@@ -29,6 +29,7 @@ They start no other session and build in one pass, whatever the number of tasks.
 ## It's working if
 
 - The test was seen to fail before the code was written, and the widest check the run allows passes.
+- A request to skip the test still got a failing test first.
 - The hand-over has the command lines (`new test failed before`, `checks pass`, `not run`), and says done or partial.
 - A commit states the problem, the cause, the one change and the check.
 - A bug fix addresses the cause rachel named.

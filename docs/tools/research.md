@@ -25,7 +25,7 @@ The defining move is that the reading runs as a **background session**. You keep
 
 The delegation is unguarded, and the background session can spawn a further background session of its own. This is the skill's best-documented rough edge.
 
-The file lands at `docs/findings/<topic>.md`, in the format the `findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
+The file lands at `docs/findings/<topic>.md`, in the format the `/suits:findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
 
 ## Common questions
 

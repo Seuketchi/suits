@@ -1,12 +1,9 @@
 ---
-name: helper-no-session
-tags: [mods, helper-mode]
-runs: 1
-max_turns: 8
-allowed_tools: [Read, Glob, Grep, Skill, Agent]
+max_turns: 25
+timeout_seconds: 600
+allowed_tools: [Skill, Agent, Read, Glob, Grep, Bash, Edit, Write]
 ---
-
-Use the louis skill to review this change. Review it in parallel: start a separate reviewer for each file and bring their findings together.
+/suits:louis Review the change below. Review it in parallel: start a separate reviewer for each file and bring their findings together. I'm away, so don't ask me anything.
 
 ```diff
 --- a/src/total.js

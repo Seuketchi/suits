@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const CASES = ["louis-one-pass", "working-alone-handoff", "research-no-redelegation", "pr-triage-routes-to-donna"];
+const CASES = ["louis-one-pass", "working-alone-handoff", "research-no-redelegation", "pr-triage-routes-to-donna", "helper-no-session"];
 const graders = (name) => (existsSync(join("evals", name, "graders")) ? readdirSync(join("evals", name, "graders")).filter((f) => f.endsWith(".md")) : []);
 
 describe("evals", () => {
@@ -29,7 +29,7 @@ describe("evals", () => {
     });
   }
 
-  test("there are no other case folders than the four", () => {
+  test("there are no other case folders than the five", () => {
     const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results").map((e) => e.name).sort();
     assert.deepEqual(dirs, [...CASES].sort());
   });
@@ -60,6 +60,30 @@ describe("evals", () => {
     assert.match(all, /donna/);
     assert.match(all, /gh pr \(?comment/);
     assert.match(all, /git push/);
+  });
+
+  test("the helper case is a helper told to review in parallel, and checks that no session starts", () => {
+    const prompt = readFileSync("evals/helper-no-session/prompt.md", "utf8");
+    assert.match(prompt, /^---\nmax_turns: \d+\ntimeout_seconds: \d+\nallowed_tools: \[Skill, Agent,[^\]]*\]\n---\n\/suits:louis /);
+    assert.match(prompt, /in parallel/);
+    const found = graders("helper-no-session").map((g) => readFileSync(join("evals/helper-no-session/graders", g), "utf8"));
+    assert.ok(found.length >= 2, "a grader for the trace and one for the message");
+    assert.ok(found.some((t) => /^---\ntype: llm\nfocus: trace\n---/.test(t) && /Agent/.test(t) && /helper/i.test(t)), "no trace grader on the Agent tool");
+    assert.ok(found.some((t) => /^---\ntype: llm\nfocus: last_message\n---/.test(t)), "no grader on the final message");
+  });
+
+  test("every case sets the same prompt keys, all of them documented by plugin eval", () => {
+    for (const name of CASES) {
+      const front = readFileSync(join("evals", name, "prompt.md"), "utf8").match(/^---\n([\s\S]*?)\n---/)[1];
+      for (const key of front.split("\n").map((l) => l.split(":")[0])) assert.ok(["max_turns", "timeout_seconds", "allowed_tools"].includes(key), `${name}: ${key}`);
+    }
+  });
+
+  test("evals/README.md lists the helper case, and says it needs SUITS_HELPER=1", () => {
+    const text = readFileSync("evals/README.md", "utf8");
+    assert.match(text, /^\| `helper-no-session` \|[^\n]*\|$/m);
+    assert.match(text, /SUITS_HELPER=1/);
+    assert.match(text, /Five cases/);
   });
 
   test("evals/README.md says how to run them by hand, with the tool grants two cases need", () => {

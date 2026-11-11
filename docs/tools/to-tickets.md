@@ -6,15 +6,15 @@ Every ticket is a **tracer bullet**: a narrow but complete path through every la
 
 ## When to reach for it
 
-You invoke this by typing `/to-tickets`. Claude won't reach for it on its own.
+You invoke this by typing `/suits:to-tickets`. Claude won't reach for it on its own.
 
 | Where you are | What to run |
 | --- | --- |
-| You have a spec issue and the build spans several sessions | `/to-tickets`, or `/to-tickets #<spec_issue>` |
-| The plan is only in the conversation, never written up | `/to-tickets` reads the thread directly, no spec needed |
+| You have a spec issue and the build spans several sessions | `/suits:to-tickets`, or `/suits:to-tickets #<spec_issue>` |
+| The plan is only in the conversation, never written up | `/suits:to-tickets` reads the thread directly, no spec needed |
 | The whole change fits in one context window | [implement](https://aihero.dev/skills-implement), skip the tickets |
 | Nothing is decided yet | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), then [to-spec](https://aihero.dev/skills-to-spec) |
-| A [banquet](https://aihero.dev/skills-banquet) map has cleared | [to-spec](https://aihero.dev/skills-to-spec) first, to collapse the map, then `/to-tickets` |
+| A [banquet](https://aihero.dev/skills-banquet) map has cleared | [to-spec](https://aihero.dev/skills-to-spec) first, to collapse the map, then `/suits:to-tickets` |
 
 Tickets that `to-tickets` produced are ready to build by construction. Don't run [triage](https://aihero.dev/skills-triage) over them. Triage is for work that arrived from someone else.
 
@@ -71,7 +71,7 @@ Same class of problem, [reported in issue #513](https://github.com/mattpocock/sk
 They did, and that was a bug: a single shared file also raced when parallel sessions wrote to it. Local mode now writes one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, in dependency order, matching the layout the local tracker template already described. The `NN` prefix is a real ticket ID, so `/cook 03` works instead of retyping a long title.
 
 **It kept truncating when it tried to read my spec.**
-A very large spec can outgrow what a tracker issue serves back cleanly, and there is no local copy to fall back on, so Claude then burns [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) re-fetching chunks and never reaches the end. Don't [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) or [compact](https://www.aihero.dev/ai-coding-dictionary/compaction) between `/to-spec` and `/to-tickets`. Run them in the same context window and the spec never has to be fetched back at all.
+A very large spec can outgrow what a tracker issue serves back cleanly, and there is no local copy to fall back on, so Claude then burns [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) re-fetching chunks and never reaches the end. Don't [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) or [compact](https://www.aihero.dev/ai-coding-dictionary/compaction) between `/suits:to-spec` and `/suits:to-tickets`. Run them in the same context window and the spec never has to be fetched back at all.
 
 **The acceptance criteria graded nothing: some passed before any work was done.**
 The template asks for criteria and says nothing about whether they can fail, so this happens. Three shapes recur: a criterion already true at the base commit, a criterion that can only be satisfied by work another ticket owns, and one that restates the request rather than deriving from the artifact. Vertical slicing prevents most of it (a slice that delivers behaviour which didn't exist before is red at the base commit by construction), but the check is worth doing by hand. For each criterion, name the observation that would show it false, and confirm it fails at the commit the implementer starts from.

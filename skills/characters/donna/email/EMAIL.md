@@ -1,6 +1,6 @@
 # Email
 
-The steps for an email draft, from `/donna`.
+The steps for an email draft, from `/suits:donna`.
 
 Draft a short plain-text email the user pastes into their own mail client. The user sends it; you never do. Chat messages and the design of HTML or system-sent email are other jobs.
 

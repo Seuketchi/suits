@@ -4,7 +4,7 @@
 
 ## When to reach for it
 
-Type `/scrum`, or ask for a standup, a scrum report, or "what did I do yesterday". Pass a date to redraft a past day. Jessica calls it when the owner asks for their own standup.
+Type `/suits:scrum`, or ask for a standup, a scrum report, or "what did I do yesterday". Pass a date to redraft a past day. Jessica calls it when the owner asks for their own standup.
 
 ## Common questions
 

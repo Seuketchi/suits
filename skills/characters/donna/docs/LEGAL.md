@@ -1,6 +1,6 @@
 # Company and legal documents
 
-Reference for `/donna` documents, step 2, when the kind is one of the 19 below. They are drafted for a Philippine company first. The facts here come from research notes (`notes/donna-company-legal-rrl.md` in the asenso repository, 6 November 2026): a rule marked **UNCONFIRMED** was not read at its source and stays marked in every draft that relies on it.
+Reference for `/suits:donna` documents, step 2, when the kind is one of the 19 below. They are drafted for a Philippine company first. The facts here come from research notes (`notes/donna-company-legal-rrl.md` in the asenso repository, 6 November 2026): a rule marked **UNCONFIRMED** was not read at its source and stays marked in every draft that relies on it.
 
 Donna drafts the skeleton and the boilerplate. She does not give legal advice, and every legal kind needs a Philippine lawyer's review before anyone signs.
 

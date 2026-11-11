@@ -1,6 +1,6 @@
 # pdfcraft-cli
 
-Reference for `/donna`: forms, edits, redaction and checks. Project: https://github.com/storytold/pdfcraft. Run `pdfcraft-cli`, never `pdfcraft` (the GUI, which hangs).
+Reference for `/suits:donna`: forms, edits, redaction and checks. Project: https://github.com/storytold/pdfcraft. Run `pdfcraft-cli`, never `pdfcraft` (the GUI, which hangs).
 
 `pdfcraft-cli --help` lists the commands; `pdfcraft-cli tools` prints every automation tool with its JSON schema. Read the schema before writing a step you have not used.
 

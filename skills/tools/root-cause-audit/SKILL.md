@@ -54,7 +54,7 @@ A cause never names a person or "human error". Write what the system allowed.
 5. **Open questions:** each with who or what can answer it.
 6. **Check next:** the one or two reads or runs that would turn an inferred into a found.
 
-Write it up with the `/findings` skill, kind `audit`, when it is long enough to keep.
+Write it up with the `/suits:findings` skill, kind `audit`, when it is long enough to keep.
 
 ## When it needs a decision
 

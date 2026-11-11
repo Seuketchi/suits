@@ -6,7 +6,7 @@ Throwaway is a constraint on how the code is *written*, not a promise to destroy
 
 ## When to reach for it
 
-Type `/prototype`, or Claude reaches for it automatically when a task fits.
+Type `/suits:prototype`, or Claude reaches for it automatically when a task fits.
 
 Reach for it the moment you hit a question you can't settle by talking: a state machine whose edge cases you can't hold in your head, a screen you can't picture until you see three versions side by side. [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) sessions balloon on exactly these questions: Claude rephrases, you guess, and the scope grows to fill the uncertainty. Stop grilling, build the throwaway version, look at it, then answer in one line. If instead something already built is misbehaving and you want to know why, use [debug](https://aihero.dev/skills-diagnosing-bugs); prototyping explores what to build, not why the built thing is broken.
 
@@ -37,7 +37,7 @@ Not any more. It used to be: build it, keep the answer, bin the code. The sharpe
 **It used to build a terminal app. Where did that go?**
 The logic branch now emits a single shareable HTML file instead. A terminal app can only be driven by someone with the repo cloned and a runtime installed, which rules out exactly the people whose opinion the prototype needs: the designer, the PM, the domain expert who knows what the state model is supposed to mean. One self-contained file that opens by double-click and survives being emailed can be driven by anyone. The pure logic module underneath is unchanged, and is still the part that lifts into the real code.
 
-**Claude told me to `/prototype` when I should have been implementing.**
+**Claude told me to `/suits:prototype` when I should have been implementing.**
 Known, and it is a naming problem. `prototype` is a generic, appealing word that reads to a model that does not know the flow as "the obvious next step" once tickets exist, so it gets recommended by name even where the design was fully settled in conversation. If you already know what to build, the next step is `/cook`, per ticket. Reach for a prototype only when a specific design question is genuinely unresolved and talking won't resolve it.
 
 **Should I prototype the whole application before building any of its production features (say, to demo it to prospects)?**

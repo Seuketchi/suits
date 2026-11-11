@@ -6,7 +6,7 @@ It is a reference, not a process. There is no loop to run, no artifact it produc
 
 ## When to reach for it
 
-Type `/codebase-design`, or Claude reaches for it automatically when a design task fits.
+Type `/suits:codebase-design`, or Claude reaches for it automatically when a design task fits.
 
 Reach for it when you already know which code you're redesigning and you need to think about its shape: where the seam goes, how small the interface can get, whether an extraction is earning its keep. It is also what you reach for to settle an argument about what a word means.
 
@@ -53,7 +53,7 @@ This is the most-asked question about the skill and the skill does not answer it
 
 **I pointed a session at it and it burned 100k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) redesigning things I never asked about.**
 
-Known, and filed as [issue #449](https://github.com/mattpocock/skills/issues/449). The skill is model-invoked and describes itself as vocabulary, but nothing in it hard-stops Claude from treating it as a runnable process. Told to "resume in /codebase-design and drive the open decisions", Claude reached for the most action-shaped content it could find: the parallel sessions in `DESIGN-IT-TWICE.md`. It re-explored code a previous session had already mapped, and ran a long way before asking anything. None of the guardrails a driver skill has (checkpoints, one question at a time, no auto-advance) are present here, because a reference has none. The workaround is to name a driver skill and let this one sit underneath it: `/grill-with-docs`, `/improve-codebase-architecture` or `/tdd` with `codebase-design` as the vocabulary. The issue is open.
+Known, and filed as [issue #449](https://github.com/mattpocock/skills/issues/449). The skill is model-invoked and describes itself as vocabulary, but nothing in it hard-stops Claude from treating it as a runnable process. Told to "resume in /codebase-design and drive the open decisions", Claude reached for the most action-shaped content it could find: the parallel sessions in `DESIGN-IT-TWICE.md`. It re-explored code a previous session had already mapped, and ran a long way before asking anything. None of the guardrails a driver skill has (checkpoints, one question at a time, no auto-advance) are present here, because a reference has none. The workaround is to name a driver skill and let this one sit underneath it: `/grill-with-docs`, `/suits:improve-codebase-architecture` or `/suits:tdd` with `codebase-design` as the vocabulary. The issue is open.
 
 **Where did `design-an-interface` go? And is there an `/interface-design` skill?**
 
@@ -81,7 +81,7 @@ People have proposed exactly those. [Issue #180](https://github.com/mattpocock/s
 - Someone can point at a proposed extraction and say whether it passes the deletion test, without hedging.
 - A proposed seam comes with a second adapter named, not just the first one.
 - Discussion of an interface covers invariants, ordering and error modes, not only the type signature.
-- Invoking it does not start a session. If Claude begins reading files and proposing refactors off the back of `/codebase-design` alone, it has mistaken the reference for a driver.
+- Invoking it does not start a session. If Claude begins reading files and proposing refactors off the back of `/suits:codebase-design` alone, it has mistaken the reference for a driver.
 
 ## Where it fits
 

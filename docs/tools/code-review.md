@@ -47,9 +47,9 @@ The **smell baseline** is the floor underneath it, twelve Fowler code smells fro
 
 ## Common questions
 
-**It has the same name as Claude Code's own `/code-review`. What do I do?**
+**It has the same name as Claude Code's own `/suits:code-review`. What do I do?**
 
-Claude Code ships its own `/code-review`, which hunts bugs in the diff; this one checks the repo's standards and the spec. Inside this plugin the skill is `suits:code-review`, so call it by that name, and the built-in keeps the plain name. Characters in this repo name it that way too.
+Claude Code ships its own `/suits:code-review`, which hunts bugs in the diff; this one checks the repo's standards and the spec. Inside this plugin the skill is `suits:code-review`, so call it by that name, and the built-in keeps the plain name. Characters in this repo name it that way too.
 
 **Its review sessions invoke it again and start more sessions.**
 

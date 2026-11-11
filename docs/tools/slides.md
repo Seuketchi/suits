@@ -4,12 +4,12 @@
 
 ## When to reach for it
 
-When the task is a deck or a presentation. Donna calls it after harvey has set the structure with `/pitching`. It does not decide what a pitch says, write a document, or draft an email.
+When the task is a deck or a presentation. Donna calls it after harvey has set the structure with `/suits:pitching`. It does not decide what a pitch says, write a document, or draft an email.
 
 ## Common questions
 
 **Who sets the order of the slides?**
-Harvey, through `/pitching`, for a pitch. For a talk that is not a pitch, the owner. The tool builds from that order and does not change it.
+Harvey, through `/suits:pitching`, for a pitch. For a talk that is not a pitch, the owner. The tool builds from that order and does not change it.
 
 **Where are the speaker notes?**
 In the source, inside each slide, so they are read by the prose check and left out of the PDF. Ask for them as a separate page if you want to print them.

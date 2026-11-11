@@ -25,9 +25,9 @@ Builds a report from **evidence only** — merged PRs, the open PR queue, real C
 
 ## When to use
 
-Explicit invocation: `/scrum`, "standup", "scrum report", "what did I do yesterday".
+Explicit invocation: `/suits:scrum`, "standup", "scrum report", "what did I do yesterday".
 
-Optional argument: a date (`/scrum 2026-09-03`) to redraft a past day. Without it, the report is for **today**.
+Optional argument: a date (`/suits:scrum 2026-09-03`) to redraft a past day. Without it, the report is for **today**.
 
 ## Prerequisites
 

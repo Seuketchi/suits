@@ -6,9 +6,9 @@ It asks in **rounds**. A round is every decision it can ask about yet: the ones 
 
 ## When to reach for it
 
-Type `/grilling`, or Claude reaches for it on its own when a task fits. It is the only [skill](https://www.aihero.dev/ai-coding-dictionary/skill) in the grilling family that is model-invoked, which is why you rarely type it: usually a skill you *did* type is running it for you.
+Type `/suits:grilling`, or Claude reaches for it on its own when a task fits. It is the only [skill](https://www.aihero.dev/ai-coding-dictionary/skill) in the grilling family that is model-invoked, which is why you rarely type it: usually a skill you *did* type is running it for you.
 
-Typing `/grilling` directly gets you the plain interview and nothing else. Where you want something more than that:
+Typing `/suits:grilling` directly gets you the plain interview and nothing else. Where you want something more than that:
 
 | What you have | Reach for |
 | --- | --- |
@@ -16,7 +16,7 @@ Typing `/grilling` directly gets you the plain interview and nothing else. Where
 | You are in a working directory | [grill-with-docs](https://aihero.dev/skills-grill-with-docs): the same session, and it writes `CONTEXT.md` and ADRs as it goes |
 | An effort too big to hold in one session | [banquet](https://aihero.dev/skills-banquet): it charts a map and runs grilling inside the decision tickets |
 | A question that talking cannot settle: how something should look or feel | [sample](https://aihero.dev/skills-prototype): build the throwaway version, then come back |
-| A skill of your own that needs an interview | Invoke `/grilling` from it, rather than writing another interview |
+| A skill of your own that needs an interview | Invoke `/suits:grilling` from it, rather than writing another interview |
 
 ## Rounds, and who decides
 
@@ -63,7 +63,7 @@ That is a bug in the run, not the intended behaviour, and it was the reason fact
 No, and a cap is deliberately out of scope. Some plans need three questions and some need fifty; a fixed ceiling either truncates the hard case or feels arbitrary on the easy one. Steering in plain language is the intended control: tell it to wrap up, or stop and accept the plan where it stands. If a session is running very long, the cause is usually that the scope was too big; break the work up and grill the pieces.
 
 **I installed `grill-me` on its own and nothing happens.**
-`grill-me` is a one-line skill whose whole body is "run a `/grilling` session", so it needs this skill installed too. The same is true of `grill-with-docs`, which additionally needs [domain-modeling](https://aihero.dev/skills-domain-modeling). Installing the whole set avoids the problem; installing selectively means installing the primitives as well.
+`grill-me` is a one-line skill whose whole body is "run a `/suits:grilling` session", so it needs this skill installed too. The same is true of `grill-with-docs`, which additionally needs [domain-modeling](https://aihero.dev/skills-domain-modeling). Installing the whole set avoids the problem; installing selectively means installing the primitives as well.
 
 **`grill-with-docs` ran, but it never loaded `grilling`.**
 A real and unfixed rough edge, reported across [harnesses](https://www.aihero.dev/ai-coding-dictionary/harness) and models: a skill that names another skill does not reliably cause that skill to load, and `grill-with-docs` names two. The tell is a session that asks everything at once with no recommendations attached: that is the model improvising an interview rather than running this one. Asking Claude directly whether it loaded `grilling` and `domain-modeling` usually recovers it.

@@ -6,7 +6,7 @@ It does not answer you in the conversation. The output is a file at `docs/findin
 
 ## When to reach for it
 
-Type `/research`, or Claude reaches for it automatically when a task turns into reading legwork.
+Type `/suits:research`, or Claude reaches for it automatically when a task turns into reading legwork.
 
 Reach for it when the next step is *finding something out* from outside the working directory (how a third-party API behaves, what a spec actually says, whether a version claim holds), and you'd rather not stall your own thread doing the reading. What you need decides which skill:
 

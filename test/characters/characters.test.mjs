@@ -24,6 +24,8 @@ const section = (source, title) => {
 const frontmatter = (source) => source.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
 const named = (source) => [...source.matchAll(/`\/(?:suits:)?([a-z][a-z0-9-]*)`/g)].map((m) => m[1]);
 const toolDir = (name) => ["tools", "characters"].map((b) => join("skills", b, name)).find((d) => existsSync(join(root, d, "SKILL.md")));
+// Code spans that name a skill shipped here without the `suits:` prefix (ADR 0002).
+const bareNames = (source) => [...source.matchAll(/`\/([a-z][a-z0-9-]*)(?=[`\s])/g)].map((m) => m[1]).filter((n) => toolDir(n));
 
 describe("characters", () => {
   test("there is at least one", () => assert.ok(characters.length > 0));
@@ -153,6 +155,13 @@ describe("the scan itself", () => {
       assert.ok(workflowWords(text, "skills/tools/pr/SKILL.md").length > 0, text);
     }
   });
+  test("finds a planted bare tool name", () => {
+    assert.deepEqual(bareNames("Run `/tdd` first."), ["tdd"]);
+    assert.deepEqual(bareNames("Type `/scrum 2026-09-03` to redraft."), ["scrum"]);
+  });
+  test("lets a prefixed tool name and a path through", () => {
+    assert.deepEqual(bareNames("Run `/suits:tdd` first, then write to `/tmp`."), []);
+  });
   test("finds a planted team size", () => {
     for (const phrase of ["a team of seven", "the six characters", "a crew of 5", "ten specialists", "7 team members"]) {
       assert.ok(teamSizePhrases(`We are ${phrase}.`).length > 0, phrase);
@@ -182,6 +191,11 @@ describe("docs pages", () => {
 
   test("there are pages to scan", () => assert.ok(files.length > 0));
 
+  test("name every tool with the suits: prefix", () => {
+    const bare = files.map((f) => [f, bareNames(read(f))]).filter(([, n]) => n.length > 0).map(([f, n]) => `${f}: ${[...new Set(n)].join(", ")}`);
+    assert.deepEqual(bare, []);
+  });
+
   test("use no workflow-tool word, except where listed with a reason", () => {
     const offenders = files
       .map((f) => [f, workflowWords(read(f), f)])
@@ -207,6 +221,11 @@ describe("skill text", () => {
       .filter(([, names]) => names.length > 0)
       .map(([f, names]) => `${f}: ${[...new Set(names)].join(", ")}`);
     assert.deepEqual(missing, []);
+  });
+
+  test("names every tool with the suits: prefix", () => {
+    const bare = files.map((f) => [f, bareNames(read(f))]).filter(([, n]) => n.length > 0).map(([f, n]) => `${f}: ${[...new Set(n)].join(", ")}`);
+    assert.deepEqual(bare, []);
   });
 
   test("uses no workflow-tool word, except where listed with a reason", () => {

@@ -50,6 +50,7 @@ Each tool is its own skill, and each character calls it only when the task needs
 - `reverse-engineer-anything`: called by mike.
 - `root-cause-audit`: called by rachel.
 - `scrum`: called by donna, jessica.
+- `security-review`: called by louis.
 - `senior`: called by harvey.
 - `slides`: called by donna.
 - `source-finder`: called by rachel.

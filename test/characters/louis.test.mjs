@@ -33,7 +33,7 @@ describe("louis puts the verdict on the first line", () => {
     assert.doesNotMatch(rule, /side by side/);
   });
   test("the hand-over puts the findings under a Standards heading and a Spec heading, each most serious first", () => {
-    assert.match(handOver, /Then the findings, under a Standards heading and a Spec heading, each most serious first; each finding opens with its prefix line \(such as `BLOCKER, verified:`\), then `file:line`\./);
+    assert.match(handOver, /Then the findings, under a Standards heading \(security findings go here\) and a Spec heading, each most serious first; each finding opens with its prefix line \(such as `BLOCKER, verified:`\), then `file:line`\./);
     assert.doesNotMatch(handOver, /findings, most serious first/);
   });
   test("his docs page says the same, in a Common questions entry", () => {
@@ -82,7 +82,7 @@ describe("louis", () => {
     assert.doesNotMatch(skill, /never fixed in the round/);
   });
   test("severity above a suggestion needs a cited rule", () => {
-    assert.match(skill, /no rule or spec line is at most a SUGGESTION/);
+    assert.match(skill, /no rule, spec line or CWE id from `\/suits:security-review` is at most a SUGGESTION/);
   });
   test("a pass can carry conditions and says what it certifies", () => {
     assert.match(skill, /`passes with N conditions: <list>`/);

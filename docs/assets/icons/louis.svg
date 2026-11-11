@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-labelledby="t">
+  <title id="t">louis</title>
+  <circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="21" cy="21" r="9"/>
+    <path d="M28 28L36 36" stroke-width="4"/>
+    <path d="M17 21L20 24L25 18" stroke="#d4a03a"/>
+  </g>
+</svg>

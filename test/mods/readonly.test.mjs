@@ -10,7 +10,6 @@ const ALLOWED = [
   "git log -p --follow -- src/a.ts",
   "git show HEAD~1:README.md",
   "git diff main...HEAD --stat",
-  "git -C ../other diff HEAD",
   "git --no-pager blame -L 10,20 file.js",
   "git grep -n 'TODO' -- '*.ts'",
   "git status --short",
@@ -36,7 +35,6 @@ const ALLOWED = [
   "find src -type f -newer package.json",
   "head -n 5 file; tail -n 5 file",
   "pwd && ls",
-  "cd docs && git log -1",
   "git log 2>/dev/null",
   "git log > /dev/null 2>&1",
   "gh pr diff 22 2>&1 | head",
@@ -67,6 +65,8 @@ const ALLOWED = [
   "git stash list",
   "file -b --mime-type a.png",
   "git log -- 'src/*'",
+  "git log -- docs",
+  "git show HEAD:docs/x",
   "git log;",
 ];
 
@@ -165,7 +165,14 @@ const DENIED = [
   ["git diff --ext-diff", "ext-diff"],
   ["git --exec-path=/tmp log", "exec-path"],
   ["git", "subcommand"],
-  ["git -C", "directory"],
+  ["git -C", "-C"],
+  // a repository committed in the tree can name a program in its own config, so no read starts in another directory
+  ["git -C evil.git diff HEAD~1 HEAD", "-C"],
+  ["git -C ../other diff HEAD", "-C"],
+  ["git -Cevil.git diff HEAD~1 HEAD", "-C"],
+  ["cd evil.git && git diff HEAD~1 HEAD", "cd"],
+  ["cd docs", "cd"],
+  ["cd docs; git log -1", "cd"],
   // gh that writes
   ["gh pr create --fill", "create"],
   ["gh pr merge 22", "merge"],

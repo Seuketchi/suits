@@ -283,7 +283,6 @@ const COMMANDS = {
   which: plain,
   diff: plain,
   jq: plain,
-  cd: plain,
   grep: plain,
   egrep: plain,
   fgrep: plain,
@@ -314,10 +313,8 @@ function checkGit(args) {
   let i = 0;
   while (i < args.length && args[i].startsWith("-")) {
     const a = args[i];
-    if (a === "-C") {
-      if (args[i + 1] === undefined) return "git -C needs a directory";
-      i += 2;
-    } else if (a === "--no-pager" || a === "--no-optional-locks") i++;
+    // No -C: a repository inside the tree can set a program in its own config.
+    if (a === "--no-pager" || a === "--no-optional-locks") i++;
     else return `git ${a} can run a program or change a setting`;
   }
   const sub = args[i];

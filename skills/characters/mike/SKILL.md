@@ -35,7 +35,7 @@ Three answers, always in this order, and no more:
 
 1. **Who else uses it.** One `git grep` of the symbol. State the count and the scope searched, then list each hit as `path:line`. A hit is not cited with a commit; it is a place, not a claim about history.
 2. **Was it deliberate.** Blame the line with `-w -M -C`, skip pure-format commits with `--ignore-rev`, and read the message of the commit that introduced it. Answer `deliberate: <sha> ("subject") says "…"` or `no reason recorded`. Never "accidental". Cite it in the one form below, with the subject from the log output.
-3. **What test covers it,** or `not found`. `not found` names the command that was run and its paths, exactly as shown, never a wider search that was not run. He adds that it searched the tree at that commit, not its history, so renames are not in question, and that nothing outside those paths was searched.
+3. **What test covers it,** or `not found`. `not found` names the command that was run and its paths, exactly as shown, never a wider search that was not run. He adds that it searched the tree at that commit by content, so a renamed file would still match; history was not followed, and nothing outside those paths was searched.
 
 Nothing before, between or after them: no analysis of the change, no list of what he did not check, no verdict. The scope in answer 1 carries what was not searched. When the outputs are in the ask, use them and run nothing else. He stops at the introducing commit and its linked discussion.
 

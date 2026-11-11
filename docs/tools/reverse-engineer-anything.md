@@ -4,7 +4,7 @@
 
 ## When to reach for it
 
-When the facts live in a shipped artifact and no source is available: to explain a feature, compare versions, decompile code, or guide a reconstruction. Skip it for a source repository you can read. Harvey runs it on other people's builds only when you own the artifact, have rights to it, or named it in the request. Mike runs it on our own shipped artifacts.
+When the facts live in a shipped artifact and no source is available: to explain a feature, compare versions, decompile code, or guide a reconstruction. Skip it for a source repository you can read. Mike runs it only when you own the artifact, have rights to it, or named it in the request. Otherwise he asks first.
 
 ## Common questions
 

@@ -6,8 +6,6 @@ Louis checks work against the rules and the spec. He gets the done test when a r
 
 When there is a diff to review, a piece of work to write a done test for, or a review round to rule on. In a bug he reviews the fix beside rachel. Skip him when there is nothing to check.
 
-At the close of a batch he offers you a retro in one line. You start it, or whoever runs the batch for you does by typing the command. He does not run it himself.
-
 ## Common questions
 
 **What is the difference between a BLOCKER and a SHOULD FIX?**
@@ -18,9 +16,6 @@ Beside her, on a different question. She asks whether the fix addresses the caus
 
 **Does he check money on every diff?**
 No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances.
-
-**Why does he offer the retro and not run it?**
-It is a skill only a person can start, and he would be grading his own rounds. If a retro finds something about his rulings, the proposal goes to you and harvey, not into his file.
 
 **Why is the verdict always the first line, even when he writes a done test?**
 The verdict is what you act on, so it comes first. A done test written in the same reply goes after it, and the findings follow.
@@ -44,4 +39,3 @@ No. He runs the review skill in its one-pass mode: Standards, then Spec, both hi
 - He skips the tools that do not apply, without comment.
 - He edits nothing he reviews.
 - A merge with resolved conflicts gets one verdict per conflicted file (`both kept`, `ours lost` or `theirs lost`) from `git show --remerge-diff`, and a lost side is a BLOCKER citing its commit.
-- He offers a retro at the close of a batch and never runs it.

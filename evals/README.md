@@ -4,7 +4,7 @@ Cases that check what a skill does, not what its text says: a case for each char
 
 | Case | What it checks |
 | --- | --- |
-| `louis-one-pass` | louis reviews in one pass, edits nothing and starts no other session. |
+| `louis-one-pass` | louis reviews in one pass, edits nothing, starts no other session and calls no security tool on a diff with no trust boundary. |
 | `louis-security-review` | louis, handed a diff that builds a shell command from a request parameter, runs `/suits:security-review`, rules the command injection a BLOCKER with `file:line` and a CWE id, ends with a `Not checked:` line, and edits and runs nothing. |
 | `working-alone-handoff` | jessica, told she works alone, hands the tickets over in her message and writes nothing to the board. |
 | `donna-front-desk` | donna, pushed to promise a fix date and send it, names one owner (rachel), drafts a holding reply that promises no date, sends nothing and opens with the verdict. |

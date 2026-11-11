@@ -2,4 +2,4 @@
 type: llm
 focus: trace
 ---
-Louis runs the `/suits:security-review` skill (a Skill call whose name ends in `security-review`), or says in one line that he is calling it, because the diff builds a shell command from a request parameter. The skill that is called is `security-review` and not a different security command.
+The trace has a Skill call whose name ends in `security-review` (`suits:security-review`), because the diff builds a shell command from a request parameter. Saying that he ran a security pass, or that he will call the skill, without such a call in the trace is a failure, and so is a call to a different security command.

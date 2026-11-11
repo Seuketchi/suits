@@ -50,6 +50,14 @@ describe("security-review", () => {
     assert.doesNotMatch(raw, /\b(spawn|sub-?agent)/i);
   });
 
+  test("the upload, execution and request rows carry the evidence the review asked for", () => {
+    const row = (n) => body.split("\n").find((l) => l.startsWith(`| ${n} |`)) ?? "";
+    for (const w of ["width * height", "CWE-190", "CWE-400", "CWE-787", "CWE-125", "Content-Type", "msl:", "SVG", "nosniff", "CWE-79"]) assert.ok(row(1).includes(w), `row 1 lacks ${w}`);
+    for (const w of ["executable or command name", "dynamic `import`", "download followed by running", "${{ github.event", "`run:`"]) assert.ok(row(2).includes(w), `row 2 lacks ${w}`);
+    assert.match(row(7), /after DNS resolution|resolved address/);
+    assert.match(row(7), /every redirect/);
+  });
+
   test("it names no character", () => {
     assert.doesNotMatch(raw, /\b(louis|jessica|harvey|donna|rachel|mike|associates)\b/i);
   });
@@ -67,6 +75,11 @@ describe("louis calls security-review", () => {
   test("the situation table and the hand-off table name it", () => {
     assert.match(louis.split("## What he does")[1].split("##")[0], /\/suits:security-review/);
     assert.match(louis.split("## Working with the others")[1], /security-review/);
+  });
+
+  test("his rule counts a CWE id as a source, and security findings go under Standards", () => {
+    assert.match(louis, /rule, spec line or CWE id from `\/suits:security-review`/);
+    assert.match(louis, /Security findings from `\/suits:security-review` go under the Standards heading/);
   });
 
   test("his read-only version can run the skill and still has no write tool", () => {
@@ -96,6 +109,9 @@ describe("the security-review eval", () => {
     const all = graders.map((g) => readFileSync(`evals/louis-security-review/graders/${g}`, "utf8")).join("\n");
     assert.match(all, /Edit|Write/);
     assert.match(all, /CWE-78|command injection/i);
+    assert.match(readFileSync("evals/louis-security-review/graders/calls-the-tool.md", "utf8"), /Skill call whose name ends in `security-review`/);
+    assert.doesNotMatch(readFileSync("evals/louis-security-review/graders/calls-the-tool.md", "utf8"), /or says/);
+    assert.match(readFileSync("evals/louis-one-pass/graders/no-security-review.md", "utf8"), /no Skill call whose name ends in `security-review`/);
     assert.match(all, /Not checked:/);
   });
 });

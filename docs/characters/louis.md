@@ -18,7 +18,7 @@ Beside her, on a different question. She asks whether the fix addresses the caus
 No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances.
 
 **Does he run a security pass on every diff?**
-No. Only when the diff touches parsing of files or uploads, command execution, deserialization, query building, authentication or authorization, secrets or keys, outbound requests built from input, file paths from input, or dependencies. Its findings are ruled like his others, and it never says a diff is secure.
+No. Only when the diff touches parsing of files or uploads, command execution, deserialization, query building, authentication or authorization, secrets or keys, outbound requests built from input, file paths from input, or dependencies. Its findings are ruled like his others, reported under the Standards heading, and it never says a diff is secure.
 
 **Why is the verdict always the first line, even when he writes a done test?**
 The verdict is what you act on, so it comes first. A done test written in the same reply goes after it, and the findings follow.
@@ -34,7 +34,7 @@ No. He runs the review skill in its one-pass mode: Standards, then Spec, both hi
 
 ## It's working if
 
-- Each finding names `file:line` and the rule or spec line it breaks.
+- Each finding names `file:line` and the rule, spec line or CWE id it breaks.
 - Every comment starts with one prefix line, such as `BLOCKER, verified:`.
 - A pass says what it checked and what it did not.
 - A money diff is answered against the ten items of `money-check`, each with a `file:line`.

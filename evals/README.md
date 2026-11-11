@@ -14,6 +14,9 @@ Cases that check what a skill does, not what its text says: a case for each char
 | `research-no-redelegation` | `/suits:research`, told to work alone, does the reading itself and writes its findings file. |
 | `pr-triage-routes-to-donna` | a pull request triage ask goes to donna, who drafts the comments and posts nothing. |
 | `helper-no-session` | a session with `SUITS_HELPER=1`, told to review in parallel, starts no other session and reviews in one pass. It needs `SUITS_HELPER=1` in the environment of the command that runs it. |
+| `trigger-louis`, `trigger-mike`, `trigger-rachel`, `trigger-jessica`, `trigger-donna` | each character is picked from a natural request that names no skill: a diff to look over, a question about how our code behaves, a double-charge bug before anyone patches it, a decided feature to plan, a vendor email to draft. The grader is `tool_used: Skill` for that character. |
+| `trigger-none-js-question`, `trigger-none-unit-convert` | a plain question that needs no character calls no skill at all (`arm: both`, `min: 0`, `max: 0`). |
+| `trigger-louis-loads-tools` | louis, called by name and handed a diff that touches money, loads `code-review` and `money-check` through the Skill tool. Run it with a changed way of naming the tools to compare how often they load. |
 
 Run them from the repo root. Unset `SUITS_HELPER` first, so that a shell started inside a helper run does not put every case in helper mode, and add `--ablation with-without` to also run each case without the plugin and see what the model does on its own:
 
@@ -28,3 +31,11 @@ SUITS_HELPER=1 claude plugin eval . --case helper-no-session --runs 1 --ablation
 ```
 
 Without the variable that case tests nothing, so a run of all the cases scores it as a failure. A case that also passes without the plugin shows what the model does anyway; that is a finding, not a reason to loosen a grader. Results are written under `evals/results/`, which is not committed.
+
+The trigger cases measure whether a skill's description fires from natural phrasing, so they use the default of three runs rather than `--runs 1`, and they run with `--ablation none`: under `with-without` a `tool_used: Skill` grader is only a plugin-fired indicator and is left out of the score, and the no-plugin arm can never pass it.
+
+```
+env -u SUITS_HELPER claude plugin eval . --case 'trigger-*' --ablation none --no-publish
+```
+
+A case that scores below 1 is a finding about the skill's description, not a reason to loosen the grader.

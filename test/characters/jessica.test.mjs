@@ -147,3 +147,67 @@ describe("jessica's four tools", () => {
     assert.match(goLive, /`human`/);
   });
 });
+
+describe("jessica and the project's issue tracker", () => {
+  const server = section(skill, "If a server is connected");
+  test("the section sits between Hard rules and Working with the others", () => {
+    const heads = [...skill.matchAll(/^## (.*)$/gm)].map((m) => m[1]);
+    const at = heads.indexOf("If a server is connected");
+    assert.ok(at > 0, "section missing");
+    assert.equal(heads[at - 1], "Hard rules");
+    assert.equal(heads[at + 1], "Working with the others");
+  });
+  test("it names the project's issue tracker as a kind, with examples, and what it is read for", () => {
+    assert.match(server, /issue tracker/);
+    assert.match(server, /for example GitHub issues, Jira, OpenProject/);
+    assert.match(server, /tickets, states and dates/);
+  });
+  test("without one she works from the board or the files, with claims marked assumed", () => {
+    assert.match(server, /[Ww]ithout one/);
+    assert.match(server, /board or the files/);
+    assert.match(server, /`assumed`/);
+  });
+  test("she writes only when the request says to and the breakdown is approved, and only reads a read-only tracker", () => {
+    assert.match(server, /only when the request says to/);
+    assert.match(server, /breakdown is approved/);
+    assert.match(server, /read-only[^.]*only reads/);
+  });
+  test("OpenProject appears only in the example list, in the skill and on the docs page", () => {
+    assert.equal((skill.match(/OpenProject/g) ?? []).length, 1);
+    assert.match(server, /OpenProject/);
+    assert.doesNotMatch(read("docs/characters/jessica.md"), /OpenProject/);
+    assert.doesNotMatch(skill, /[Nn]ever writes? to/);
+  });
+  test("rule 4 is the tracker rule, not a product rule", () => {
+    const rule = section(skill, "Hard rules").match(/^4\. (.*)$/m)?.[1] ?? "";
+    assert.match(rule, /read-only/);
+    assert.match(rule, /only reads/);
+    assert.match(rule, /rule 5/);
+  });
+  test("the docs page answers the tracker question and has a working-if line for it", () => {
+    const docs = read("docs/characters/jessica.md");
+    assert.match(section(docs, "What it does"), /issue tracker/);
+    assert.match(section(docs, "Common questions"), /\*\*[^*\n]*tracker[^*\n]*\*\*/);
+    assert.match(section(docs, "Common questions"), /read-only/);
+    assert.match(section(docs, "It's working if"), /tracker[^\n]*only when the request says to/);
+  });
+});
+
+// working-alone-handoff / hand-over-opening: the owner is away, so the opening asks no question
+// and names the character the next step is for.
+describe("jessica's hand-over opening when she works alone", () => {
+  const alone = section(skill, "Working alone");
+  const handOver = section(skill, "Hand over");
+  test("a decided request with the board not hers is `No decision needed`, not an approval or a question", () => {
+    assert.match(alone, /decided[^.\n]*`No decision needed`/);
+    assert.match(alone, /approval of the breakdown[^.\n]*not a decision/);
+  });
+  test("the hand-over asks the owner nothing, and `Decision needed:` is kept for a blocker", () => {
+    assert.match(alone, /asks? no question/);
+    assert.match(alone, /`Decision needed:`[^.\n]*blocker/);
+  });
+  test("the opening names the character the next step is for, within the first five lines", () => {
+    assert.match(handOver, /first five lines[^.\n]*(by name|named)|(by name|named)[^.\n]*first five lines/);
+    assert.match(handOver, /the character the next step is for/);
+  });
+});

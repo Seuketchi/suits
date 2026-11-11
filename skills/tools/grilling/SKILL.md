@@ -33,9 +33,9 @@ One table per round, one row per question:
 ## Facts versus decisions
 
 - **Facts are yours.** If a question needs a fact you can look up, send a sub-agent to find it with the skill that fits where the fact lives, and never ask the user for it:
-  - our own code or system → `/stocktake`
-  - docs, specs, third-party APIs → `/research`
-  - a shipped app, binary or device we have no source for → `/reverse-engineer-anything`
-  - only running it can tell (real latency, real responses, a real phone or board) → `/test-kitchen`, which asks the user before it runs anything
+  - our own code or system → `/suits:stocktake`
+  - docs, specs, third-party APIs → `/suits:research`
+  - a shipped app, binary or device we have no source for → `/suits:reverse-engineer-anything`
+  - only running it can tell (real latency, real responses, a real phone or board) → `/suits:test-kitchen`, which asks the user before it runs anything
 - **Don't wait on the sub-agent.** Hold back only the questions that need its answer, and ask the rest now.
 - **Decisions are the user's.** Put each one to them, with your recommendation, and wait.

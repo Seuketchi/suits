@@ -1,6 +1,6 @@
 # Building a document from HTML
 
-Reference for `/donna` step 2, "Build a new document". Read it before writing the first line of HTML.
+Reference for `/suits:donna` step 2, "Build a new document". Read it before writing the first line of HTML.
 
 ## Match the design
 

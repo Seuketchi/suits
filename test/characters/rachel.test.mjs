@@ -23,7 +23,7 @@ describe("rachel", () => {
     assert.doesNotMatch(skill, /^\d\. \*\*(Deeper|Sideways|Back up):\*\*/m);
   });
   test("on a bug she calls the audit; the table says so in one line", () => {
-    assert.match(section(skill, "What she does"), /bug.*`\/root-cause-audit`/);
+    assert.match(section(skill, "What she does"), /bug.*`\/suits:root-cause-audit`/);
     assert.match(section(skill, "What she does"), /writes the trigger and the causes \|/);
   });
   test("she keeps mike's check of her framing and the /rabbit-hole offer", () => {
@@ -55,8 +55,8 @@ describe("rachel", () => {
 
   test("she calls the root-cause audit only when the task is a bug", () => {
     const when = section(skill, "When to call");
-    assert.match(when, /\| `\/root-cause-audit` \| the task is a bug/);
-    assert.match(section(skill, "What she does"), /`\/root-cause-audit`/);
+    assert.match(when, /\| `\/suits:root-cause-audit` \| the task is a bug/);
+    assert.match(section(skill, "What she does"), /`\/suits:root-cause-audit`/);
   });
   test("the hand-off table has the audit's inputs and its decision route", () => {
     const table = section(skill, "Working with the others");
@@ -64,7 +64,7 @@ describe("rachel", () => {
     assert.match(table, /rachel \| harvey \|/);
   });
   test("a hard rule keeps the audit read-only and calls it by name", () => {
-    assert.match(section(skill, "Hard rules"), /`\/root-cause-audit`.*(edits no code|edits nothing|read-only)/s);
+    assert.match(section(skill, "Hard rules"), /`\/suits:root-cause-audit`.*(edits no code|edits nothing|read-only)/s);
   });
 });
 

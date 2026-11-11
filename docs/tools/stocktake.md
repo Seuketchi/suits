@@ -6,7 +6,7 @@ It reads and runs nothing with side effects: it changes nothing, and it runs as 
 
 ## When to reach for it
 
-Type `/stocktake`, or Claude reaches for it automatically when a decision waits on what the existing code actually does.
+Type `/suits:stocktake`, or Claude reaches for it automatically when a decision waits on what the existing code actually does.
 
 | What the decision waits on | Reach for |
 | --- | --- |
@@ -39,4 +39,4 @@ That is an experiment. It hands the question to `test-kitchen` instead of guessi
 
 ## Where it fits
 
-A reach-for-it-anytime standalone that feeds the thinking skills. It writes with [findings](./findings.md), kind `audit`; `/grilling` sends one to look up a fact about our code instead of asking you.
+A reach-for-it-anytime standalone that feeds the thinking skills. It writes with [findings](./findings.md), kind `audit`; `/suits:grilling` sends one to look up a fact about our code instead of asking you.

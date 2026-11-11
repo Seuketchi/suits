@@ -10,7 +10,7 @@ She works in two registers. To you she is confident, dry and a step ahead: she h
 
 ## When to reach for it
 
-Type `/donna`, or ask for any of the above and she is called.
+Type `/suits:donna`, or ask for any of the above and she is called.
 
 | The job | Where it is |
 | --- | --- |
@@ -27,7 +27,7 @@ Type `/donna`, or ask for any of the above and she is called.
 - **A packet only when it pays.** Work that goes to another character or spans more than one ticket gets a hand-off packet. A small ask gets one line and skips the other characters.
 - **Reports on change.** She reports when a request's state changes, then once at the end. A request that passes its budget stops and asks.
 
-She calls a tool only when the task matches its trigger: `/pr` for a pull request body, `/handoff` when a session ends, `/morning-brief` and `/scrum` for your own briefs, `/slides` for a deck. The default is not to call.
+She calls a tool only when the task matches its trigger: `/suits:pr` for a pull request body, `/suits:handoff` when a session ends, `/suits:morning-brief` and `/suits:scrum` for your own briefs, `/suits:slides` for a deck. The default is not to call.
 
 ## Three styles, and your own
 
@@ -54,11 +54,11 @@ Donna drafts the skeleton and the boilerplate of 19 kinds, Philippines first, fr
 
 `harvey` passes the pitch structure and donna builds the deck from it; a change to the structure goes back to him.
 
-`jessica` is the project-management skill (plans, tickets, risks, status reports, go-live readiness). When your task needs a plan, a status report or go-live readiness, donna runs `jessica` and carries on with what comes back; when `jessica` has a report to lay out, an email to draft or something for your brief, she hands it to donna. Donna writes the action log and the decision log, `jessica` tracks from them, and neither calls the other twice for the same thing. `jessica` is not in the repo yet: this is the contract she will follow.
+`jessica` is the project-management skill (plans, tickets, risks, status reports, go-live readiness). When your task needs a plan, a status report or go-live readiness, donna runs `/suits:jessica` and carries on with what comes back; when `jessica` has a report to lay out, an email to draft or something for your brief, she hands it to donna. Donna writes the action log and the decision log, `jessica` tracks from them, and neither calls the other twice for the same thing. `jessica` is not in the repo yet: this is the contract she will follow.
 
 ## Decks
 
-For a pitch, `harvey` sets the structure with `/pitching` and donna builds the deck from it with `/slides`: one point a slide, the title states the claim, one slide to a page, speaker notes in the source and not in the PDF. She does not reorder or cut the structure. A number with no source is marked unverified on the slide. The deck goes through the same checks as a PDF, so a kicker, a card, a gradient or a stock opener fails it.
+For a pitch, `harvey` sets the structure with `/suits:pitching` and donna builds the deck from it with `/suits:slides`: one point a slide, the title states the claim, one slide to a page, speaker notes in the source and not in the PDF. She does not reorder or cut the structure. A number with no source is marked unverified on the slide. The deck goes through the same checks as a PDF, so a kicker, a card, a gradient or a stock opener fails it.
 
 ## Common questions
 
@@ -102,7 +102,7 @@ No, nothing: not a PDF, not an email, not a brief. It names the file, its page c
 - A legal draft has the review notice on page 1, an empty notary block, and every unconfirmed point marked.
 - A meeting brief fits one page and names what is overdue; minutes come with their actions in the log.
 - A request has one named owner and one line in the action log before work starts.
-- She skips the tools that do not apply: a typo goes to a builder without a plan, and a pull request body is the only thing that reaches `/pr`.
+- She skips the tools that do not apply: a typo goes to a builder without a plan, and a pull request body is the only thing that reaches `/suits:pr`.
 - A deck follows the structure harvey gave her, and every number on it has a source or is marked unverified.
 - Nothing was sent, signed or accepted for you.
 - To you she is brief and a step ahead; in the documents for others there is no trace of her voice.

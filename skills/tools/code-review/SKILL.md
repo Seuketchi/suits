@@ -57,7 +57,7 @@ Each smell reads *what it is* → *how to fix*. Match each against the diff:
 
 Start both sub-agents in one go, in the foreground, and aggregate the reports they return.
 
-End each brief with: "Do not invoke `/code-review` or spawn additional agents: perform this review directly." Without it a sub-agent can find this skill again and fan out.
+End each brief with: "Do not invoke `/suits:code-review` or spawn additional agents: perform this review directly." Without it a sub-agent can find this skill again and fan out.
 
 **Standards sub-agent prompt** includes:
 

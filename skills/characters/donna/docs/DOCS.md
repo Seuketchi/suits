@@ -1,6 +1,6 @@
 # Documents
 
-The steps for a finished, designed PDF, from `/donna`. They run in order: look, pick the route, keep a source, write, check, hand over.
+The steps for a finished, designed PDF, from `/suits:donna`. They run in order: look, pick the route, keep a source, write, check, hand over.
 
 Make a finished PDF from a source file you edit and a build you repeat, then look at every page before saying it is done.
 

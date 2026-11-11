@@ -23,7 +23,7 @@ No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, c
 It is a skill only a person can start, and he would be grading his own rounds. If a retro finds something about his rulings, the proposal goes to you and harvey, not into his file.
 
 **Why does he name the review skill as `suits:code-review`?**
-Claude Code has a built-in `/code-review`. The prefix picks this one.
+Claude Code has a built-in `/suits:code-review`. The prefix picks this one.
 
 ## It's working if
 

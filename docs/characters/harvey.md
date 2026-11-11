@@ -4,7 +4,7 @@ Harvey is the senior judgement. At the front of a request he decides whether to 
 
 ## When to reach for it
 
-Reach for harvey when the change is non-trivial (a feature, a refactor, a migration, a schema or dependency choice), when you are preparing a pitch or a negotiation, or when a finding changes scope, money or a rule. Donna sends work to him; you can also call `/harvey` directly. A typo or a one-line fix does not need him.
+Reach for harvey when the change is non-trivial (a feature, a refactor, a migration, a schema or dependency choice), when you are preparing a pitch or a negotiation, or when a finding changes scope, money or a rule. Donna sends work to him; you can also call `/suits:harvey` directly. A typo or a one-line fix does not need him.
 
 ## Common questions
 

@@ -13,6 +13,6 @@ The **test kitchen** is where a recipe is tried before it goes on the menu. An e
 2. **Pin the setup:** build or commit, device and OS version, environment, account, tool versions. An experiment you can't repeat is an anecdote.
 3. **Run it,** repeated enough to tell signal from noise: three runs at least for anything timed. Capture raw output (logs, responses, screenshots, traces) into `docs/findings/<topic>/`, with secrets and personal data redacted.
 4. **Undo what you changed** where you can: test records, device settings, toggles. Say what couldn't be undone.
-5. **Write it up** with the `/findings` skill, kind `experiment`. **Method** holds the setup and side effects; each claim cites the run and the raw output it came from.
+5. **Write it up** with the `/suits:findings` skill, kind `experiment`. **Method** holds the setup and side effects; each claim cites the run and the raw output it came from.
 
 Tools by target: the app on a phone, `adb` or the device driver your session has; an API, `curl` against staging with the request saved; a board or device, its serial console and the bench tools in reach; a build, the repo's own scripts. Physical steps only a person can do go to the user as a numbered checklist.

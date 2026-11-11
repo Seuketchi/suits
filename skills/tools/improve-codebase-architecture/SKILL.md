@@ -55,7 +55,7 @@ Each candidate is a card with:
 
 End the report with a **Top recommendation** section: which candidate to tackle first, and why.
 
-**Use CONTEXT.md vocabulary for the domain and `/codebase-design` vocabulary for the architecture.** If `CONTEXT.md` defines "Order," say "the Order intake module," not "the FooBarHandler" or "the Order service."
+**Use CONTEXT.md vocabulary for the domain and `/suits:codebase-design` vocabulary for the architecture.** If `CONTEXT.md` defines "Order," say "the Order intake module," not "the FooBarHandler" or "the Order service."
 
 **ADR conflicts**: surface a candidate that contradicts an existing ADR only when the friction is real enough to reopen the ADR. Mark it in the card with a warning callout (e.g. _"contradicts ADR-0007, but worth reopening because…"_). Leave out theoretical refactors an ADR forbids.
 

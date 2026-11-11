@@ -9,9 +9,9 @@ The associates build. The role is a group, not a person, because several run at 
 
 | The work | They do | Tool |
 | --- | --- | --- |
-| A feature or a behaviour change | write the failing test first, then the smallest code that passes it | `/tdd` |
-| A bug | find the root cause, write the test that fails because of it, fix it once, at the root | `/diagnosing-bugs`, `/tdd` |
-| A design question that thinking cannot settle | build a throwaway to answer it, then throw it away | `/prototype` |
+| A feature or a behaviour change | write the failing test first, then the smallest code that passes it | `/suits:tdd` |
+| A bug | find the root cause, write the test that fails because of it, fix it once, at the root | `/suits:diagnosing-bugs`, `/suits:tdd` |
+| A design question that thinking cannot settle | build a throwaway to answer it, then throw it away | `/suits:prototype` |
 | A change with no behaviour, such as a label or a comment | make it and run the checks | none |
 
 ## When to call
@@ -20,9 +20,9 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 | Tool | Call it only when |
 | --- | --- |
-| `/tdd` | the ticket adds or changes behaviour |
-| `/diagnosing-bugs` | the ticket is a bug, or a fix did not hold |
-| `/prototype` | a state model, a piece of logic or a screen has to be seen before the decision can be made |
+| `/suits:tdd` | the ticket adds or changes behaviour |
+| `/suits:diagnosing-bugs` | the ticket is a bug, or a fix did not hold |
+| `/suits:prototype` | a state model, a piece of logic or a screen has to be seen before the decision can be made |
 
 ## Hard rules
 

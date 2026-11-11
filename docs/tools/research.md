@@ -6,7 +6,7 @@ It does not answer you in the conversation. The output is a file at `docs/findin
 
 ## When to reach for it
 
-Type `/research`, or Claude reaches for it automatically when a task turns into reading legwork.
+Type `/suits:research`, or Claude reaches for it automatically when a task turns into reading legwork.
 
 Reach for it when the next step is *finding something out* from outside the working directory (how a third-party API behaves, what a spec actually says, whether a version claim holds), and you'd rather not stall your own thread doing the reading. What you need decides which skill:
 
@@ -25,7 +25,7 @@ The defining move is that the reading runs as a **background session**. You keep
 
 The delegation is unguarded, and the background session can spawn a further background session of its own. This is the skill's best-documented rough edge.
 
-The file lands at `docs/findings/<topic>.md`, in the format the `findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
+The file lands at `docs/findings/<topic>.md`, in the format the `/suits:findings` skill defines (answer, method, claims marked observed, inferred or unknown, open questions), the same place and shape as an audit, a reverse-engineering run or an experiment. It writes one file per run.
 
 ## Common questions
 

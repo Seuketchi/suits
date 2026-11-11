@@ -10,8 +10,9 @@
 //   `skills/characters/README.md`, and each tool's "Called by" tail.
 //
 // The one-line summaries in the bucket READMEs are written by hand and kept by
-// name, and so is the whole line of a user-invoked tool ("Started by the owner;
-// offered by louis."), which no table can say.
+// name. That includes a user-invoked tool's "Started by the owner; offered by
+// louis.", which no table can say. It is written once, in the tools README, and
+// the root README is built from it.
 //
 //   node scripts/lists.mjs --write   rewrite the copies
 //   node scripts/lists.mjs --check   exit 1, naming each copy that has drifted
@@ -71,6 +72,9 @@ const lines = (items) => (items.length > 0 ? items.join("\n") : "None yet.");
 const bucketBullets = (text) => new Map([...text.matchAll(/^- \*\*\[([\w-]+)\]\(\.\/\1\/SKILL\.md\)\*\*: (.*)$/gm)].map((m) => [m[1], m[2]]));
 const rootBullets = (text) => new Map([...text.matchAll(/^- `([\w-]+)`: (.*)$/gm)].map((m) => [m[1], m[2]]));
 const firstSentence = (s = "") => s.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? s;
+// A bucket README line without its generated "Called by" tail: the kept text, or a first draft for a new skill.
+const bucketBase = (kept, s) =>
+  (kept.get(s.name) ?? `${firstSentence(s.description)}${s.userInvoked ? " Started by the owner." : ""}`).replace(/ Called by .*\.$/, "");
 
 // What each copy should say, as { file: text }, given the repo at `root`.
 export function expected(root) {
@@ -87,10 +91,9 @@ export function expected(root) {
     let text = read(root, file);
     const kept = bucketBullets(text);
     const bullet = (s) => {
-      const summary = (kept.get(s.name) ?? firstSentence(s.description)).replace(/ Called by .*\.$/, "");
-      if (s.userInvoked) return `- **[${s.name}](./${s.name}/SKILL.md)**: ${kept.get(s.name) ?? summary}`;
+      const base = bucketBase(kept, s);
       const callers = bucket === "tools" ? calledBy(root, characters, s.name) : [];
-      return `- **[${s.name}](./${s.name}/SKILL.md)**: ${summary}${callers.length > 0 ? ` Called by ${callers.join(", ")}.` : ""}`;
+      return `- **[${s.name}](./${s.name}/SKILL.md)**: ${base}${callers.length > 0 ? ` Called by ${callers.join(", ")}.` : ""}`;
     };
     const skills = bucket === "characters" ? characters : tools;
     text = replaceUnder(text, "## User-invoked", lines(skills.filter((s) => s.userInvoked).map(bullet)));
@@ -99,10 +102,15 @@ export function expected(root) {
   }
 
   let text = read(root, ROOT_README);
-  const kept = rootBullets(text);
+  const keptTools = bucketBullets(read(root, bucketReadme("tools")));
   const bullet = (s) => {
-    if (s.userInvoked) return `- \`${s.name}\`: ${kept.get(s.name) ?? "started by the owner."}`;
     const callers = calledBy(root, characters, s.name);
+    if (s.userInvoked) {
+      // The started-by fact is written once, in the tools README line, and read from there.
+      const started = bucketBase(keptTools, s).match(/Started by the owner[^.]*\./)?.[0] ?? "Started by the owner.";
+      const fact = started[0].toLowerCase() + started.slice(1).replace(/; /g, ", ");
+      return `- \`${s.name}\`: ${callers.length > 0 ? `${fact.slice(0, -1)}, called by ${callers.join(", ")}.` : fact}`;
+    }
     return `- \`${s.name}\`: ${callers.length > 0 ? `called by ${callers.join(", ")}.` : "called by no character."}`;
   };
   text = replaceUnder(text, "### User-invoked", lines(tools.filter((s) => s.userInvoked).map(bullet)));

@@ -24,6 +24,10 @@ _Avoid_: job, position
 The one character accountable for a request, written down by donna when the request arrives. There is never more than one.
 _Avoid_: assignee, stakeholder
 
+**Working alone**:
+A mode every character has for a session that cannot, or is told not to, start another session. It starts no other session and does the work of any tool itself, in one pass. A hand-off becomes a message to whoever sent the brief, in the character's own hand-over format. A pull request is read with `gh pr diff` and a commit with `git show`, never by checking a branch out.
+_Avoid_: solo mode, helper mode (that is the name the session uses when it asks for this mode)
+
 **Hand-off packet**:
 What one character passes to the next: the goal, the limits and budget, the done test, what is known and not, the questions to answer, the next owner, and the deadline. A small ask gets one line instead.
 _Avoid_: ticket, brief
@@ -33,7 +37,7 @@ The fact about a task that makes a character call a tool. Without a matching tri
 _Avoid_: condition, rule
 
 **Action log**:
-The one record of who was asked what, who owns it, its state, its budget and the next owner. Donna is its only writer.
+The one record of who was asked what, who owns it, its state, its budget and the next owner. Donna is its only writer, or the run's board, when there is one.
 
 **Decision log**:
 The one record of what was decided, by whom, why, and when. Entries are added and never rewritten. Donna is its only writer.
@@ -41,3 +45,11 @@ The one record of what was decided, by whom, why, and when. Entries are added an
 **Ruling**:
 A verdict on a review comment in two parts: whether it is true (verified, outdated, disputed) and how serious it is (BLOCKER, SHOULD FIX, SUGGESTION).
 _Avoid_: grade, label
+
+**Rules file**:
+The one file a project keeps at `.claude/suits-rules.json` to list its own `never` and `warn` rules. The hooks read it from the session's start folder up to the git root and hold no rule of their own. With no file they pass every call.
+_Avoid_: config, policy
+
+**Helper mode**:
+The state of a session whose `SUITS_HELPER` variable is set to anything but empty or `0`. The mod then refuses to start any session and adds one line to the system prompt pointing the character at its Working alone section, and the status line reads `<character> · helper`. Whatever starts a helper sets the variable; this plugin only reads it.
+_Avoid_: solo mode, worker mode

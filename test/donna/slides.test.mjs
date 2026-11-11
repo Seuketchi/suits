@@ -24,7 +24,7 @@ describe("the slides tool", () => {
   test("it is a tool called slides, for a deck built from a pitch structure", () => {
     assert.match(skill, /^name: slides$/m);
     assert.match(skill, /^description: .*deck/m);
-    assert.match(skill, /`\/pitching`/);
+    assert.match(skill, /`\/suits:pitching`/);
   });
 
   test("the structure is pitching's: the tool names it and does not restate its section table", () => {
@@ -86,13 +86,13 @@ describe("the slides tool", () => {
   test("the unverified marker is donna's own: a mark element, and ask for structure rather than run harvey's tool", () => {
     assert.match(skill, /<mark class="unverified">/);
     assert.doesNotMatch(skill, /span\.unverified/);
-    assert.doesNotMatch(skill, /run `\/pitching`/);
+    assert.doesNotMatch(skill, /run `\/suits:pitching`/);
     assert.match(skill, /for a pitch it comes from harvey/);
   });
 
   test("it leaves donna's secretary files alone", () => {
     const files = readdirSync("skills/characters/donna/secretary").sort();
-    assert.deepEqual(files, ["BRIEFING.md", "MEETING-BRIEF.md", "MINUTES.md", "RECORDS.md", "TICKLER.md"]);
+    assert.deepEqual(files, ["BRIEFING.md", "MEETING-BRIEF.md", "MINUTES.md", "PR-TRIAGE.md", "RECORDS.md", "TICKLER.md"]);
   });
 });
 
@@ -100,13 +100,13 @@ describe("donna and the slides tool", () => {
   test("the deck is a row in Pick the job, and no longer a file still to come", () => {
     const pick = donna.split("## Pick the job")[1].split("## When to call")[0];
     assert.match(pick, /deck|presentation|slides/i);
-    assert.match(pick, /\/slides/);
+    assert.match(pick, /\/suits:slides/);
     assert.doesNotMatch(pick, /Another ability \(a deck/);
   });
 
   test("/slides is a row in When to call, with a trigger stated as a fact about the task", () => {
     const when = donna.split("## When to call")[1].split("## Voice")[0];
-    assert.match(when, /\| `\/slides` \| the task is a (deck|presentation)/);
+    assert.match(when, /\| `\/suits:slides` \| the task is a (deck|presentation)/);
     assert.match(when, /harvey/);
   });
 
@@ -126,7 +126,7 @@ describe("donna and the slides tool", () => {
   test("a hard rule keeps the deck to the structure and the owner's facts", () => {
     const hard = donna.split("## Hard rules")[1].split("\n## ")[0];
     assert.match(hard, /deck/i);
-    assert.match(hard, /\/slides/);
+    assert.match(hard, /\/suits:slides/);
     assert.match(hard, /traction|number/i);
   });
 });
@@ -143,7 +143,7 @@ describe("promotion", () => {
 
   test("donna's own page says she builds decks", () => {
     assert.match(read("docs/characters/donna.md"), /deck/i);
-    assert.match(read("docs/characters/donna.md"), /`\/slides`/);
+    assert.match(read("docs/characters/donna.md"), /`\/suits:slides`/);
   });
 });
 

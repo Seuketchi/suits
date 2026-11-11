@@ -1,10 +1,14 @@
 ## What this is
 
-A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `test/characters/characters.test.mjs` fails otherwise), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
+A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `npm run lists` writes these and `npm run check-skills` fails when they drift), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
 
-Run `npm run check-skills` after adding, moving or renaming a skill, and `npm test` after changing a skill or a test. CI runs both on every pull request.
+After adding, moving or renaming a skill, run `npm run lists` first, then `npm run check-skills`. The lists in `plugin.json`, the root `README.md` and both bucket `README.md` files are generated from the skill folders and each character's **When to call** table; only the one-line summaries in the bucket READMEs are written by hand. Run `npm test` after changing a skill or a test. CI runs both on every pull request.
+
+A change is done when it is merged with a test that proves it. Run `claude plugin eval` by hand after changing a skill's behaviour; CI does not run it.
 
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
+
+The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs`, wiring in `register.tsx`, no rules of their own: they read the project's `.claude/suits-rules.json`); run `npm run test:mods` and `claude plugin test .` after changing them.
 
 ## Rules for characters
 
@@ -17,9 +21,9 @@ There are no releases or versions: the plugin has no `version`, so Claude Code v
 ## Writing
 
 - Never mention assistants, agents, cooks, kitchens, head chefs, stations, ticket boards or any workflow tool in commits, pull requests, skill text or docs pages meant for others. Tool names in code spans (`/test-kitchen`) are fine, and so are the legal terms in donna's `LEGAL.md` ("assistant secretary", an attorney-in-fact's "agent"). A skill that has to tell the model to start a sub-agent is listed with its reason in `WORKFLOW_WORD_ALLOWED` in `test/characters/characters.test.mjs`; do not add to that list without the owner's say.
-- `npm run test:characters` checks both rules above on every `SKILL.md`, the word rule on every docs page (`DOCS_WORD_ALLOWED` lists the exceptions), that every `/skill` it names ships here (or is in `OFFERED`), and that every character's **Voice** section gives a register, what it avoids, a sample line, and the plain professional register for anyone but the owner.
+- `npm run test:characters` checks both rules above on every `SKILL.md`, the word rule on every docs page (`DOCS_WORD_ALLOWED` lists the exceptions), that every `/skill` it names ships here, and that every character's **Voice** section gives a register, what it avoids, a sample line, and the plain professional register for anyone but the owner.
 - Conventional commits. No attribution lines.
-- Documents and emails a character writes carry no machine-made look: no tracked-caps kickers, hero titles, dot meta lines, side bars or tinted cards. English only.
+- Documents and emails a character writes carry no machine-made look: no tracked-caps kickers, hero titles, dot meta lines, side bars or tinted cards. Documents and emails are in English. A chat reply to a teammate may be in Taglish when the owner asks or the thread is in it.
 
 ## Decisions
 

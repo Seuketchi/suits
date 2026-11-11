@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
+description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents, or in one pass when asked, and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 ---
 
 Review the diff between `HEAD` and a fixed point the user supplies, along two axes:
@@ -57,7 +57,7 @@ Each smell reads *what it is* → *how to fix*. Match each against the diff:
 
 Start both sub-agents in one go, in the foreground, and aggregate the reports they return.
 
-End each brief with: "Do not invoke `/code-review` or spawn additional agents: perform this review directly." Without it a sub-agent can find this skill again and fan out.
+End each brief with: "Do not invoke `/suits:code-review` or spawn additional agents: perform this review directly." Without it a sub-agent can find this skill again and fan out.
 
 **Standards sub-agent prompt** includes:
 
@@ -77,6 +77,14 @@ If there is no spec, skip the Spec sub-agent and say so in the final report.
 
 1. Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Keep each axis's findings in its own section and its own order: never merge or rerank across them (see _Why two axes_).
 2. End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Name no single winner across axes; that is the reranking the separation prevents.
+
+## One pass
+
+Use this mode when the caller asks for it, or when no other session can be started. The parallel default above stays for a normal session. Three steps change:
+
+1. **Pin the diff (step 1).** When the branch is not checked out, take the diff from `gh pr diff <n>` and the commits from `gh pr view <n> --json commits`, or from `git show <sha>` for a single commit, instead of `git diff <fixed-point>...HEAD`. Never check a branch out to read it.
+2. **Review (step 4).** Start nothing. Run the Standards review yourself, then the Spec review, on the same diff, with the briefs from step 4 as your checklist. Write each in its own section, `## Standards` first and `## Spec` second, and let neither borrow from the other. If there is no spec, say so in the `## Spec` section.
+3. **Aggregate (step 5).** Unchanged: the two sections stay apart, and the closing line names the worst issue within each axis.
 
 ## Why two axes
 

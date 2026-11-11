@@ -72,7 +72,7 @@ describe("harvey", () => {
     });
     test("harvey calls it only when a negotiation is the task", () => {
       const rows = section(skill, "When to call");
-      assert.match(rows, /^\| `\/negotiation-prep` \| a negotiation .*is the task/m);
+      assert.match(rows, /^\| `\/suits:negotiation-prep` \| a negotiation .*is the task/m);
     });
     test("the hand-off table and hard rules name it", () => {
       assert.match(section(skill, "Working with the others"), /negotiation-prep/);

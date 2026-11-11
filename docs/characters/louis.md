@@ -22,8 +22,14 @@ No. Only when the diff or spec touches amounts, fees, limits, rates, rounding, c
 **Why does he offer the retro and not run it?**
 It is a skill only a person can start, and he would be grading his own rounds. If a retro finds something about his rulings, the proposal goes to you and harvey, not into his file.
 
+**Why is the verdict always the first line, even when he writes a done test?**
+The verdict is what you act on, so it comes first. A done test written in the same reply goes after it, and the findings follow.
+
 **Why does he name the review skill as `suits:code-review`?**
 Claude Code has a built-in `/code-review`. The prefix picks this one.
+
+**Does he start other sessions to review?**
+No. He runs the review skill in its one-pass mode: Standards, then Spec, both himself, each in its own section. That is also what he does when he works alone, and he reads a pull request with `gh pr diff` or a commit with `git show` without checking a branch out. A hand-off to another character becomes a message to whoever sent the brief, in his hand-over format.
 
 ## It's working if
 
@@ -34,4 +40,5 @@ Claude Code has a built-in `/code-review`. The prefix picks this one.
 - A diff with no money in it gets no numbers check.
 - He skips the tools that do not apply, without comment.
 - He edits nothing he reviews.
+- A merge with resolved conflicts gets one verdict per conflicted file (`both kept`, `ours lost` or `theirs lost`) from `git show --remerge-diff`, and a lost side is a BLOCKER citing its commit.
 - He offers a retro at the close of a batch and never runs it.

@@ -12,8 +12,6 @@ const characters = readdirSync(join(root, "skills/characters"), { withFileTypes:
   .filter((e) => e.isDirectory())
   .map((e) => e.name);
 
-// Skills a character only offers to the owner, which are not in this repo.
-const OFFERED = new Set(["rabbit-hole"]);
 // Slash words in code spans that are paths, not skills.
 const NOT_A_SKILL = new Set(["tmp"]);
 
@@ -24,6 +22,17 @@ const section = (source, title) => {
 const frontmatter = (source) => source.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
 const named = (source) => [...source.matchAll(/`\/(?:suits:)?([a-z][a-z0-9-]*)`/g)].map((m) => m[1]);
 const toolDir = (name) => ["tools", "characters"].map((b) => join("skills", b, name)).find((d) => existsSync(join(root, d, "SKILL.md")));
+// Code spans that name a skill shipped here without the `suits:` prefix (ADR 0002): a slash span
+// (`/tdd`, `/scrum 2026-09-03`) or the plain form "the `jessica` skill".
+const bareNames = (source) =>
+  [...source.matchAll(/`\/([a-z][a-z0-9-]*)(?=[`\s])|\bthe `([a-z][a-z0-9-]*)` skill\b/g)].map((m) => m[1] ?? m[2]).filter((n) => toolDir(n));
+// Files that name a bare tool on purpose, each with why.
+const BARE_ALLOWED = {
+  "docs/tools/code-review.md": "names Claude Code's built-in /code-review, which this tool shares a name with",
+  "docs/characters/louis.md": "names Claude Code's built-in /code-review, which the review skill shares a name with",
+};
+const bareNameOffenders = (files) =>
+  files.filter((f) => !(f in BARE_ALLOWED)).map((f) => [f, bareNames(read(f))]).filter(([, n]) => n.length > 0).map(([f, n]) => `${f}: ${[...new Set(n)].join(", ")}`);
 
 describe("characters", () => {
   test("there is at least one", () => assert.ok(characters.length > 0));
@@ -37,7 +46,7 @@ describe("characters", () => {
       }
 
       test("calls only skills that exist here", () => {
-        const missing = named(source).filter((n) => !OFFERED.has(n) && !toolDir(n));
+        const missing = named(source).filter((n) => !toolDir(n));
         assert.deepEqual([...new Set(missing)], []);
       });
 
@@ -63,6 +72,22 @@ describe("characters", () => {
         const prose = source.replace(/`[^`\n]*`/g, ""); // tool names such as `/test-kitchen` are fine
         assert.doesNotMatch(prose, /\b(kitchen|head chef|cooks?|stations?|tickets? board)\b/i);
         assert.doesNotMatch(prose, /\b(six|seven|eight)\s+(characters|people|members)\b/i);
+      });
+
+      test("has a Working alone section before Hand over", () => {
+        const text = section(source, "Working alone");
+        assert.ok(text.length > 0, "no ## Working alone section");
+        assert.ok(source.indexOf("## Working alone") < source.indexOf("## Hand over"), "Working alone comes after Hand over");
+        assert.match(text, /\b(?:gh pr diff|git show)\b/);
+        assert.match(text, /hand-off[^.\n]* is a message/i);
+        assert.match(text, /start no other session/i);
+        assert.match(text, /to whoever sent the brief/);
+        assert.match(text, /For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present\./);
+      });
+
+      test("explains Working alone in its docs page, under Common questions", () => {
+        const page = read("docs/characters", `${name}.md`);
+        assert.match(section(page, "Common questions"), /work(?:s|ing)? alone/i);
       });
 
       test("has a sample line of 30 words or fewer", () => {
@@ -123,7 +148,6 @@ export const teamSizePhrases = (source) => TEAM_SIZE.flatMap((re) => prose(sourc
 // that no longer needs its place fails too, so the list only shrinks.
 const WORKFLOW_WORD_ALLOWED = {
   "skills/characters/harvey/SKILL.md": "starts a sub-agent for the architecture survey, and says so first",
-  "skills/characters/louis/SKILL.md": "starts the review's sub-agents, and says so first",
   "skills/tools/code-review/SKILL.md": "starts a sub-agent per review axis",
   "skills/tools/codebase-design/SKILL.md": "points to parallel sub-agents for design-it-twice",
   "skills/tools/diagnosing-bugs/SKILL.md": "a checklist item on a loop that runs unattended",
@@ -152,6 +176,15 @@ describe("the scan itself", () => {
     for (const text of ["Then the agent reads the file.", "Hand it to an agent.", "An assistant secretary signs."]) {
       assert.ok(workflowWords(text, "skills/tools/pr/SKILL.md").length > 0, text);
     }
+  });
+  test("finds a planted bare tool name", () => {
+    assert.deepEqual(bareNames("Run `/tdd` first."), ["tdd"]);
+    assert.deepEqual(bareNames("Type `/scrum 2026-09-03` to redraft."), ["scrum"]);
+    assert.deepEqual(bareNames("Run the `jessica` skill and carry on."), ["jessica"]);
+  });
+  test("lets a prefixed tool name and a path through", () => {
+    assert.deepEqual(bareNames("Run `/suits:tdd` first, then write to `/tmp`."), []);
+    assert.deepEqual(bareNames("See the `/suits:code-review` skill, or the `pdf` skill if listed."), []);
   });
   test("finds a planted team size", () => {
     for (const phrase of ["a team of seven", "the six characters", "a crew of 5", "ten specialists", "7 team members"]) {
@@ -182,6 +215,10 @@ describe("docs pages", () => {
 
   test("there are pages to scan", () => assert.ok(files.length > 0));
 
+  test("name every tool with the suits: prefix", () => {
+    assert.deepEqual(bareNameOffenders(files), []);
+  });
+
   test("use no workflow-tool word, except where listed with a reason", () => {
     const offenders = files
       .map((f) => [f, workflowWords(read(f), f)])
@@ -201,12 +238,21 @@ describe("skill text", () => {
 
   test("there are skills to scan", () => assert.ok(files.length > characters.length));
 
-  test("names only skills that exist here, or are offered", () => {
+  test("names only skills that exist here", () => {
     const missing = files
-      .map((f) => [f, named(read(f)).filter((n) => !OFFERED.has(n) && !NOT_A_SKILL.has(n) && !toolDir(n))])
+      .map((f) => [f, named(read(f)).filter((n) => !NOT_A_SKILL.has(n) && !toolDir(n))])
       .filter(([, names]) => names.length > 0)
       .map(([f, names]) => `${f}: ${[...new Set(names)].join(", ")}`);
     assert.deepEqual(missing, []);
+  });
+
+  test("mentions no /rabbit-hole: no skill or docs page offers a tool this repo does not ship", () => {
+    const offenders = [...docFiles("skills"), ...docFiles("docs")].filter((f) => /rabbit-hole/.test(read(f)));
+    assert.deepEqual(offenders, []);
+  });
+
+  test("names every tool with the suits: prefix", () => {
+    assert.deepEqual(bareNameOffenders(files), []);
   });
 
   test("uses no workflow-tool word, except where listed with a reason", () => {
@@ -244,6 +290,21 @@ const NO_PERSONA = new Set(["associates"]);
 const persona = characters.filter((n) => !NO_PERSONA.has(n));
 const voiceLines = (name) => section(read("skills/characters", name, "SKILL.md"), "Voice").split("\n").filter((l) => l.trim());
 const sampleLines = (name) => voiceLines(name).filter((l) => /^(?:>|Sample:)\s*\S/.test(l));
+
+describe("working alone, in the shared terms", () => {
+  test("CONTEXT.md defines the term", () => {
+    assert.match(read("CONTEXT.md"), /^\*\*Working alone\*\*:/m);
+  });
+  test("jessica writes tickets in her hand-over, not on the board, when working alone", () => {
+    const source = read("skills/characters/jessica/SKILL.md");
+    assert.match(source, /working alone[^.\n]*(?:tickets|hand-over)[^.\n]*does not write to the board/i);
+  });
+  test("ADR 0003 records the mode", () => {
+    const adr = read("docs/adr/0003-characters-can-work-alone.md");
+    assert.match(adr, /^# /m);
+    assert.match(adr, /^## Decision/m);
+  });
+});
 
 describe("the voice rule in CLAUDE.md", () => {
   const rule = read("CLAUDE.md").split("\n").find((l) => /\*\*Voice\*\* section/.test(l)) ?? "";

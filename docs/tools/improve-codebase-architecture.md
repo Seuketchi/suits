@@ -8,7 +8,7 @@ Two filters keep the report from becoming generic cleanup advice. Every candidat
 
 ## When to reach for it
 
-Type `/improve-codebase-architecture`, or let harvey reach for it when you ask where the code should be deepened. Either way it asks before it starts a helper session or writes the report.
+Type `/suits:improve-codebase-architecture`, or let harvey reach for it when you ask where the code should be deepened. Either way it asks before it starts a helper session or writes the report.
 
 It sits outside the build loop: it is not a step in the main loop but something you run periodically to queue up more work to improve the codebase. The four situations it gets used in:
 
@@ -71,9 +71,9 @@ With the next thing you are building in mind. Where a big build is coming up, po
 
 Partly. It is strong on big existing codebases lacking consistent structure, and it is the recommended upkeep mechanism after any one-time structural setup. The honest counterweight: users with genuinely out-of-control projects report it "helped a little but still doesn't seem to cut it," and one developer with an eight-year legacy codebase reported the model going in circles where the same skill produces a clean graph on a tidy repo. There is no dedicated `/refactor` skill for that case yet. If the codebase has no shared vocabulary at all, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) to establish one first tends to make this skill's output much better.
 
-**How is this different from `/codebase-design`?**
+**How is this different from `/suits:codebase-design`?**
 
-`/codebase-design` is a reference, not a session driver. It supplies the vocabulary (module, interface, depth, seam, adapter, leverage, locality), and this skill borrows it. Pointing a fresh session at `/codebase-design` as the thing to "do" is a known failure: with no process of its own to follow, Claude invents one, re-explores code and runs for a very long time before asking you anything. Drive with this skill; consume that one.
+`/suits:codebase-design` is a reference, not a session driver. It supplies the vocabulary (module, interface, depth, seam, adapter, leverage, locality), and this skill borrows it. Pointing a fresh session at `/suits:codebase-design` as the thing to "do" is a known failure: with no process of its own to follow, Claude invents one, re-explores code and runs for a very long time before asking you anything. Drive with this skill; consume that one.
 
 **Will it ever tell me the codebase is fine?**
 

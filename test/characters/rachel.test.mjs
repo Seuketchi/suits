@@ -23,12 +23,13 @@ describe("rachel", () => {
     assert.doesNotMatch(skill, /^\d\. \*\*(Deeper|Sideways|Back up):\*\*/m);
   });
   test("on a bug she calls the audit; the table says so in one line", () => {
-    assert.match(section(skill, "What she does"), /bug.*`\/root-cause-audit`/);
+    assert.match(section(skill, "What she does"), /bug.*`\/suits:root-cause-audit`/);
     assert.match(section(skill, "What she does"), /writes the trigger and the causes \|/);
   });
-  test("she keeps mike's check of her framing and the /rabbit-hole offer", () => {
+  test("she keeps mike's check of her framing and names a side thread under Open questions, never a tool", () => {
     assert.match(skill, /Mike checks her framing/);
-    assert.match(skill, /offers the owner a `\/rabbit-hole`/);
+    assert.doesNotMatch(skill, /rabbit-hole/);
+    assert.match(section(skill, "Hard rules").match(/^7\. [^\n]*/m)?.[0] ?? "", /Open questions/);
   });
   test("a red flag is the list of cases she tells the owner at once, and it goes to harvey with mike's check", () => {
     const rule4 = section(skill, "Hard rules").match(/^4\. [^\n]*/m)?.[0] ?? "";
@@ -55,8 +56,8 @@ describe("rachel", () => {
 
   test("she calls the root-cause audit only when the task is a bug", () => {
     const when = section(skill, "When to call");
-    assert.match(when, /\| `\/root-cause-audit` \| the task is a bug/);
-    assert.match(section(skill, "What she does"), /`\/root-cause-audit`/);
+    assert.match(when, /\| `\/suits:root-cause-audit` \| the task is a bug/);
+    assert.match(section(skill, "What she does"), /`\/suits:root-cause-audit`/);
   });
   test("the hand-off table has the audit's inputs and its decision route", () => {
     const table = section(skill, "Working with the others");
@@ -64,7 +65,7 @@ describe("rachel", () => {
     assert.match(table, /rachel \| harvey \|/);
   });
   test("a hard rule keeps the audit read-only and calls it by name", () => {
-    assert.match(section(skill, "Hard rules"), /`\/root-cause-audit`.*(edits no code|edits nothing|read-only)/s);
+    assert.match(section(skill, "Hard rules"), /`\/suits:root-cause-audit`.*(edits no code|edits nothing|read-only)/s);
   });
 });
 
@@ -102,8 +103,20 @@ describe("root-cause-audit", () => {
   test("a cause never names a person", () => {
     assert.match(audit, /never names a person or "human error"/);
   });
-  test("a thread outside the bug is offered as a /rabbit-hole, not followed", () => {
-    assert.match(audit, /`\/rabbit-hole`/);
+  test("a thread outside the bug goes under Open questions, not followed, and offers no tool", () => {
+    assert.doesNotMatch(audit, /rabbit-hole/);
+    const thread = section(audit, "A thread outside the bug");
+    assert.match(thread, /Do not follow it/);
+    assert.match(thread, /Open questions/);
+  });
+  test("sideways also searches the sibling repos the project names, for the same flaw and for callers", () => {
+    const sideways = section(audit.replace(/^### /gm, "## "), "Sideways");
+    assert.match(sideways, /`## Sibling repos`/);
+    assert.match(sideways, /`CLAUDE\.md`[\s\S]*`CONTEXT\.md`/);
+    assert.match(sideways, /same flaw/);
+    assert.match(sideways, /every caller of the changed code/);
+    assert.match(sideways, /`searched:`[^\n]*each (sibling )?repo/);
+    assert.match(sideways, /`no sibling repos named`/);
   });
   test("causes, plural, with a trigger and three timestamps", () => {
     assert.match(audit, /\*\*Causes\*\*, plural/);

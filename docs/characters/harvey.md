@@ -4,7 +4,7 @@ Harvey is the senior judgement. At the front of a request he decides whether to 
 
 ## When to reach for it
 
-Reach for harvey when the change is non-trivial (a feature, a refactor, a migration, a schema or dependency choice), when you are preparing a pitch or a negotiation, or when a finding changes scope, money or a rule. Donna sends work to him; you can also call `/harvey` directly. A typo or a one-line fix does not need him.
+Reach for harvey when the change is non-trivial (a feature, a refactor, a migration, a schema or dependency choice), when you are preparing a pitch or a negotiation, or when a finding changes scope, money or a rule. Donna sends work to him; you can also call `/suits:harvey` directly. A typo or a one-line fix does not need him.
 
 ## Common questions
 
@@ -22,6 +22,9 @@ Only on an artifact you own, have rights to, or named in the request. Otherwise 
 
 **Why does `improve-codebase-architecture` ask before it runs?**
 It starts a helper session and writes a report, so he checks first.
+
+**What does he do when he works alone?**
+He starts no other session, so the architecture survey is done in one pass by him. A hand-off to another character becomes a message to whoever sent the brief, naming the character it is for, in his hand-over format: the call first, then the one reason.
 
 ## It's working if
 

@@ -2,7 +2,7 @@
 
 `root-cause-audit` looks at a bug for what let it happen, not only which line was wrong. It reads the bug report, what mike found in our code, and the fix diff once there is one, and it edits no code.
 
-It looks in three fixed directions: deeper (how was it possible), sideways (where else the same flaw lives) and back up (the design it belongs to, and whether the fix is a guardrail or a design change). It writes a trigger and its causes, each tagged found, not found or inferred, with the source. A *not found* names the search, and an *inferred* says what would confirm it.
+It looks in three fixed directions: deeper (how was it possible), sideways (where else the same flaw lives, in our repo and in the sibling repos the project names) and back up (the design it belongs to, and whether the fix is a guardrail or a design change). It writes a trigger and its causes, each tagged found, not found or inferred, with the source. A *not found* names the search, and an *inferred* says what would confirm it.
 
 It returns open questions and what to check next. A finding that needs a decision goes to you and to harvey at the same moment.
 
@@ -19,7 +19,7 @@ No. It names the causes. The fix goes to the builders, and their failing test mu
 A trigger sets a failure off, and several conditions let it hurt. One line called "the cause" hides the rest.
 
 **What does it do with a thread outside the bug?**
-It offers you a `/rabbit-hole` on it and does not follow it.
+It names the thread to you under open questions and does not follow it.
 
 **When does it interrupt?**
 When the cause is a design flaw, the finding changes scope, it involves money or it breaks a rule. Harvey validates the finding on the same thread.

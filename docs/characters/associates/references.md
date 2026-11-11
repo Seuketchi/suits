@@ -29,7 +29,7 @@ Research of 6 Nov 2026. VERIFIED = read on the page in this session (URL given).
 | Pattern | Why | Check |
 | --- | --- | --- |
 | Deleting an assertion to turn a test green | Beck: "Mistake: delete assertions so the test pretends to pass." | node test on a diff: a test file with removed `assert`/`expect` lines and none added fails. Heuristic only |
-| Expected value copied from the code's own output | Beck names it a mistake; `/tdd` calls it tautological | not checkable |
+| Expected value copied from the code's own output | Beck names it a mistake; `/suits:tdd` calls it tautological | not checkable |
 | All tests written first, then all code | Beck: speculative tests cause rework | not checkable; the done test from jessica is one test |
 | Bug-fix commit with no test file in the same commit | Git: "make sure you have new tests that break if somebody else breaks" what you fixed | node test over `git diff --name-only <base>..HEAD`: a `fix` commit touching source and no path matching `test` fails. Needs a "no behaviour" opt-out |
 | Commit that mixes two changes | kernel: one problem per patch | not checkable; proxy: commit touches paths from more than one ticket's owned list |

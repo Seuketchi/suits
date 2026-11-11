@@ -18,7 +18,10 @@ When the cause is a design flaw, the finding changes the scope, it involves mone
 They check different things. She asks whether the fix addresses the cause. He asks whether it meets the standards and the spec. Their reports stay separate.
 
 **What happens to a thread outside the bug?**
-She offers you a `/rabbit-hole` on it and never starts one.
+She names it to you under open questions and never follows it.
+
+**What does she do when she works alone?**
+She starts no other session, so the research and the root-cause look are done by her in one pass. A hand-off to another character becomes a message to whoever sent the brief, in her hand-over format, with a typed item per cause.
 
 ## It's working if
 

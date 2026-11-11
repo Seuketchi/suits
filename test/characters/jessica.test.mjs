@@ -67,7 +67,7 @@ describe("jessica", () => {
   test("rule 9 stays a short pointer to the tool and does not copy its lines", () => {
     const rule = section(skill, "Hard rules").match(/^9\. (.*)$/m)?.[1] ?? "";
     assert.match(rule, /recommendation, not a verdict/);
-    assert.match(rule, /`\/go-live-check`/);
+    assert.match(rule, /`\/suits:go-live-check`/);
     assert.ok(rule.split(/(?<=[.!?])\s+/).length <= 2, `rule 9 is more than two sentences: ${rule}`);
     assert.doesNotMatch(rule, /its reason, its check and its evidence/);
     assert.doesNotMatch(rule, /no fix becomes a ticket/);
@@ -75,6 +75,13 @@ describe("jessica", () => {
   test("the go-live check is capped at 30 lines and lists evidence", () => {
     assert.match(goLive, /At most 30 lines/);
     assert.match(goLive, /the evidence, and the result/);
+  });
+  test("tracks from the board when there is no action log, and keeps the decision log", () => {
+    const logs = section(skill, "Working with the others") + skill.match(/^The action log and the decision log[^\n]*$/m)?.[0];
+    assert.match(logs, /action log[^|\n]*run's board/);
+    assert.match(skill, /run keeps (its own )?board of tickets[^.]*no action log[^.]*board[^.]*decision log/i);
+    assert.match(skill, /tracks from them and does not copy them/);
+    assert.match(read("docs/characters/jessica.md"), /no action log[^.]*board/i);
   });
 });
 
@@ -102,7 +109,7 @@ describe("jessica's four tools", () => {
   });
   test("jessica's When to call has one row per tool, each with a trigger", () => {
     const when = section(skill, "When to call");
-    for (const name of TOOLS) assert.match(when, new RegExp(`^\\| \`/${name}\` \\| .{15,}`, "m"), name);
+    for (const name of TOOLS) assert.match(when, new RegExp(`^\\| \`/suits:${name}\` \\| .{15,}`, "m"), name);
     assert.match(when, /external dependenc/);
     assert.match(when, /three or more tickets/);
     assert.match(when, /a release is next/);
@@ -111,9 +118,9 @@ describe("jessica's four tools", () => {
     assert.match(section(skill, "Working with the others"), /go-live check/);
     assert.match(section(skill, "Working with the others"), /status report/);
     const rules = section(skill, "Hard rules");
-    assert.match(rules, /`\/raid-log`/);
-    assert.match(rules, /`\/critical-path`/);
-    assert.match(rules, /`\/go-live-check`/);
+    assert.match(rules, /`\/suits:raid-log`/);
+    assert.match(rules, /`\/suits:critical-path`/);
+    assert.match(rules, /`\/suits:go-live-check`/);
   });
   test("the risk log: one row shape, a last column by kind, closed rows stay", () => {
     assert.match(raid, /`id` \| `kind` \| `text`/);

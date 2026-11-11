@@ -39,7 +39,7 @@ Repo name, date, and a compact legend: solid box = module, dashed line = seam, r
 
 ## Candidate card
 
-The diagrams carry the weight. Prose is sparse and plain, and uses the glossary terms (from the `/codebase-design` skill) without ceremony.
+The diagrams carry the weight. Prose is sparse and plain, and uses the glossary terms (from the `/suits:codebase-design` skill) without ceremony.
 
 Each candidate is one `<article>`:
 
@@ -105,7 +105,7 @@ One larger card: candidate name, one sentence on why, and an anchor link to its 
 
 ## Tone
 
-Plain, concise English, with the architectural nouns and verbs taken straight from the `/codebase-design` skill. Stay on those terms even when compressing.
+Plain, concise English, with the architectural nouns and verbs taken straight from the `/suits:codebase-design` skill. Stay on those terms even when compressing.
 
 **Use exactly:** module, interface, implementation, depth, deep, shallow, seam, adapter, leverage, locality.
 
@@ -120,4 +120,4 @@ Plain, concise English, with the architectural nouns and verbs taken straight fr
 
 **Wins bullets** name the gain in glossary terms: *"locality: bugs concentrate in one module"*, *"leverage: one interface, N call sites"*, *"interface shrinks; implementation absorbs the wrappers"*. Leave out *"easier to maintain"* and *"cleaner code"*: they aren't glossary terms.
 
-No hedging or throat-clearing ("it's worth noting that…"). Turn a sentence into a bullet where you can, and cut a bullet where you can. Before inventing a term, reach for one in the `/codebase-design` glossary.
+No hedging or throat-clearing ("it's worth noting that…"). Turn a sentence into a bullet where you can, and cut a bullet where you can. Before inventing a term, reach for one in the `/suits:codebase-design` glossary.

@@ -5,7 +5,7 @@ description: Build a slide deck as a PDF from a pitch or talk structure that is 
 
 # Slides
 
-Build the deck. Do not decide what it says: the structure comes from `/pitching` (the points the audience must keep, the order, the ask), or from the owner for a talk that is not a pitch. This tool turns that structure into slides that look like a person made them and pass the same checks as a finished PDF.
+Build the deck. Do not decide what it says: the structure comes from `/suits:pitching` (the points the audience must keep, the order, the ask), or from the owner for a talk that is not a pitch. This tool turns that structure into slides that look like a person made them and pass the same checks as a finished PDF.
 
 ## Before the first slide
 

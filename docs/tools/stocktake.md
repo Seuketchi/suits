@@ -2,11 +2,11 @@
 
 `stocktake` audits how our own code or system behaves today. It treats the code as the **primary source** and docs, comments and memory as leads to check against it, so every claim in the result cites file:line on a named commit.
 
-It reads and runs nothing with side effects: it changes nothing, and it runs as a background session so your conversation keeps going.
+It reads and runs nothing with side effects: it changes nothing, and it runs as a background session so your conversation keeps going. If that session is already a background session, or cannot start one, it does the audit itself and never starts another.
 
 ## When to reach for it
 
-Type `/stocktake`, or Claude reaches for it automatically when a decision waits on what the existing code actually does.
+Type `/suits:stocktake`, or Claude reaches for it automatically when a decision waits on what the existing code actually does.
 
 | What the decision waits on | Reach for |
 | --- | --- |
@@ -39,4 +39,4 @@ That is an experiment. It hands the question to `test-kitchen` instead of guessi
 
 ## Where it fits
 
-A reach-for-it-anytime standalone that feeds the thinking skills. It writes with [findings](./findings.md), kind `audit`; `/grilling` sends one to look up a fact about our code instead of asking you.
+A reach-for-it-anytime standalone that feeds the thinking skills. It writes with [findings](./findings.md), kind `audit`; `/suits:grilling` sends one to look up a fact about our code instead of asking you.

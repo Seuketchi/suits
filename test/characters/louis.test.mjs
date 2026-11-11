@@ -6,6 +6,21 @@ import { existsSync, readFileSync } from "node:fs";
 const skill = readFileSync("skills/characters/louis/SKILL.md", "utf8");
 const money = readFileSync("skills/tools/money-check/SKILL.md", "utf8");
 
+describe("louis puts the verdict on the first line", () => {
+  const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
+  test("the verdict is the first line of every reply, even when a done test is also written", () => {
+    assert.match(handOver, /The verdict is the first line of every reply, before a title, a preface or a done test\./);
+  });
+  test("a done test written in the same reply comes after the verdict", () => {
+    assert.match(handOver, /A done test written in the same reply goes after the verdict/);
+  });
+  test("his docs page says the same, in a Common questions entry", () => {
+    const docs = readFileSync("docs/characters/louis.md", "utf8");
+    const questions = docs.split(/^## Common questions/m)[1]?.split(/^## /m)[0] ?? "";
+    assert.match(questions, /verdict[^\n]*first line/i);
+  });
+});
+
 describe("louis reviews in one pass", () => {
   const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
   test("the code-review row says one pass", () => {
@@ -93,10 +108,10 @@ describe("louis reviews a merge resolution with remerge-diff", () => {
   const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
   const docs = readFileSync("docs/characters/louis.md", "utf8");
 
-  test("the What he does table reads git show --remerge-diff for each conflicted merge, and reads each hunk", () => {
+  test("the What he does table reads git show --remerge-diff for each conflicted merge, and reads each conflicted file", () => {
     assert.match(row, /`git show --remerge-diff <merge>`/);
     assert.match(row, /for each conflicted merge/);
-    assert.match(row, /for each conflicted hunk names what each side meant and whether the result keeps both/);
+    assert.match(row, /for each conflicted file names what each side meant and whether the result keeps both/);
     assert.match(row, /\| none \|$/);
   });
   test("the hand-over names the three per-file verdicts with file:line and the commit each side came from", () => {

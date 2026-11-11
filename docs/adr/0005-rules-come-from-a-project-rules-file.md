@@ -13,7 +13,7 @@ The plugin ships a mod in `hooks/`, and the mod holds no rule of its own. A proj
 - A `never` match is denied with `<id>: <why>`, and the owner sees a toast.
 - A `warn` match runs. The owner sees a toast and the model reads the `why` after the tool's result.
 - With no file, every call passes. A file that is not valid JSON, or that exists but cannot be read, is reported once and none of its rules apply, so a mistake in the file never stops work. A read that fails on a file that exists is never taken for no file.
-- One bad rule drops only that rule and is reported once; the valid `never` and `warn` rules in the same file stay in force. A rule is bad when a field is missing, `match` is not a regular expression, or `match` repeats a group that already repeats (`(a+)+`), which can freeze every call. Only the first 4,096 characters of a call's input are tested, for the same reason.
+- One bad rule drops only that rule and is reported once; the valid `never` and `warn` rules in the same file stay in force. A rule is bad when a field is missing, `match` is not a regular expression, or `match` repeats a group that already repeats (`(a+)+`), which can freeze every call. Input longer than 4 KB is cut off before it is tested, for the same reason.
 - If the check itself fails, the call goes through and a toast says it was not checked.
 - A warning is toasted only for a call that ran.
 - `/suits-rules` shows the file, or says there is none.

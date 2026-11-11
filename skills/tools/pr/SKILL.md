@@ -160,4 +160,4 @@ The blast radius is how far the change reaches if it is wrong: a layout shift, a
 
 ## Outdated bot comments
 
-When asked to tidy a pull request, find its bot comments that are outdated, the ones whose code has since changed. Hide each one as outdated with the GraphQL `minimizeComment` mutation, passing `classifier: OUTDATED`. Hiding keeps the comment on the record and collapses it on screen. Never delete a comment, and leave a comment that is still current as it is.
+When asked to tidy a pull request, find its bot comments that are outdated. A review comment is outdated when its `isOutdated` field is true; GitHub sets that flag when the code the comment points at has since changed. A comment is a bot comment only when its author's type is `Bot`, or its login ends in `[bot]`. Never hide a human's comment, even when it is outdated. Hide each outdated bot comment with the GraphQL `minimizeComment` mutation, passing `classifier: OUTDATED`. Hiding keeps the comment on the record and collapses it on screen. Never delete a comment, and leave a comment that is still current as it is.

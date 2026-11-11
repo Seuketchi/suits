@@ -63,6 +63,17 @@ describe("pr: outdated bot comments", () => {
     assert.match(text, /hide/i);
   });
 
+  test("tells a bot from a human by author type or the [bot] login, and never hides a human", () => {
+    const text = skill();
+    assert.match(text, /author's type is `Bot`/);
+    assert.match(text, /login ends in `\[bot\]`/);
+    assert.match(text, /Never hide a human's comment/);
+  });
+
+  test("names isOutdated as the source of the outdated flag", () => {
+    assert.match(skill(), /`isOutdated`/);
+  });
+
   test("never deletes a comment", () => {
     const text = skill();
     assert.match(text, /never delete/i);

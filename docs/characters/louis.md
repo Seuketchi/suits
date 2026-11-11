@@ -37,4 +37,5 @@ No. He runs the review skill in its one-pass mode: Standards, then Spec, both hi
 - A diff with no money in it gets no numbers check.
 - He skips the tools that do not apply, without comment.
 - He edits nothing he reviews.
+- A merge with resolved conflicts gets one verdict per conflicted file (`both kept`, `ours lost` or `theirs lost`) from `git show --remerge-diff`, and a lost side is a BLOCKER citing its commit.
 - He offers a retro at the close of a batch and never runs it.

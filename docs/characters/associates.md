@@ -20,13 +20,16 @@ Pushing is the owner's call. The owner, or the session when the owner says so, d
 **What is the test for a bug fix?**
 It fails before the fix and fails because of the named cause.
 
+**Why do heavy test runs wait in line?**
+Up to three run at once, so a whole suite or a test database takes turns in one shared slot unless the run says otherwise. A run that cannot finish says so in its `not run` line.
+
 **What do they do when they are told to work alone?**
 They start no other session and build in one pass, whatever the number of tasks. A hand-off to another character becomes a message to whoever sent the brief, in their usual hand-over format. They read a pull request with `gh pr diff` and a commit with `git show`, and never check a branch out.
 
 ## It's working if
 
-- The test was seen to fail before the code was written, and the whole suite passes.
-- The hand-over has the two command lines (`new test failed before`, `suite passes`) and says done or partial.
+- The test was seen to fail before the code was written, and the widest check the run allows passes.
+- The hand-over has the command lines (`new test failed before`, `checks pass`, `not run`), and says done or partial.
 - A commit states the problem, the cause, the one change and the check.
 - A bug fix addresses the cause rachel named.
 - Each associate touched only the files its ticket owns.

@@ -31,7 +31,7 @@ describe("associates", () => {
   });
   test("the hand-over has the two command lines and says done or partial", () => {
     assert.match(skill, /`new test failed before: <command>`/);
-    assert.match(skill, /`suite passes: <command>`/);
+    assert.match(skill, /`checks pass: <command>`/);
     assert.match(skill, /done or partial/);
   });
   test("refactoring is its own commit", () => {
@@ -62,6 +62,32 @@ describe("associates", () => {
     assert.match(working, /each added branch has a test that fails without it/);
     assert.match(working, /checked against the real system with the evidence given/);
     assert.match(working, /named as unverified with how to check it/);
+  });
+  test("rule 10 runs the widest check the run allows, and says what did not run and why", () => {
+    const rule10 = section(skill, "Hard rules").match(/^10\. [^\n]*/m)?.[0] ?? "";
+    assert.match(rule10, /\*\*Run the widest check the run allows,\*\*/);
+    assert.match(rule10, /the whole suite when it can finish, otherwise the check the ticket names/);
+    assert.match(rule10, /say which command showed what, and what did not run and why/i);
+    assert.match(rule10, /a time cap, a shared slot/);
+    assert.doesNotMatch(skill, /Run the whole suite, not only the new test/);
+  });
+  test("line 6 says heavy test runs take turns in one shared slot", () => {
+    const intro = skill.split("\n")[5] ?? "";
+    assert.match(intro, /up to three in parallel/);
+    assert.match(intro, /Heavy test runs \(a whole suite, a test database\) take turns in one shared slot unless the run says otherwise/);
+  });
+  test("the hand-over says checks pass and not run, not suite passes", () => {
+    const hand = section(skill, "Hand over");
+    assert.match(hand, /`checks pass: <command>`/);
+    assert.match(hand, /`not run: <what, why>`/);
+    assert.doesNotMatch(skill, /suite passes/);
+  });
+  test("the docs page's working-if matches the widest-check hand-over", () => {
+    const working = section(doc, "It's working if");
+    assert.match(working, /`new test failed before`, `checks pass`, `not run`/);
+    assert.match(working, /the widest check the run allows passes/);
+    assert.doesNotMatch(working, /suite passes/);
+    assert.match(section(doc, "What it does") + section(doc, "Common questions"), /shared slot/);
   });
   test("the hard rules run 1 to 12 in order", () => {
     const nums = [...skill.matchAll(/^(\d+)\. \*\*/gm)].map((m) => Number(m[1]));

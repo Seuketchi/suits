@@ -69,13 +69,16 @@ test('a subagent that is not one of the three is not held', async ($, on) => {
   expect(ran.length).toBe(2)
 })
 
-test('a subagent the session does not list is denied, not let through', async ($, on) => {
-  const { ran } = engine(on)
+// Pinned on purpose (ADR 0009): a loop the session's list does not name (a workflow's, an
+// engine fork) is not one of the three, and holding it would break other work.
+test('a subagent the session does not list is not held', async ($, on) => {
+  const { ran, toasts } = engine(on)
 
-  const out = await $.tool.call({ tool: 'Bash', command: 'git log', agentId: 'unknown' })
+  const out = await $.tool.call({ tool: 'Bash', command: 'git commit -m x', agentId: 'unknown' })
 
-  expect(out.deny).toContain('ADR 0009')
-  expect(ran).toEqual([])
+  expect(out.deny).toBeUndefined()
+  expect(ran).toEqual(['git commit -m x'])
+  expect(toasts).toEqual([])
 })
 
 test('the main session is not held', async ($, on) => {

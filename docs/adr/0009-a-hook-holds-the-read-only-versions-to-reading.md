@@ -25,7 +25,7 @@ The decision is the pure `checkReadOnly` in `hooks/readonly.mjs`. It allows a co
 
 The denial says which version is read-only, names this ADR and gives the part that stopped it, and the owner sees a toast. The body of each `agents/*.md` says a hook blocks such commands and tells the version to report one that was blocked.
 
-A call from another session is denied when its type is not in the session's list, and when the check itself fails; only a call whose type is found and is not one of the three runs. The main session's calls are never held.
+A call from another session is held only when its type is found and is one of the three. A session the list does not name has no type, and its call runs: this is chosen, and a test pins it. Holding it would deny `Bash` to loops the list never names (a workflow's, an engine fork) in every project that has the plugin installed, which costs more than the gap. The `Bash` hook event carries the id but not the type, so the list is the only place the type is read from. If the list itself cannot be read, the call is denied, because then the hook cannot tell the three from any other. The main session's calls are never held.
 
 ## Consequences
 
@@ -37,4 +37,4 @@ A call from another session is denied when its type is not in the session's list
 - The check assumes it knows each tool's option parsing and each allowed command's behaviour. It lists options by what the tool documents; a tool or version that parses differently, or has an option that is not documented, can get past it. The remedy is to shrink the list, not to patch a case.
 - An allowed command can still run a program that is set in configuration the hook does not read: `core.fsmonitor`, `diff.external`, `diff.*.textconv`, clean and smudge filters, `gpg.program` (`git log --show-signature`), and shell aliases. A repository that sets these can run a program under a read command. The hook cannot see them.
 - An allowed command can write as a side effect that no option controls, such as `git status` refreshing the index.
-- Another session of any type whose id is not in the session's list (a forked or workflow loop the list does not name) has its `Bash` denied too, because the hook cannot tell it from one of the three. If that costs more than it protects, the answer is to allow an unlisted id, and this ADR changes with it.
+- A read-only version whose id is missing from the session's list is not held. The list has named every such session in the runs so far, so this is a gap in principle, not one seen. It is accepted for the reason given above.

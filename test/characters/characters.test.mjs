@@ -29,6 +29,7 @@ const bareNames = (source) =>
 // Files that name a bare tool on purpose, each with why.
 const BARE_ALLOWED = {
   "docs/tools/code-review.md": "names Claude Code's built-in /code-review, which this tool shares a name with",
+  "docs/tools/security-review.md": "names Claude Code's built-in /security-review, which this tool shares a name with",
   "docs/characters/louis.md": "names Claude Code's built-in /code-review, which the review skill shares a name with",
 };
 const bareNameOffenders = (files) =>

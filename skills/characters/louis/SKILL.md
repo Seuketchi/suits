@@ -16,6 +16,7 @@ Louis checks work against the rules and the spec, and does not let a miss throug
 | A bug's fix arrives | reviews it beside rachel, on a different question | `/suits:code-review` |
 | A merge with resolved conflicts arrives | reads `git show --remerge-diff <merge>` for each conflicted merge, and for each conflicted file names what each side meant and whether the result keeps both | none |
 | The work touches money | answers the ten numbers items, each with `file:line` | `/suits:money-check` |
+| The work touches untrusted input or a trust boundary | runs the security pass, each finding with `file:line` and its rule | `/suits:security-review` |
 
 ## When to call
 
@@ -25,6 +26,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 | --- | --- |
 | `/suits:code-review` | there is a diff to check. He asks for its one-pass mode. |
 | `/suits:money-check` | the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances. A diff with no money in it skips this. |
+| `/suits:security-review` | the diff touches parsing of files or uploads, command execution, deserialization, query building, authentication or authorization, secrets or keys, outbound requests built from input, file paths from input, or new or bumped dependencies. A diff with none of these skips this. |
 
 ## Rulings
 
@@ -54,7 +56,7 @@ Every review comment starts with one prefix line: `BLOCKER, verified:`, `SHOULD 
 | --- | --- | --- |
 | donna or jessica | louis | the request with its done test to write, at intake |
 | the builders | louis | each piece of work as it arrives |
-| louis | the author | the findings with rulings, and the loop is logged; on money work, the `/suits:money-check` answers with `file:line` |
+| louis | the author | the findings with rulings, and the loop is logged; on money work, the `/suits:money-check` answers, and on trust-boundary work the `/suits:security-review` findings, each with `file:line` |
 | rachel | louis | nothing: they review the same fix on different questions and stay separate |
 | louis and rachel | donna | one consolidated list, the two axes under their own headings |
 | louis | harvey | an item he could not pass, or the third failed round |

@@ -18,7 +18,7 @@ The plugin ships a mod in `hooks/`, and the mod holds no rule of its own. A proj
 - A warning is toasted only for a call that ran.
 - `/suits-rules` shows the file, or says there is none.
 
-The decisions are pure functions in `hooks/logic.mjs`, tested with `node:test` and no Claude Code install. `hooks/register.ts` only reads the file and calls them, and is tested with `claude plugin test .`. A test fails if `hooks/` carries a rule of its own, or names a project or the tool that starts a session.
+The decisions are pure functions in `hooks/logic.mjs`, tested with `node:test` and no Claude Code install. `hooks/register.ts` only reads the file and calls them, and is tested with `claude plugin test .`. A test fails if `hooks/` carries a rule of its own or reads the environment.
 
 ## Consequences
 

@@ -82,6 +82,16 @@ The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that
 - If a check itself fails, the call goes through and a toast says it was not checked.
 - `/suits-rules` shows the file and its rules, or says there is none.
 
+### Helper mode
+
+A session that must do its work alone, with no new session started, is a helper. One variable turns helper mode on: `SUITS_HELPER`, any value but empty or `0`. It is the only variable the mod reads, and it is read at each event, not once at start.
+
+- Starting a session is refused with "This session is a helper: do the work yourself in one pass (Working alone).", and a toast says so.
+- The system prompt gains one line pointing the character at its **Working alone** section.
+- The status line shows the working character when a character skill is used (`louis`), and `louis · helper` in helper mode. In helper mode with no character yet it shows `helper`. A tool skill does not change it.
+
+Nothing in this plugin sets the variable. Whatever starts a helper sets it: put `SUITS_HELPER=1` in the environment of the session it launches, or have a mod of its own call `$.env.set("SUITS_HELPER", "1")` in a `session.start` hook, which sets it for the whole process.
+
 ## Layout
 
 - [skills/characters](./skills/characters/README.md): the characters.

@@ -24,6 +24,10 @@ _Avoid_: job, position
 The one character accountable for a request, written down by donna when the request arrives. There is never more than one.
 _Avoid_: assignee, stakeholder
 
+**Working alone**:
+A mode every character has for a session that cannot, or is told not to, start another session. It starts no other session and does the work of any tool itself, in one pass. A hand-off becomes a message to whoever sent the brief, in the character's own hand-over format. A pull request is read with `gh pr diff` and a commit with `git show`, never by checking a branch out.
+_Avoid_: solo mode, helper mode (that is the name the session uses when it asks for this mode)
+
 **Hand-off packet**:
 What one character passes to the next: the goal, the limits and budget, the done test, what is known and not, the questions to answer, the next owner, and the deadline. A small ask gets one line instead.
 _Avoid_: ticket, brief

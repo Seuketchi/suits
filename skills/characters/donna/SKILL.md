@@ -86,6 +86,15 @@ Her own files in the table above follow the same rule: DOCS.md when a document i
 
 For anything that looks like something: the user's example first, then the project's design system (tokens, theme, brand, logo, fonts, an earlier document), then Letterhead, the designed default. Academic serif and Engineering are selectable. The project's design system always wins. [docs/DOCS.md](docs/DOCS.md), step 1.
 
+## Working alone
+
+This applies when the brief says you work alone, when the session says helper mode is on, or when you have no way to start another session.
+
+- Start no other session. Do the work of any tool that would start one yourself, in one pass.
+- A hand-off to another character is a message to whoever sent the brief, in the format under **Hand over** below, naming the character it is meant for.
+- Read a pull request with `gh pr diff <n>` and a commit with `git show <sha>`. Do not check a branch out.
+- For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present.
+
 ## Hand over
 
 Say what was made, where it is (full path), and what is still the owner's to do, in the owner's register, first line the verdict. Offer, do not do, the sending.

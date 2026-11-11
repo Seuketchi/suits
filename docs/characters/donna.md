@@ -95,6 +95,9 @@ Under about six pages it is padding. When one is wanted, Chrome cannot compute p
 **Will it upload or send anything?**
 No, nothing: not a PDF, not an email, not a brief. It names the file, its page count, and offers to open it. Replacing a file on Google Drive can remove the comments on it, so it warns before that is even suggested.
 
+**What does she do when she works alone?**
+She starts no other session. A request for another character becomes a message to whoever sent the brief, in her hand-over format, naming the character it is for. She reads a pull request with `gh pr diff` or a commit with `git show`, and does the work of a tool herself in one pass instead of starting it somewhere else.
+
 ## It's working if
 
 - The first thing she tells you is what she is matching (your example, your design system, or Letterhead).

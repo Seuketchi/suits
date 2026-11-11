@@ -20,6 +20,9 @@ They check different things. She asks whether the fix addresses the cause. He as
 **What happens to a thread outside the bug?**
 She offers you a `/rabbit-hole` on it and never starts one.
 
+**What does she do when she works alone?**
+She starts no other session, so the research and the root-cause look are done by her in one pass. A hand-off to another character becomes a message to whoever sent the brief, in her hand-over format, with a typed item per cause.
+
 ## It's working if
 
 - Each finding is tagged found, not found or inferred, with a source.

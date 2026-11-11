@@ -51,6 +51,9 @@ The **smell baseline** is the floor underneath it, twelve Fowler code smells fro
 
 Claude Code ships its own `/code-review`, which hunts bugs in the diff; this one checks the repo's standards and the spec. Inside this plugin the skill is `suits:code-review`, so call it by that name, and the built-in keeps the plain name. Characters in this repo name it that way too.
 
+**Can it run without starting any other session?**
+Yes: ask for one pass, or run it where no other session can be started. It then reads the diff from `gh pr diff <n>` or `git show <sha>` when the branch is not checked out, runs the Standards review and then the Spec review itself, and reports them under their own headings. Louis always uses this mode. The parallel default stays for a normal session.
+
 **Its review sessions invoke it again and start more sessions.**
 
 Reported upstream, with one report reaching 50-plus sessions: a review session can rediscover the skill and fan out again. The briefs now end with a line that forbids it, so each review is done directly.

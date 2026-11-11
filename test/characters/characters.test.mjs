@@ -31,6 +31,7 @@ const bareNames = (source) =>
 // Files that name a bare tool on purpose, each with why.
 const BARE_ALLOWED = {
   "docs/tools/code-review.md": "names Claude Code's built-in /code-review, which this tool shares a name with",
+  "docs/characters/louis.md": "names Claude Code's built-in /code-review, which the review skill shares a name with",
 };
 const bareNameOffenders = (files) =>
   files.filter((f) => !(f in BARE_ALLOWED)).map((f) => [f, bareNames(read(f))]).filter(([, n]) => n.length > 0).map(([f, n]) => `${f}: ${[...new Set(n)].join(", ")}`);
@@ -73,6 +74,21 @@ describe("characters", () => {
         const prose = source.replace(/`[^`\n]*`/g, ""); // tool names such as `/test-kitchen` are fine
         assert.doesNotMatch(prose, /\b(kitchen|head chef|cooks?|stations?|tickets? board)\b/i);
         assert.doesNotMatch(prose, /\b(six|seven|eight)\s+(characters|people|members)\b/i);
+      });
+
+      test("has a Working alone section before Hand over", () => {
+        const text = section(source, "Working alone");
+        assert.ok(text.length > 0, "no ## Working alone section");
+        assert.ok(source.indexOf("## Working alone") < source.indexOf("## Hand over"), "Working alone comes after Hand over");
+        assert.match(text, /\b(?:gh pr diff|git show)\b/);
+        assert.match(text, /hand-off[^.\n]* is a message/i);
+        assert.match(text, /start no other session/i);
+        assert.match(text, /`suits_checklist`/);
+      });
+
+      test("explains Working alone in its docs page, under Common questions", () => {
+        const page = read("docs/characters", `${name}.md`);
+        assert.match(section(page, "Common questions"), /work(?:s|ing)? alone/i);
       });
 
       test("has a sample line of 30 words or fewer", () => {
@@ -133,7 +149,6 @@ export const teamSizePhrases = (source) => TEAM_SIZE.flatMap((re) => prose(sourc
 // that no longer needs its place fails too, so the list only shrinks.
 const WORKFLOW_WORD_ALLOWED = {
   "skills/characters/harvey/SKILL.md": "starts a sub-agent for the architecture survey, and says so first",
-  "skills/characters/louis/SKILL.md": "starts the review's sub-agents, and says so first",
   "skills/tools/code-review/SKILL.md": "starts a sub-agent per review axis",
   "skills/tools/codebase-design/SKILL.md": "points to parallel sub-agents for design-it-twice",
   "skills/tools/diagnosing-bugs/SKILL.md": "a checklist item on a loop that runs unattended",
@@ -271,6 +286,21 @@ const NO_PERSONA = new Set(["associates"]);
 const persona = characters.filter((n) => !NO_PERSONA.has(n));
 const voiceLines = (name) => section(read("skills/characters", name, "SKILL.md"), "Voice").split("\n").filter((l) => l.trim());
 const sampleLines = (name) => voiceLines(name).filter((l) => /^(?:>|Sample:)\s*\S/.test(l));
+
+describe("working alone, in the shared terms", () => {
+  test("CONTEXT.md defines the term", () => {
+    assert.match(read("CONTEXT.md"), /^\*\*Working alone\*\*:/m);
+  });
+  test("jessica writes tickets in her hand-over, not on the board, when working alone", () => {
+    const source = read("skills/characters/jessica/SKILL.md");
+    assert.match(source, /working alone[^.\n]*(?:tickets|hand-over)[^.\n]*does not write to the board/i);
+  });
+  test("ADR 0003 records the mode", () => {
+    const adr = read("docs/adr/0003-characters-can-work-alone.md");
+    assert.match(adr, /^# /m);
+    assert.match(adr, /^## Decision/m);
+  });
+});
 
 describe("the voice rule in CLAUDE.md", () => {
   const rule = read("CLAUDE.md").split("\n").find((l) => /\*\*Voice\*\* section/.test(l)) ?? "";

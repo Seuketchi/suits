@@ -271,9 +271,119 @@ export function checklistText(checklist, notes) {
   return [...lines, checklistCount(checklist), ...notes].join("\n");
 }
 
-// What `/suits-checklist` answers, from what `$.ui.open` returned: "opened"
-// only when a surface draws the pane now, else why it does not.
-export function paneText(opened) {
-  if (opened && opened.isPlaced) return "Checklist pane opened.";
-  return `Checklist pane is open but not shown: ${opened?.reason ?? "no surface draws it yet"}`;
+// What `/suits-checklist` and `/suits-cast` answer, from what `$.ui.open`
+// returned: "opened" only when a surface draws the pane now, else why it does not.
+export function paneText(opened, title = "Checklist") {
+  if (opened && opened.isPlaced) return `${title} pane opened.`;
+  return `${title} pane is open but not shown: ${opened?.reason ?? "no surface draws it yet"}`;
 }
+
+// The cast board: who holds the work, how it passed on, and the last tool each
+// character called. Kept for the session by the caller; never written anywhere.
+// `loops` maps a loop id ('' is the main loop) to the character holding it.
+export const EMPTY_CAST = { holder: "", loops: {}, handoffs: [], lastTool: {} };
+export const MAX_HANDOFFS = 20;
+
+const isText = (value) => typeof value === "string" && value !== "";
+
+// `event` is { kind: 'skill', skill, loop?, pluginName? } or { kind: 'tool', tool, loop? }.
+// Returns the next board; an event it cannot use returns `board` unchanged.
+export function castEvent(board, event, characters) {
+  if (event === null || typeof event !== "object" || !Array.isArray(characters)) return board;
+  if (event.loop !== undefined && typeof event.loop !== "string") return board;
+  const loop = event.loop;
+
+  let label;
+  if (event.kind === "tool" && isText(event.tool)) {
+    label = event.tool;
+  } else if (event.kind === "skill" && isText(event.skill)) {
+    const character = characterOf(event.skill, characters, event.pluginName);
+    if (character === undefined) label = `/${event.skill}`;
+    else return take(board, character, loop);
+  } else {
+    return board;
+  }
+
+  const key = loop ?? "";
+  if (!Object.hasOwn(board.loops, key)) return board;
+  const holder = board.loops[key];
+  return { ...board, lastTool: { ...board.lastTool, [holder]: label } };
+}
+
+// A character takes a loop. A skill prompt carries no loop: the Skill call that
+// raised it was already counted when some loop holds the character, else the
+// main loop takes it.
+function take(board, character, loop) {
+  if (loop === undefined && Object.values(board.loops).includes(character)) return board;
+  const into = loop ?? "";
+  if (Object.hasOwn(board.loops, into) && board.loops[into] === character) return board;
+  const handoffs =
+    board.holder !== "" && board.holder !== character
+      ? [...board.handoffs, { from: board.holder, to: character }].slice(-MAX_HANDOFFS)
+      : board.handoffs;
+  return { ...board, holder: character, loops: { ...board.loops, [into]: character }, handoffs };
+}
+
+// The pane's lines; one tool row per character, in the order each one's tool was first recorded.
+export const castRows = (board) => ({
+  holder: board.holder,
+  handoffs: board.handoffs.map((h) => `${h.from} → ${h.to}`),
+  tools: Object.entries(board.lastTool).map(([character, tool]) => ({ character, tool })),
+});
+
+// donna's action log, read-only. The caller finds the file the way it finds the rules file.
+export const ACTION_LOG_PATH = "donna/action-log.md";
+export const MAX_ACTION_ROWS = 10;
+
+const cellsOf = (line) =>
+  line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+const isTableLine = (line) => line.trim().startsWith("|");
+const isSeparator = (line) => isTableLine(line) && cellsOf(line).every((cell) => /^:?-+:?$/.test(cell));
+
+// `text` is the file's text, or undefined when there is no file. Reads the first
+// table with ID, Owner, Task and Status columns (Due optional), by name, any order.
+export function parseActionLog(text) {
+  if (typeof text !== "string") return { status: "missing" };
+  const lines = text.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    if (!isTableLine(lines[i])) continue;
+    const names = cellsOf(lines[i]).map((cell) => cell.toLowerCase());
+    if (!["id", "owner", "task", "status"].every((name) => names.includes(name))) continue;
+    const column = (name) => names.indexOf(name);
+    const rows = [];
+    for (let j = i + 1; j < lines.length && isTableLine(lines[j]); j++) {
+      if (isSeparator(lines[j])) continue;
+      const cells = cellsOf(lines[j]);
+      const at = (name) => (column(name) >= 0 ? (cells[column(name)] ?? "") : "");
+      if (cells.every((cell) => cell === "")) continue;
+      rows.push({ id: at("id"), owner: at("owner"), task: at("task"), due: at("due"), status: at("status") });
+    }
+    return { status: "ok", rows };
+  }
+  return { status: "ok", rows: [] };
+}
+
+const CLOSED = new Set(["done", "dropped"]);
+
+export function actionLogLines(log) {
+  if (log.status === "missing") return ["No action log."];
+  if (log.rows.length === 0) return ["No actions yet."];
+  const counts = new Map();
+  for (const { status } of log.rows) counts.set(status, (counts.get(status) ?? 0) + 1);
+  const count = [...counts].map(([status, n]) => `${n} ${status || "no status"}`).join(", ");
+  const open = log.rows.filter((r) => !CLOSED.has(r.status.toLowerCase()));
+  const shown = open.slice(0, MAX_ACTION_ROWS).map((r) => {
+    const head = [r.id, r.status, r.owner].filter((part) => part !== "").join(" ");
+    return `${head}: ${r.task}${r.due ? ` (due ${r.due})` : ""}`;
+  });
+  const cut = open.length - shown.length;
+  return [count, ...shown, ...(cut > 0 ? [`and ${cut} more`] : [])];
+}
+
+export const isActionLogPath = (path) =>
+  typeof path === "string" && (path === ACTION_LOG_PATH || path.endsWith(`/${ACTION_LOG_PATH}`));

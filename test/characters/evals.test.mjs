@@ -91,6 +91,22 @@ describe("evals", () => {
     for (const n of ["#41", "#44", "#52", "#58"]) assert.match(found[0], new RegExp(n));
   });
 
+  test("the working-alone case reads the tickets from the whole message with a regex, not a judge that sees only its start", () => {
+    const g = readFileSync("evals/working-alone-handoff/graders/tickets-carry-blockers-and-files.md", "utf8");
+    assert.match(g, /^---\ntype: regex\ntarget: last_message\nmatch: contains\n---\n/);
+    const pattern = g.split("---\n")[2].trim();
+    const re = new RegExp(pattern);
+    assert.ok(re.test("T1 CSV writer. Blocked by: none. Owns: src/report/csv.js (assumed)"));
+    assert.ok(re.test("T1 CSV writer. Depends on: nothing. Files: src/report/csv.js (assumed)"));
+    assert.ok(!re.test("A plan with no tickets in it."));
+    assert.ok(!re.test("T1 CSV writer. Blocked by: nothing."), "blockers without files");
+  });
+
+  test("the triage judge is given the list, so it can check that none was invented", () => {
+    const g = readFileSync("evals/pr-triage-routes-to-donna/graders/uses-the-list-given.md", "utf8");
+    for (const file of ["src/fee.js", "test/fee.test.js", "src/caps.js", "test/caps.test.js", "src/round.js", "README.md"]) assert.match(g, new RegExp(file.replace(/\./g, "\\.")), file);
+  });
+
   test("CI does not run the evals", () => {
     for (const f of readdirSync(".github/workflows")) assert.doesNotMatch(readFileSync(join(".github/workflows", f), "utf8"), /plugin eval/, f);
   });

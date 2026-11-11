@@ -23,6 +23,12 @@ Only as far as it answers the question. A secret or a customer's details never l
 **What does he do when he works alone?**
 He starts no other session. He answers from the code and the record in one pass, and a hand-off becomes a message to whoever sent the brief, in his hand-over format. He reads a pull request with `gh pr diff` and a commit with `git show`.
 
+**Does he need a code search server?**
+No. With a code search or code graph server connected, he uses it to find who else uses a symbol and where it is defined. Without one, he uses `git grep`, `git log -L` and `git blame -w -M -C`, and works the same. A server hit is a lead: his citation is still the one form, read from the file.
+
+**Can another session start a read-only mike?**
+Yes. `agents/mike.md` is a read-only version. It edits nothing, starts no other session and follows the working-alone rules. Its `Bash` access is limited only by the file's own instruction to read, not by the tool list.
+
 ## It's working if
 
 - Every claim is in the one citation form, and a claim about today is dated.
@@ -31,3 +37,6 @@ He starts no other session. He answers from the code and the record in one pass,
 - He skips the tools that do not apply, without comment.
 - A label typo does not reach him.
 - When memory and code differ, he reports the code.
+- With a code search server connected, a hit from it is a lead, and the citation still comes from the file.
+- The quick look is the three answers and nothing else: no analysis, no extra list, no verdict.
+- A `not found` names the command that was run, with its paths, and no wider search.

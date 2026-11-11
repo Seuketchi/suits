@@ -34,4 +34,69 @@ describe("mike", () => {
   test("the voice does not invite answering from memory", () => {
     assert.doesNotMatch(skill, /total recall/i);
   });
+  describe("if a server is connected", () => {
+    const section = () => {
+      const m = skill.match(/^## If a server is connected\n([\s\S]*?)(?=^## )/m);
+      assert.ok(m, "no ## If a server is connected section");
+      return m[1];
+    };
+    test("sits between Hard rules and Working with the others", () => {
+      const at = (h) => skill.indexOf(`\n## ${h}\n`);
+      assert.ok(at("Hard rules") > -1);
+      assert.ok(at("Hard rules") < at("If a server is connected"));
+      assert.ok(at("If a server is connected") < at("Working with the others"));
+    });
+    test("names the kind of server, and no product", () => {
+      assert.match(section(), /code search or code graph server/);
+      assert.match(section(), /who else uses a symbol/);
+      assert.match(section(), /where it is defined/);
+    });
+    test("says what he does without one", () => {
+      const s = section();
+      assert.match(s, /[Ww]ithout one/);
+      assert.match(s, /`git grep`/);
+      assert.match(s, /`git log -L`/);
+      assert.match(s, /`git blame -w -M -C`/);
+    });
+    test("a server hit is a lead and the citation stays the one form, read from the file", () => {
+      const s = section();
+      assert.match(s, /lead/);
+      assert.match(s, /path:line \(symbol\) @ <12-char sha> \("subject"\)/);
+      assert.match(s, /read from the file/);
+    });
+    test("is three to five lines", () => {
+      const n = section().trim().split("\n").length;
+      assert.ok(n >= 3 && n <= 5, `${n} lines`);
+    });
+  });
+
+  describe("the quick look, as the eval found it", () => {
+    const quick = () => skill.match(/^## The quick look\n([\s\S]*?)(?=^## )/m)[1];
+    test("the callers are listed as path:line hits: a grep hit is not a citation and is not blamed", () => {
+      const q = quick();
+      assert.match(q, /list each hit as `path:line`/);
+      assert.match(q, /not cited with a commit/);
+    });
+    test("the answer holds the three answers and nothing else", () => {
+      const q = quick();
+      assert.match(q, /Nothing before, between or after them/);
+      assert.match(q, /no analysis of the change/);
+      assert.match(q, /no list of what he did not check/);
+    });
+    test("when the outputs are given he uses them and cites the introducing commit's own subject", () => {
+      const q = quick();
+      assert.match(q, /When the outputs are in the ask, use them/);
+      assert.match(q, /the subject from the log output/);
+    });
+    test("not found names only the search that was run, never a wider one", () => {
+      const q = quick();
+      assert.match(q, /`not found` names the command that was run and its paths, exactly as shown/);
+      assert.match(q, /never a wider search that was not run/);
+    });
+    test("not found also says it was the tree at that commit, not history, and what was left unsearched", () => {
+      const q = quick();
+      assert.match(q, /searched the tree at that commit by content, so a renamed file would still match; history was not followed/);
+      assert.match(q, /nothing outside those paths was searched/);
+    });
+  });
 });

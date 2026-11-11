@@ -12,7 +12,7 @@ The owner starts it, or whoever runs the batch for the owner by typing the comma
 
 Read in this order, and stop reading when the findings are clear.
 
-1. **The action log and the decision log**, the batch's lines only. They are small and already the record.
+1. **The action log, or the run's board when there was no action log, and the decision log**: the batch's entries only. They are small and already the record.
 2. **Louis's rulings and rounds for the batch**: the prefix lines, the outcomes and any open BLOCKERs. They say why an item came back.
 3. **Session transcripts**, only for an item the first two flagged, to find the moment it went wrong. Never a sweep: transcripts are the costly input, and usage is capped.
 
@@ -36,8 +36,13 @@ Class each finding by the kind of fix it needs.
 - **Coding standard:** a reviewer missed something it should have caught, or a rule is unclear or no longer needed. Fix: a new, clearer or removed review rule.
 - **New skill:** the batch worked out a method that will come up again. Fix: a draft skill that keeps the method and drops the specifics, with no names, keys, hostnames or customer data.
 - **Information access:** a fact the work needed was out of reach. Fix: give access, such as a log or a read-only view of a service.
+- **Tool economy:** a tool call that cost more than a cheaper one would have, or a custom command or server that returns more than the work needs. Fix: a narrower call, or a leaner tool.
+- **Steering files:** an instruction in a large `CLAUDE.md` or `AGENTS.md` that a check or a standards file would hold better. Fix: move it there, and keep only navigation pointers in the steering file.
+- **No-ops:** a steering line that changes no behaviour, because the work would come out the same without it. Fix: delete it.
 
-A signal that fits none of the five is a process finding for donna or jessica, about how requests are taken, planned or logged. It is reported, not dropped.
+Review enforces the coding standards, not implementation. A standards gap is a review rule to propose, never a line added to the steering file the implementer reads.
+
+A signal that fits none of these is a process finding for donna or jessica, about how requests are taken, planned or logged. It is reported, not dropped.
 
 ## Sorting
 

@@ -76,6 +76,13 @@ describe("jessica", () => {
     assert.match(goLive, /At most 30 lines/);
     assert.match(goLive, /the evidence, and the result/);
   });
+  test("tracks from the board when there is no action log, and keeps the decision log", () => {
+    const logs = section(skill, "Working with the others") + skill.match(/^The action log and the decision log[^\n]*$/m)?.[0];
+    assert.match(logs, /action log[^|\n]*run's board/);
+    assert.match(skill, /run keeps (its own )?board of tickets[^.]*no action log[^.]*board[^.]*decision log/i);
+    assert.match(skill, /tracks from them and does not copy them/);
+    assert.match(read("docs/characters/jessica.md"), /no action log[^.]*board/i);
+  });
 });
 
 describe("jessica's four tools", () => {

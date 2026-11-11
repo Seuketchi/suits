@@ -16,10 +16,13 @@ const fail = (reason) => ({ status: "broken", reason });
 // applied, and it is reported like a file that does not parse.
 export const unreadableRules = (message) => fail(`the file exists but could not be read (${message})`);
 
-// Only this many characters of a call's input are tested, so a slow pattern
+// Only this many characters (UTF-16, not bytes) of a call's input are tested, so a slow pattern
 // cannot freeze a call on a long input.
 export const MAX_SUBJECT = 4096;
 
+// A filter, not a proof. It misses an alternation inside a repeated group,
+// `(a|a)+$` (exponential), and adjacent overlapping repeats, `a+a+a+$`
+// (polynomial). The cap on the input does not protect against these either.
 // A quantified group that holds a quantifier (`(a+)+`, `(a*)*`) can backtrack
 // without end. Returns true for a pattern that has one. It is conservative: a
 // rule that trips it is dropped and reported, and can be written another way.

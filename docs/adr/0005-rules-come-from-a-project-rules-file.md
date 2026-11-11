@@ -13,7 +13,7 @@ The plugin ships a mod in `hooks/`, and the mod holds no rule of its own. A proj
 - A `never` match is denied with `<id>: <why>`, and the owner sees a toast.
 - A `warn` match runs. The owner sees a toast and the model reads the `why` after the tool's result.
 - With no file, every call passes. A file that is not valid JSON, or that exists but cannot be read, is reported once and none of its rules apply, so a mistake in the file never stops work. A read that fails on a file that exists is never taken for no file.
-- One bad rule drops only that rule and is reported once; the valid `never` and `warn` rules in the same file stay in force. A rule is bad when a field is missing, `match` is not a regular expression, or `match` repeats a group that already repeats (`(a+)+`), which can freeze every call. Input longer than 4 KB is cut off before it is tested, for the same reason.
+- One bad rule drops only that rule and is reported once; the valid `never` and `warn` rules in the same file stay in force. A rule is bad when a field is missing, `match` is not a regular expression, or `match` repeats a group that already repeats (`(a+)+`), which can freeze every call. A call's input is cut at 4096 characters (UTF-16 characters, not bytes) before it is tested, for the same reason.
 - If the check itself fails, the call goes through and a toast says it was not checked.
 - A warning is toasted only for a call that ran.
 - `/suits-rules` shows the file, or says there is none.
@@ -27,3 +27,4 @@ The decisions are pure functions in `hooks/logic.mjs`, tested with `node:test` a
 - There is no per-project off switch except the file itself.
 - The command is named `suits-rules`, typed `/suits-rules`: a mod registers a bare name, so the suits name is part of it and it cannot clash with another plugin's `/rules`.
 - CI pins a Claude Code build that reads `hooks.json` modules and runs `claude plugin test .`, which needs no login.
+- `canRunAway` is a conservative filter, not a proof. It misses an alternation inside a repeated group, `(a|a)+$` (exponential: 27 characters takes 2 s), and adjacent overlapping repeats, `a+a+a+$` (polynomial: 2000 characters takes over 120 s). The 4096-character cap does not protect against these. A rule that runs away freezes every tool call, and the hook budget cannot interrupt it. The author of a rules file must keep `match` simple.

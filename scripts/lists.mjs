@@ -120,6 +120,16 @@ export function expected(root) {
   return out;
 }
 
+// Hand-written lines the generator cannot build on. A user-invoked tool's line in the tools README must
+// say "Started by the owner", because the root README is built from it; the line is kept as written,
+// never overwritten, so the author has to fix it.
+export function problems(root) {
+  const kept = bucketBullets(read(root, bucketReadme("tools")));
+  return skillsOf(root, "tools")
+    .filter((s) => s.userInvoked && kept.has(s.name) && !/Started by the owner/.test(kept.get(s.name)))
+    .map((s) => `${bucketReadme("tools")}: ${s.name} is user-invoked, so its line must say "Started by the owner" (the root README is built from it); add it by hand`);
+}
+
 // The copies that differ from what they should say.
 export function drifted(root) {
   return Object.entries(expected(root)).filter(([file, text]) => read(root, file) !== text).map(([file]) => file);
@@ -132,6 +142,11 @@ function main(argv) {
   if (!mode || (at >= 0 && !argv[at + 1])) {
     console.error("usage: node scripts/lists.mjs --write | --check [--root <dir>]");
     return 2;
+  }
+  const unfit = problems(root);
+  if (unfit.length > 0) {
+    console.error(unfit.join("\n"));
+    return 1;
   }
   const want = expected(root);
   const stale = Object.keys(want).filter((file) => read(root, file) !== want[file]);

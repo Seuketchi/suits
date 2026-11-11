@@ -3,7 +3,7 @@ max_turns: 25
 timeout_seconds: 600
 allowed_tools: [Skill, Agent, Read, Glob, Grep, Bash, Edit, Write]
 ---
-I have too many open pull requests on acme/widgets and need to know which to fold together and which to close. Here is the list of open ones as of today, so you don't need to fetch it:
+I have too many open pull requests on acme/widgets and need to know which to fold together and which to close. This session has no network access, so work from this list of the open ones as of today:
 
 | # | Title | Branch | Updated | Draft | Files |
 | --- | --- | --- | --- | --- | --- |

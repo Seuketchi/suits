@@ -167,6 +167,20 @@ describe("scripts/lists.mjs", () => {
     assert.equal(run(dir, "--check").status, 0);
   });
 
+  test("a hand-written user-invoked line without a started-by sentence is kept and fails the check", () => {
+    const dir = copyRepo();
+    edit(dir, "skills/tools/README.md", (t) => t.replace("Started by the owner; offered by louis.", "Offered by louis."));
+    const written = readFileSync(join(dir, "skills/tools/README.md"), "utf8");
+    const check = run(dir, "--check");
+    assert.equal(check.status, 1);
+    assert.match(check.stderr, /skills\/tools\/README\.md/);
+    assert.match(check.stderr, /retro/);
+    assert.match(check.stderr, /Started by the owner/);
+    const write = run(dir, "--write");
+    assert.equal(write.status, 1);
+    assert.equal(readFileSync(join(dir, "skills/tools/README.md"), "utf8"), written, "the hand-written line is kept");
+  });
+
   test("a bad mode or a missing mode exits 2 with a usage line", () => {
     const r = spawnSync("node", [script], { encoding: "utf8" });
     assert.equal(r.status, 2);

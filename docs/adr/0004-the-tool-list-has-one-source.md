@@ -12,7 +12,7 @@ The skill folders are the source: each `skills/<bucket>/<name>/SKILL.md` and its
 
 - `npm run lists` (`--write`) rewrites `plugin.json`'s `skills`, the root README's User-invoked and Model-invoked tool lists, the grouping of both bucket READMEs, and each tool's "Called by" tail.
 - `--check` exits 1 and names each copy that has drifted. `npm run check-skills` runs it, so CI fails on a stale copy.
-- The one-line summary of each skill in the bucket READMEs stays hand-written and is kept by name. That includes a user-invoked tool's "Started by the owner; offered by louis.", since an offer is not in any table. It is written once, in the tools README, and the root README line is built from it. A character's table that names a user-invoked tool adds that caller to both lists.
+- The one-line summary of each skill in the bucket READMEs stays hand-written and is kept by name. That includes a user-invoked tool's "Started by the owner; offered by louis.", since an offer is not in any table. It is written once, in the tools README, and the root README line is built from it. A character's table that names a user-invoked tool adds that caller to both lists. A hand-written user-invoked line that does not say "Started by the owner" is never overwritten: `--check` and `--write` both fail and name it, so the author fixes it.
 
 Running `npm run lists` first is now the first step after adding, moving or renaming a skill.
 

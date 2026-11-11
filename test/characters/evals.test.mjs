@@ -74,6 +74,23 @@ describe("evals", () => {
     assert.match(text, /not (?:available|checked out)[^\n]*assum/i);
   });
 
+  test("no case names a real person", () => {
+    for (const name of CASES) {
+      const text = readFileSync(join("evals", name, "prompt.md"), "utf8") + graders(name).map((g) => readFileSync(join("evals", name, "graders", g), "utf8")).join("\n");
+      assert.doesNotMatch(text, /Tristan/, name);
+    }
+  });
+
+  test("the triage case gives the list, does not waive the fetch, and checks that no pull request is invented", () => {
+    const prompt = readFileSync("evals/pr-triage-routes-to-donna/prompt.md", "utf8");
+    assert.doesNotMatch(prompt, /don't need to fetch|do not need to fetch/i);
+    assert.match(prompt, /no network access/i);
+    const found = graders("pr-triage-routes-to-donna").map((g) => readFileSync(join("evals/pr-triage-routes-to-donna/graders", g), "utf8")).filter((t) => /invent/i.test(t));
+    assert.equal(found.length, 1, "no grader checks that the list given is the one used");
+    assert.match(found[0], /^---\ntype: llm\nfocus: (?:trace|last_message)\n---/);
+    for (const n of ["#41", "#44", "#52", "#58"]) assert.match(found[0], new RegExp(n));
+  });
+
   test("CI does not run the evals", () => {
     for (const f of readdirSync(".github/workflows")) assert.doesNotMatch(readFileSync(join(".github/workflows", f), "utf8"), /plugin eval/, f);
   });
@@ -86,5 +103,14 @@ describe("evals", () => {
     const claude = readFileSync("CLAUDE.md", "utf8");
     assert.match(claude, /Run `claude plugin eval` by hand after changing a skill's behaviour; CI does not run it\./);
     assert.match(claude, /A change is done when it is merged with a test that proves it\./);
+  });
+
+  test("those two sentences are their own paragraph, directly after the one about the lists", () => {
+    const paragraphs = readFileSync("CLAUDE.md", "utf8").split(/\n\n+/);
+    const at = paragraphs.findIndex((p) => p.startsWith("A change is done when it is merged with a test that proves it."));
+    assert.ok(at > 0, "no paragraph starts with the done rule");
+    assert.equal(paragraphs[at], "A change is done when it is merged with a test that proves it. Run `claude plugin eval` by hand after changing a skill's behaviour; CI does not run it.");
+    assert.match(paragraphs[at - 1], /^After adding, moving or renaming a skill/);
+    assert.doesNotMatch(paragraphs[at - 1], /A change is done|claude plugin eval/);
   });
 });

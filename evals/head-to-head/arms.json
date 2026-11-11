@@ -1,0 +1,6 @@
+{
+  "baseline": { "pluginDir": null },
+  "suits": { "pluginDir": "ARMS_DIR/suits" },
+  "superpowers": { "pluginDir": "ARMS_DIR/superpowers" },
+  "gstack": { "pluginDir": "ARMS_DIR/gstack" }
+}

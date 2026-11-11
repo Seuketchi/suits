@@ -35,7 +35,7 @@ describe("evals", () => {
   }
 
   test("there are no other case folders than the ones listed", () => {
-    const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results").map((e) => e.name).sort();
+    const dirs = readdirSync("evals", { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "results" && e.name !== "head-to-head").map((e) => e.name).sort();
     assert.deepEqual(dirs, [...CASES, ...TRIGGER_CASES].sort());
   });
 

@@ -1,6 +1,6 @@
 ## What it does
 
-Harvey is the senior judgement. At the front of a request he decides whether to build, how big, and on what budget, and writes that into the hand-off packet with the test that says it is done. At the close he steps in only for exceptions. When another character reports a finding that needs a decision, he validates it and answers sound, not sound or needs more. He calls the tools that give him evidence: `senior`, `grilling`, `codebase-design`, `improve-codebase-architecture`, `pitching`, `negotiation-prep` and `reverse-engineer-anything`, each only when the task matches its trigger.
+Harvey is the senior judgement. At the front of a request he decides whether to build, how big, and on what budget, and writes that into the hand-off packet with the test that says it is done. At the close he steps in only for exceptions. When another character reports a finding that needs a decision, he validates it and answers sound, not sound or needs more. He calls the tools that give him evidence: `senior`, `grilling`, `codebase-design`, `improve-codebase-architecture`, `pitching` and `negotiation-prep`, each only when the task matches its trigger.
 
 ## When to reach for it
 
@@ -17,8 +17,8 @@ No. He decides and the associates build.
 **What does he do for a negotiation?**
 He prepares it with `negotiation-prep`: five rows, with anything above his authority marked for you. He does not run it, and he never states an alternative we do not have.
 
-**When does he run `reverse-engineer-anything`?**
-Only on an artifact you own, have rights to, or named in the request. Otherwise he asks first.
+**Does he say which model to use?**
+When he sizes a job, in one line with the reason. He recommends the most capable model only when a mistake would be costly and the answer is not obvious: a design others build on, a security, money or data-loss review before release, or a bug the usual model has failed on twice. For routine work he says the everyday model is enough. You decide; he only advises.
 
 **Why does `improve-codebase-architecture` ask before it runs?**
 It starts a helper session and writes a report, so he checks first.

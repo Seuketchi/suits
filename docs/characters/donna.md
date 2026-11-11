@@ -24,7 +24,7 @@ Type `/suits:donna`, or ask for any of the above and she is called.
 
 ## At the front desk
 
-- **One owner.** She names the one character accountable for the request and says who it is. Never two. An unrelated ask is a new request, with its own owner and its own log line.
+- **One owner.** She names the one character accountable for the request and says who it is. Never two. A bug report goes to `rachel` first, for its causes, before anyone looks for the line to change; the builders come after, not named as a second owner. An unrelated ask is a new request, with its own owner and its own log line.
 - **Two logs, one writer.** The action log (who was asked what, who owns it, its state, its budget, the next owner) and the decision log (what was decided, by whom, why, when) are hers alone. When the run keeps its own board of tickets, the board is the action log and she writes no action-log line; the decision log is kept in every case. An entry is added, never rewritten.
 - **A packet only when it pays.** Work that goes to another character or spans more than one ticket gets a hand-off packet. A small ask gets one line and skips the other characters.
 - **Reports on change.** She reports when a request's state changes, then once at the end. A request that passes its budget stops and asks.
@@ -100,6 +100,12 @@ No, nothing: not a PDF, not an email, not a brief. It names the file, its page c
 **What does she do when she works alone?**
 She starts no other session. A request for another character becomes a message to whoever sent the brief, in her hand-over format, naming the character it is for. She reads a pull request with `gh pr diff` or a commit with `git show`, and does the work of a tool herself in one pass instead of starting it somewhere else.
 
+**Does she need a mail and calendar server?**
+No. With one connected she reads your mail and calendar through it for the brief, the tickler and a meeting brief, and writes drafts only: she never sends, replies, accepts, declines, books or deletes through it. Without one she works from the files open in the session and says "no calendar connected". A sign-in is yours: she stops at the screen and says where.
+
+**You told her to promise a client a date. Why is the draft a holding reply?**
+Because she does not know the cause yet. She writes one draft that acknowledges the report and says the team is looking into it, with no date, weekday, cause or fix, and tells you the date is yours to add once the cause is known.
+
 **Does she close the pull requests she recommends closing?**
 No. She lists the open pull requests with `gh pr list`, recommends fold, supersede or keep for each with one line of evidence, and drafts the combined body and the closing comment. She never comments, closes, merges or pushes; you post what you agree with.
 
@@ -115,7 +121,7 @@ Only as a short draft in chat, in the language of the thread, and only when you 
 - A request has one named owner and one line in the action log before work starts.
 - She skips the tools that do not apply: a typo goes to a builder without a plan, and a pull request body is the only thing that reaches `/suits:pr`.
 - A deck follows the structure harvey gave her, and every number on it has a source or is marked unverified.
-- Nothing was sent, signed or accepted for you.
+- Nothing was sent, signed or accepted for you, and with a mail and calendar server connected she wrote drafts only.
 - To you she is brief and a step ahead; in the documents for others there is no trace of her voice.
 
 ## Where it fits

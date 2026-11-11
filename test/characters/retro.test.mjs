@@ -1,4 +1,4 @@
-// The retro tool: what it reads, what it writes, who starts it, and how louis offers it.
+// The retro tool: what it reads, what it writes, who starts it, and how jessica offers it.
 //
 //   node --test test/characters/retro.test.mjs
 import { describe, test } from "node:test";
@@ -8,6 +8,8 @@ import { readFileSync } from "node:fs";
 const skill = () => readFileSync("skills/tools/retro/SKILL.md", "utf8");
 const louis = () => readFileSync("skills/characters/louis/SKILL.md", "utf8");
 const louisPage = () => readFileSync("docs/characters/louis.md", "utf8");
+const jessica = () => readFileSync("skills/characters/jessica/SKILL.md", "utf8");
+const jessicaPage = () => readFileSync("docs/characters/jessica.md", "utf8");
 const section = (source, title) =>
   source.match(new RegExp(`^## ${title}\\s*\\n([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, "m"))?.[1] ?? "";
 const at = (source, re) => {
@@ -153,12 +155,12 @@ describe("retro: promoted", () => {
   });
 });
 
-describe("retro: louis offers it and does not call it", () => {
-  test("the offer is a row in What he does with no tool, saying he does not run it", () => {
-    const row = section(louis(), "What he does")
+describe("retro: jessica offers it and does not call it", () => {
+  test("the offer is a row in What she does with no tool, saying she does not run it", () => {
+    const row = section(jessica(), "What she does")
       .split("\n")
       .find((l) => /retro/i.test(l));
-    assert.ok(row, "no retro row in What he does");
+    assert.ok(row, "no retro row in What she does");
     assert.match(row, /^\| A batch closes \|/);
     assert.match(row, /offers the owner/i);
     assert.match(row, /does not run it/i);
@@ -166,29 +168,52 @@ describe("retro: louis offers it and does not call it", () => {
   });
 
   test("When to call has no retro row, and the default is still not to call", () => {
-    const when = section(louis(), "When to call");
+    const when = section(jessica(), "When to call");
     assert.doesNotMatch(when, /retro/i);
     assert.match(when, /The default is not to call\./);
   });
 
   test("the offer is plain prose: no backticked name for the retro skill", () => {
     const names = /`\/(suits:)?retro`/;
-    assert.doesNotMatch(louis(), names);
-    assert.doesNotMatch(louisPage(), names);
-    assert.match(louis(), /the retro skill/);
+    assert.doesNotMatch(jessica(), names);
+    assert.doesNotMatch(jessicaPage(), names);
+    assert.match(jessica(), /the retro skill/);
   });
 
-  test("the owner starts it, and louis would be grading his own rounds if he did", () => {
-    const rule = louis().match(/^[^\n]*retro skill[^\n]*$/m)?.[0] ?? "";
-    assert.match(louis(), /the owner starts it/i);
-    assert.match(louis(), /grading his own rounds/i);
+  test("the owner starts it, and the offer is one line", () => {
+    const rule = jessica().match(/^[^\n]*retro skill[^\n]*$/m)?.[0] ?? "";
+    assert.match(jessica(), /the owner starts it/i);
     assert.match(rule, /one line/i);
   });
 
-  test("his docs page names the batch-close offer and checks for it", () => {
-    const page = louisPage();
+  test("her docs page names the batch-close offer and checks for it", () => {
+    const page = jessicaPage();
     assert.match(section(page, "When to reach for it") + section(page, "Common questions"), /close of a batch/i);
     assert.match(section(page, "It's working if"), /offers a retro at the close of a batch and never runs it/i);
+  });
+
+  test("a rule the retro proposes for any character, jessica included, goes through the owner and harvey", () => {
+    const body = section(jessica(), "The retro offer");
+    assert.match(body, /any rule the retro proposes for a character, jessica included, goes through the owner and harvey, never straight into that character's file/i);
+    assert.doesNotMatch(body, /for louis/i);
+    assert.match(section(jessicaPage(), "Common questions"), /rule for any character, jessica included[^.]*goes to you and harvey, not into that character's file/i);
+  });
+
+  test("a rule for louis the retro proposes still goes to the owner and harvey, and the retro pages say jessica offers it", () => {
+    assert.match(skill(), /Jessica may offer it when a batch closes/);
+    assert.doesNotMatch(skill(), /Louis may offer it/);
+    const page = readFileSync("docs/tools/retro.md", "utf8");
+    assert.match(page, /Jessica offers it when a batch closes but does not run it/);
+    assert.doesNotMatch(page, /Louis offers it/);
+    assert.match(section(page, "Common questions"), /Why can't jessica run it\?/);
+    assert.match(section(page, "Common questions"), /proposed rule for louis goes to you and harvey/);
+  });
+});
+
+describe("retro: louis no longer offers it", () => {
+  test("his skill and his page do not mention the retro", () => {
+    assert.doesNotMatch(louis(), /retro/i);
+    assert.doesNotMatch(louisPage(), /retro/i);
   });
 
   test("hard rule 3 is unchanged", () => {

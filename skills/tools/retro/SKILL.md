@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 A **retro** looks back at a batch of work and asks what in the owner's setup let its problems happen, so the next batch goes better. It reads and reports. The fixes are someone else's work, and none is made until the owner agrees.
 
-The owner starts it, or whoever runs the batch for the owner by typing the command. No character calls it. Louis may offer it when a batch closes, in one line, and does not run it. If the owner names no batch, ask which one. Do not guess.
+The owner starts it, or whoever runs the batch for the owner by typing the command. No character calls it. Jessica may offer it when a batch closes, in one line, and does not run it. If the owner names no batch, ask which one. Do not guess.
 
 ## Inputs
 

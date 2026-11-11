@@ -4,7 +4,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 
 ## User-invoked
 
-- **[retro](./retro/SKILL.md)**: Look back at a batch that has landed and propose fixes to the owner's setup, from the logs and the review rounds. Started by the owner; offered by louis.
+- **[retro](./retro/SKILL.md)**: Look back at a batch that has landed and propose fixes to the owner's setup, from the logs and the review rounds. Started by the owner; offered by jessica.
 
 ## Model-invoked
 
@@ -27,9 +27,10 @@ The skills the characters call. Each is a separate file, never copied into a cha
 - **[raid-log](./raid-log/SKILL.md)**: Keep the risk log of risks, assumptions, issues and dependencies in one row shape. Called by jessica.
 - **[recall](./recall/SKILL.md)**: Search past sessions for how something was done or decided. Called by mike.
 - **[research](./research/SKILL.md)**: Answer an outside question from primary sources, as a cited findings file. Called by rachel.
-- **[reverse-engineer-anything](./reverse-engineer-anything/SKILL.md)**: Work out what a shipped artifact does when there is no source (from morluto/rea). Called by harvey, mike.
+- **[reverse-engineer-anything](./reverse-engineer-anything/SKILL.md)**: Work out what a shipped artifact does when there is no source (from morluto/rea). Called by mike.
 - **[root-cause-audit](./root-cause-audit/SKILL.md)**: Frame the causes of a bug in three directions: deeper, sideways, back up. Read only. Called by rachel.
 - **[scrum](./scrum/SKILL.md)**: Draft a daily standup report from real git and GitHub activity. Called by donna, jessica.
+- **[security-review](./security-review/SKILL.md)**: A read-only, one-pass security review of a diff that touches untrusted input or a trust boundary, ruled like any other review finding. Called by louis.
 - **[senior](./senior/SKILL.md)**: A senior developer's judgement before a non-trivial change, and a read-only PR review. Called by harvey.
 - **[slides](./slides/SKILL.md)**: Build a slide deck as a PDF from a set pitch structure: one point a slide, notes in the source, the same checks as a document. Called by donna.
 - **[source-finder](./source-finder/SKILL.md)**: Find and verify real academic papers for a claim, a topic, or a gap. Called by rachel.

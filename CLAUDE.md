@@ -1,6 +1,6 @@
 ## What this is
 
-A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `npm run lists` writes these and `npm run check-skills` fails when they drift), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
+A private plugin of specialist skills. Characters live in `skills/characters/`, the tools they call in `skills/tools/`. Read-only versions of louis, mike and rachel live in `agents/`, and `npm run test:characters` checks their tool lists. Every skill is promoted: it is in `.claude-plugin/plugin.json`'s `skills`, listed in its bucket's `README.md` under **User-invoked** or **Model-invoked** (a tool is also listed in the root `README.md`; `npm run lists` writes these and `npm run check-skills` fails when they drift), and has a docs page at `docs/<bucket>/<skill>.md` with four sections: **What it does**, **When to reach for it**, **Common questions**, **It's working if**.
 
 After adding, moving or renaming a skill, run `npm run lists` first, then `npm run check-skills`. The lists in `plugin.json`, the root `README.md` and both bucket `README.md` files are generated from the skill folders and each character's **When to call** table; only the one-line summaries in the bucket READMEs are written by hand. Run `npm test` after changing a skill or a test. CI runs both on every pull request.
 
@@ -8,14 +8,14 @@ A change is done when it is merged with a test that proves it. Run `claude plugi
 
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
 
-The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs`, wiring in `register.tsx`, no rules of their own: they read the project's `.claude/suits-rules.json`); run `npm run test:mods` and `claude plugin test .` after changing them.
+The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs` and `readonly.mjs`, wiring in `register.tsx`; they carry no project rules, which they read from the project's `.claude/suits-rules.json`, and one rule of the plugin's own: `readonly.mjs` holds the read-only versions' `Bash` to reading, ADR 0009); run `npm run test:mods` and `claude plugin test .` after changing them.
 
 ## Rules for characters
 
 - A character calls tools as `/skill`-style prose ("Run the `/tdd` skill"), never copies a tool's text and never links across skill folders. A tool's shared reference material lives inside the tool that owns it.
 - Every character's `SKILL.md` has a **When to call** section: one trigger per tool, stated as a fact about the task. The default is not to call. A character says in one line which tool it is calling and why, and skips the others without comment.
 - Every character's `SKILL.md` ends with a **Voice** section. For every character but the associates it is a block of 8 to 12 lines: the stance, three habits, what it cares about, what it will not do, how it disagrees, two or three sample lines of 30 words or fewer, and one line saying the voice yields to every rule, the hand-over format, numbers, `file:line` references and blockers, and, for anyone but the owner, to the plain professional register. Build it from traits in our own words: no show dialogue, no catchphrases, no actor names. The associates keep a plain voice with no persona. The voice never lengthens an answer: verdict first, short. It speaks only to the owner. Anything written for other people (documents, emails, pull requests, commits) is in the plain professional register. Numbers, `file:line` references and blockers stay plain.
-- Name tools by Matt Pocock's names where he has one. Where an upstream has its own skill, use it and port its changes by hand, in our own words.
+- Name tools by Matt Pocock's names where he has one. Where an upstream has its own skill, use it and port its changes by hand, in our own words. The departures we keep, and the rule for the next hand-port, are in [ADR 0008](docs/adr/0008-where-suits-departs-from-upstream.md).
 - Name no number of characters anywhere: not in a name, a tagline, a description or skill text ("the six", "a team of seven"). The team may grow. A count that is not a team size, such as "72 characters or fewer" or "up to three in parallel", is fine.
 
 ## Writing

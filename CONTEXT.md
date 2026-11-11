@@ -28,6 +28,10 @@ _Avoid_: assignee, stakeholder
 A mode every character has for a session that cannot, or is told not to, start another session. It starts no other session and does the work of any tool itself, in one pass. A hand-off becomes a message to whoever sent the brief, in the character's own hand-over format. A pull request is read with `gh pr diff` and a commit with `git show`, never by checking a branch out.
 _Avoid_: solo mode, helper mode (that is the name the session uses when it asks for this mode)
 
+**Read-only version**:
+A definition in `agents/` that another session can start for louis, mike or rachel. Its tool list has no way to edit a file or start another session. `Bash` stays, and a hook blocks any command in it that writes.
+_Avoid_: sub-agent, read-only agent
+
 **Hand-off packet**:
 What one character passes to the next: the goal, the limits and budget, the done test, what is known and not, the questions to answer, the next owner, and the deadline. A small ask gets one line instead.
 _Avoid_: ticket, brief
@@ -53,3 +57,7 @@ _Avoid_: config, policy
 **Helper mode**:
 The state of a session whose `SUITS_HELPER` variable is set to anything but empty or `0`. The mod then refuses to start any session and adds one line to the system prompt pointing the character at its Working alone section, and the status line reads `<character> · helper`. Whatever starts a helper sets the variable; this plugin only reads it.
 _Avoid_: solo mode, worker mode
+
+**Connected server**:
+A server the session has connected, which suits neither ships nor names. A character names the kind it uses and works without it.
+_Avoid_: MCP, integration

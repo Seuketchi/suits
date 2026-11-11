@@ -126,6 +126,14 @@ describe("rachel", () => {
       assert.match(typed, /says what is missing, never the change to make/);
       assert.match(typed, /no code, no "make X do Y"/);
     });
+    test("the trigger is the input or event that set it off, never a line of code", () => {
+      assert.match(item(1), /The trigger is the input or event that set it off, never a line of code/);
+    });
+    test("the red flag uses the words overcharged-or-paid, harvey validates it, nothing is fixed or refunded until you decide", () => {
+      const flag = item(2);
+      assert.match(flag, /Harvey validates it/);
+      assert.match(flag, /Nothing is fixed or refunded until you decide/);
+    });
     test("the red flag comes before every cause, even where a tool lists the causes first", () => {
       assert.match(item(2), /before the other causes/);
     });
@@ -135,9 +143,9 @@ describe("rachel", () => {
       assert.match(flag, /straight after the first line/);
       assert.match(flag, /not at the end/);
       assert.match(flag, /money/);
-      assert.match(flag, /harvey validates it/);
+      assert.match(flag, /[Hh]arvey validates it/);
       assert.match(flag, /mike's check of its facts/);
-      assert.match(flag, /nothing is fixed until the owner decides/i);
+      assert.match(flag, /nothing is fixed( or refunded)? until (the owner decides|you decide)/i);
     });
     test("working alone, the red flag is in the message to whoever sent the brief, naming harvey", () => {
       assert.match(item(2), /Working alone[^\n]*message to whoever sent the brief[^\n]*harvey/);

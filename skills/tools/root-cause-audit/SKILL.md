@@ -31,6 +31,8 @@ How was it possible? Keep asking "how" until the answer is a check, type, rule, 
 
 Where else in our system does the same flaw live? This is a read, not a fix. State the search: the pattern and the paths. A `searched:` line with both is required for every *not found*.
 
+Also search the sibling repos the project names under a `## Sibling repos` heading in its `CLAUDE.md`, or in its `CONTEXT.md` when `CLAUDE.md` has none, for the same flaw and for every caller of the changed code. The `searched:` line names each repo searched. When the project names none, say `no sibling repos named`. Mike's hand-off may supply the list.
+
 ### Back up
 
 What design does this belong to, and is the design the problem? Say whether the fix, or the one proposed, is a guardrail (a reminder, an alert, a doc, "be careful") or a design change. When the design is the cause and only a guardrail is proposed, say so.
@@ -70,4 +72,4 @@ Other findings go through the normal flow.
 
 ## A thread outside the bug
 
-Do not follow it. Offer the owner a `/rabbit-hole` on it, when installed, and carry on.
+Do not follow it. Name it to the owner under Open questions, and carry on.

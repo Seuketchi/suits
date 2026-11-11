@@ -62,6 +62,18 @@ describe("evals", () => {
     assert.match(all, /git push/);
   });
 
+  test("evals/README.md says how to run them by hand, with the tool grants two cases need", () => {
+    const text = readFileSync("evals/README.md", "utf8");
+    assert.match(text, /claude plugin eval/);
+    assert.match(text, /--allow-tools[^\n]*Write[^\n]*WebFetch[^\n]*WebSearch/);
+    assert.match(text, /not a gate/i);
+  });
+
+  test("the working-alone case does not claim code the run cannot see", () => {
+    const text = readFileSync("evals/working-alone-handoff/prompt.md", "utf8");
+    assert.match(text, /not (?:available|checked out)[^\n]*assum/i);
+  });
+
   test("CI does not run the evals", () => {
     for (const f of readdirSync(".github/workflows")) assert.doesNotMatch(readFileSync(join(".github/workflows", f), "utf8"), /plugin eval/, f);
   });

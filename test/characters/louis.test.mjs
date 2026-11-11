@@ -43,6 +43,18 @@ describe("louis puts the verdict on the first line", () => {
   });
 });
 
+describe("louis keeps a done test out of a review of a diff (eval louis-one-pass, verdict-and-two-axes)", () => {
+  const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
+  const row = skill.split("\n").find((l) => l.startsWith("| A request starts")) ?? "";
+  test("a brief that hands over a diff to review gets no done test", () => {
+    assert.match(row, /brief that hands over a diff to review is the review itself/);
+    assert.match(handOver, /When the brief hands over a diff to review, write no done test/);
+  });
+  test("a done test that is written goes last, never between the verdict and the Standards heading", () => {
+    assert.match(handOver, /goes after the verdict and after the findings, never between them/);
+  });
+});
+
 describe("louis reviews in one pass", () => {
   const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
   test("the code-review row says one pass", () => {
@@ -155,5 +167,26 @@ describe("louis reviews a merge resolution with remerge-diff", () => {
   test("the merge check still starts no other session", () => {
     assert.doesNotMatch(row, /sub-?agent/i);
     assert.doesNotMatch(handOver, /sub-?agent/i);
+  });
+});
+
+describe("louis has a read-only version, and his docs page says so", () => {
+  const docs = readFileSync("docs/characters/louis.md", "utf8");
+  const questions = docs.split(/^## Common questions/m)[1]?.split(/^## /m)[0] ?? "";
+  test("a Common questions entry asks whether another session can start a read-only louis", () => {
+    assert.match(questions, /\*\*Can another session start a read-only louis\?\*\*/);
+  });
+  test("the entry says what it cannot do and what it cannot limit, without the word agent", () => {
+    const entry = questions.split("**Can another session start a read-only louis?**")[1]?.split(/\n\*\*/)[0] ?? "";
+    assert.match(entry, /agents\/louis\.md/);
+    assert.match(entry, /edit|write/i);
+    assert.match(entry, /no other session/i);
+    assert.match(entry, /`Bash`/);
+    assert.doesNotMatch(entry, /\bagents?\b(?!\/)/i);
+  });
+  test("the page keeps its four sections", () => {
+    for (const h of ["What it does", "When to reach for it", "Common questions", "It's working if"]) {
+      assert.match(docs, new RegExp(`^## ${h}$`, "m"));
+    }
   });
 });

@@ -14,6 +14,15 @@ describe("louis puts the verdict on the first line", () => {
   test("a done test written in the same reply comes after the verdict", () => {
     assert.match(handOver, /A done test written in the same reply goes after the verdict/);
   });
+  test("rule 2 keeps the axes under their own headings, not side by side in one list", () => {
+    const rule = skill.split("\n").find((l) => /^2\. \*\*Two axes/.test(l)) ?? "";
+    assert.match(rule, /under a Standards heading and a Spec heading, each most serious first/);
+    assert.doesNotMatch(rule, /side by side/);
+  });
+  test("the hand-over puts the findings under a Standards heading and a Spec heading, each most serious first", () => {
+    assert.match(handOver, /Then the findings, under a Standards heading and a Spec heading, each most serious first, each finding with its prefix line and `file:line`\./);
+    assert.doesNotMatch(handOver, /findings, most serious first/);
+  });
   test("his docs page says the same, in a Common questions entry", () => {
     const docs = readFileSync("docs/characters/louis.md", "utf8");
     const questions = docs.split(/^## Common questions/m)[1]?.split(/^## /m)[0] ?? "";

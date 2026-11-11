@@ -136,6 +136,51 @@ describe("scripts/lists.mjs", () => {
     assert.equal(run(dir, "--check").status, 0);
   });
 
+  test("a user-invoked tool's started-by fact is written once, in its bucket README line", () => {
+    const dir = copyRepo();
+    edit(dir, "skills/tools/README.md", (t) => t.replace("Started by the owner; offered by louis.", "Started by the owner; offered by louis and harvey."));
+    const r = run(dir, "--check");
+    assert.equal(r.status, 1);
+    assert.match(r.stderr, /(^|\n)README\.md:/, "the root README follows the bucket line");
+    run(dir, "--write");
+    assert.match(readFileSync(join(dir, "README.md"), "utf8"), /^- `retro`: started by the owner, offered by louis and harvey\.$/m);
+    assert.equal(run(dir, "--check").status, 0);
+  });
+
+  test("a root README line for a user-invoked tool is not a second source", () => {
+    const dir = copyRepo();
+    edit(dir, "README.md", (t) => t.replace("started by the owner, offered by louis.", "started by anyone, offered by nobody."));
+    const r = run(dir, "--check");
+    assert.equal(r.status, 1);
+    assert.match(r.stderr, /(^|\n)README\.md:/);
+    run(dir, "--write");
+    assert.match(readFileSync(join(dir, "README.md"), "utf8"), /^- `retro`: started by the owner, offered by louis\.$/m);
+  });
+
+  test("a user-invoked tool that a character's table names keeps that caller in both lists", () => {
+    const dir = copyRepo();
+    edit(dir, "skills/characters/harvey/SKILL.md", (t) => t.replace("| `/suits:grilling` |", "| `/suits:retro` | a batch has closed and the owner asked. |\n| `/suits:grilling` |"));
+    assert.equal(run(dir, "--check").status, 1);
+    run(dir, "--write");
+    assert.match(readFileSync(join(dir, "README.md"), "utf8"), /^- `retro`: started by the owner, offered by louis, called by harvey\.$/m);
+    assert.match(readFileSync(join(dir, "skills/tools/README.md"), "utf8"), /Started by the owner; offered by louis\. Called by harvey\.$/m);
+    assert.equal(run(dir, "--check").status, 0);
+  });
+
+  test("a hand-written user-invoked line without a started-by sentence is kept and fails the check", () => {
+    const dir = copyRepo();
+    edit(dir, "skills/tools/README.md", (t) => t.replace("Started by the owner; offered by louis.", "Offered by louis."));
+    const written = readFileSync(join(dir, "skills/tools/README.md"), "utf8");
+    const check = run(dir, "--check");
+    assert.equal(check.status, 1);
+    assert.match(check.stderr, /skills\/tools\/README\.md/);
+    assert.match(check.stderr, /retro/);
+    assert.match(check.stderr, /Started by the owner/);
+    const write = run(dir, "--write");
+    assert.equal(write.status, 1);
+    assert.equal(readFileSync(join(dir, "skills/tools/README.md"), "utf8"), written, "the hand-written line is kept");
+  });
+
   test("a bad mode or a missing mode exits 2 with a usage line", () => {
     const r = spawnSync("node", [script], { encoding: "utf8" });
     assert.equal(r.status, 2);

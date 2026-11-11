@@ -43,6 +43,18 @@ describe("louis puts the verdict on the first line", () => {
   });
 });
 
+describe("louis keeps a done test out of a review of a diff (eval louis-one-pass, verdict-and-two-axes)", () => {
+  const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
+  const row = skill.split("\n").find((l) => l.startsWith("| A request starts")) ?? "";
+  test("a brief that hands over a diff to review gets no done test", () => {
+    assert.match(row, /brief that hands over a diff to review is the review itself/);
+    assert.match(handOver, /When the brief hands over a diff to review, write no done test/);
+  });
+  test("a done test that is written goes last, never between the verdict and the Standards heading", () => {
+    assert.match(handOver, /goes after the verdict and after the findings, never between them/);
+  });
+});
+
 describe("louis reviews in one pass", () => {
   const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
   test("the code-review row says one pass", () => {

@@ -49,6 +49,7 @@ Every review comment starts with one prefix line: `BLOCKER, verified:`, `SHOULD 
 5. **Report every mismatch,** even one minor unit. When `/suits:money-check` ran, every rounding site must also say which party gains the remainder.
 6. **Plain in review comments.** Comments, pull request text and anything written for other people use the plain professional register.
 7. **One pass.** He runs the review himself, both axes, and starts no other session.
+8. **Trust boundaries go through the tool.** When the diff matches the `/suits:security-review` trigger, he calls it in his one pass and does not do a security pass by hand; its findings are ruled like any other.
 
 ## Working with the others
 

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { EMPTY_CHECKLIST, HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_STEPS, MAX_STEP_LENGTH, MAX_SUBJECT, NO_FILE_TEXT, applyChecklist, checklistCount, checklistRows, checklistText, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
+import { EMPTY_CHECKLIST, HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_STEPS, MAX_STEP_LENGTH, paneText, MAX_SUBJECT, NO_FILE_TEXT, applyChecklist, checklistCount, checklistRows, checklistText, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
 
 const FILE = JSON.stringify({
   never: [
@@ -304,4 +304,23 @@ test("the tool's answer lists the steps and the count", () => {
   assert.match(text, /^1 of 2 done$/m);
   assert.match(text, /ignored 9/);
   assert.equal(checklistText(EMPTY_CHECKLIST, []), "No steps yet. Call with steps to set them.");
+});
+
+test("a step cut to its length limit is said, once, with how many", () => {
+  const long = "x".repeat(MAX_STEP_LENGTH + 1);
+  const { notes } = applyChecklist(EMPTY_CHECKLIST, { steps: ["short", long, long] });
+  const cut = notes.filter((n) => /cut/.test(n));
+  assert.equal(cut.length, 1);
+  assert.match(cut[0], new RegExp(`2 steps were cut to ${MAX_STEP_LENGTH} characters`));
+  assert.deepEqual(applyChecklist(EMPTY_CHECKLIST, { steps: ["a".repeat(MAX_STEP_LENGTH)] }).notes, []);
+  assert.match(applyChecklist(EMPTY_CHECKLIST, { steps: [long] }).notes[0], /1 step was cut/);
+});
+
+test("the command says opened only when the pane is placed, else gives the reason", () => {
+  assert.equal(paneText({ isPlaced: true }), "Checklist pane opened.");
+  assert.equal(
+    paneText({ isPlaced: false, reason: "the window is 80 columns wide; a pane needs 110" }),
+    "Checklist pane is open but not shown: the window is 80 columns wide; a pane needs 110",
+  );
+  assert.match(paneText(undefined), /not shown/);
 });

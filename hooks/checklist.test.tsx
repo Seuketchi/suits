@@ -19,7 +19,7 @@ const PANE = {
 
 // The engine beneath the plugin: the plugin's own manifest, and a record of
 // every pane and tool it was asked to register or open.
-function engine(on: any) {
+function engine(on: any, placement: { isPlaced: true } | { isPlaced: false; reason: string } = { isPlaced: true }) {
   const opened: string[] = []
   const tools: string[] = []
 
@@ -37,7 +37,7 @@ function engine(on: any) {
   })
   on('ui.open', (_: unknown, e: { id: string }) => {
     opened.push(e.id)
-    return { value: { isPlaced: true } }
+    return { value: placement }
   })
   on('session.start', (_: unknown, e: { cwd: string }) => ({ cwd: e.cwd }))
   on('skill.prompt', (_: unknown, e: { text: string }) => ({ text: e.text }))
@@ -103,4 +103,13 @@ test('the tool answers with the list, the count and what it ignored', async ($, 
   expect(JSON.stringify(out.result)).toContain('1. [x] a')
   expect(JSON.stringify(out.result)).toContain('1 of 2 done')
   expect(JSON.stringify(out.result)).toContain('ignored 7')
+})
+
+test('the command gives the reason when the pane cannot be shown', async ($, on) => {
+  engine(on, { isPlaced: false, reason: 'the window is 80 columns wide; a pane needs 110' })
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+
+  const out = await $.command.run({ command: 'suits-checklist' })
+
+  expect(out.text).toBe('Checklist pane is open but not shown: the window is 80 columns wide; a pane needs 110')
 })

@@ -238,7 +238,10 @@ export function applyChecklist(current, input) {
     const valid = Array.isArray(input.steps) && input.steps.length > 0 && input.steps.every((s) => typeof s === "string" && s.trim() !== "");
     if (valid) {
       if (input.steps.length > MAX_STEPS) notes.push(`only the first ${MAX_STEPS} steps are kept`);
-      steps = input.steps.slice(0, MAX_STEPS).map((s) => s.trim().slice(0, MAX_STEP_LENGTH));
+      const kept = input.steps.slice(0, MAX_STEPS).map((s) => s.trim());
+      const cut = kept.filter((s) => s.length > MAX_STEP_LENGTH).length;
+      if (cut > 0) notes.push(`${cut} ${cut === 1 ? "step was" : "steps were"} cut to ${MAX_STEP_LENGTH} characters`);
+      steps = kept.map((s) => s.slice(0, MAX_STEP_LENGTH));
       done = [];
     } else {
       notes.push('"steps" must be a non-empty list of non-empty strings; the list is unchanged');
@@ -266,4 +269,11 @@ export function checklistText(checklist, notes) {
   if (checklist.steps.length === 0) return "No steps yet. Call with steps to set them.";
   const lines = checklistRows(checklist).map((r) => `${r.number}. [${r.isDone ? "x" : " "}] ${r.text}`);
   return [...lines, checklistCount(checklist), ...notes].join("\n");
+}
+
+// What `/suits-checklist` answers, from what `$.ui.open` returned: "opened"
+// only when a surface draws the pane now, else why it does not.
+export function paneText(opened) {
+  if (opened && opened.isPlaced) return "Checklist pane opened.";
+  return `Checklist pane is open but not shown: ${opened?.reason ?? "no surface draws it yet"}`;
 }

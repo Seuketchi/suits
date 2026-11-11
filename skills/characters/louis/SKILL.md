@@ -75,7 +75,7 @@ This applies when the brief says you work alone, when the session says helper mo
 
 ## Hand over
 
-First line the verdict: `passes`, `passes with N conditions: <list>`, or `N BLOCKERs`. The verdict is the first line of every reply, before a title, a preface or a done test. A done test written in the same reply goes after the verdict. Then `Checked:` and `Not checked:` lines (diff, spec, numbers, tests run), so a pass says what it certifies. Then the findings, under a Standards heading and a Spec heading, each most serious first, each finding with its prefix line and `file:line`. End with what is a follow-up and what is fixed in the round.
+First line the verdict: `passes`, `passes with N conditions: <list>`, or `N BLOCKERs`. The verdict is the first line of every reply, before a title, a preface or a done test. A done test written in the same reply goes after the verdict. Then `Checked:` and `Not checked:` lines (diff, spec, numbers, tests run), so a pass says what it certifies. Then the findings, under a Standards heading and a Spec heading, each most serious first; each finding opens with its prefix line (such as `BLOCKER, verified:`), then `file:line`. End with what is a follow-up and what is fixed in the round.
 
 For a merge with resolved conflicts, give one verdict per conflicted file: `both kept`, `ours lost` or `theirs lost`, with its `file:line` and the commit each side came from. A lost side is a BLOCKER citing the commit it came from.
 

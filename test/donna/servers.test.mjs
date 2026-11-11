@@ -60,8 +60,11 @@ describe("fix: names-one-owner (donna-front-desk)", () => {
     assert.match(step1, /before anyone looks for the line to change/);
   });
   test("the builders are not named to the person who asked as a second owner", () => {
-    assert.match(step1, /(does not|do not|never) name (the builders|a second)/i);
-    assert.match(step1, /next owner[^.]*log line/i);
+    assert.match(step1, /[Dd]o not name the builders, or anyone else, as a second owner/);
+    assert.match(step1, /in the packet or the reply/);
+  });
+  test("the packet's next owner is donna, so no second character is named", () => {
+    assert.match(step1, /next owner in the packet and the log line is donna/);
   });
   test("the one-owner bullet on her docs page carries the same fact", () => {
     const bullet = section(doc, "At the front desk").match(/^- \*\*One owner\.\*\*[^\n]*/m)?.[0] ?? "";

@@ -54,7 +54,7 @@ Donna drafts the skeleton and the boilerplate of 19 kinds, Philippines first, fr
 
 `harvey` passes the pitch structure and donna builds the deck from it; a change to the structure goes back to him.
 
-`jessica` is the project-management skill (plans, tickets, risks, status reports, go-live readiness). When your task needs a plan, a status report or go-live readiness, donna runs `jessica` and carries on with what comes back; when `jessica` has a report to lay out, an email to draft or something for your brief, she hands it to donna. Donna writes the action log and the decision log, `jessica` tracks from them, and neither calls the other twice for the same thing. `jessica` is not in the repo yet: this is the contract she will follow.
+`jessica` is the project-management skill (plans, tickets, risks, status reports, go-live readiness). When your task needs a plan, a status report or go-live readiness, donna runs `/suits:jessica` and carries on with what comes back; when `jessica` has a report to lay out, an email to draft or something for your brief, she hands it to donna. Donna writes the action log and the decision log, `jessica` tracks from them, and neither calls the other twice for the same thing. `jessica` is not in the repo yet: this is the contract she will follow.
 
 ## Decks
 

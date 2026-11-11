@@ -17,7 +17,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { drifted } from "./lists.mjs";
+import { drifted, problems as listProblems } from "./lists.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BUCKETS = ["characters", "tools"];
@@ -88,6 +88,7 @@ for (const entry of shipped) {
 }
 
 // The generated lists: plugin.json, the root README and both bucket READMEs.
+problems.push(...listProblems(repo));
 for (const file of drifted(repo)) problems.push(`${file}: out of date with the skill folders; run npm run lists`);
 
 // Relative links, outside fenced code blocks.

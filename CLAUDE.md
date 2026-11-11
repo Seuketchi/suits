@@ -4,6 +4,8 @@ A private plugin of specialist skills. Characters live in `skills/characters/`, 
 
 After adding, moving or renaming a skill, run `npm run lists` first, then `npm run check-skills`. The lists in `plugin.json`, the root `README.md` and both bucket `README.md` files are generated from the skill folders and each character's **When to call** table; only the one-line summaries in the bucket READMEs are written by hand. Run `npm test` after changing a skill or a test. CI runs both on every pull request.
 
+A change is done when it is merged with a test that proves it. Run `claude plugin eval` by hand after changing a skill's behaviour; CI does not run it.
+
 There are no releases or versions: the plugin has no `version`, so Claude Code versions it by commit. Do not add one.
 
 The plugin also has hooks under `hooks/` (decisions in the pure `logic.mjs`, wiring in `register.ts`, no rules of their own: they read the project's `.claude/suits-rules.json`); run `npm run test:mods` and `claude plugin test .` after changing them.

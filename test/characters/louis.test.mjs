@@ -87,3 +87,36 @@ describe("louis", () => {
     assert.doesNotMatch(skill, /100\.004 (through|passes)/);
   });
 });
+
+describe("louis reviews a merge resolution with remerge-diff", () => {
+  const row = skill.split("\n").find((l) => l.startsWith("| A merge with resolved conflicts arrives")) ?? "";
+  const handOver = skill.split("## Hand over")[1]?.split("\n## ")[0] ?? "";
+  const docs = readFileSync("docs/characters/louis.md", "utf8");
+
+  test("the What he does table reads git show --remerge-diff for each conflicted merge, and reads each hunk", () => {
+    assert.match(row, /`git show --remerge-diff <merge>`/);
+    assert.match(row, /for each conflicted merge/);
+    assert.match(row, /for each conflicted hunk names what each side meant and whether the result keeps both/);
+    assert.match(row, /\| none \|$/);
+  });
+  test("the hand-over names the three per-file verdicts with file:line and the commit each side came from", () => {
+    assert.match(handOver, /`both kept`/);
+    assert.match(handOver, /`ours lost`/);
+    assert.match(handOver, /`theirs lost`/);
+    assert.match(handOver, /per conflicted file/);
+    assert.match(handOver, /commit each side came from/);
+  });
+  test("a lost side is a BLOCKER that cites the commit it came from", () => {
+    assert.match(skill, /A lost side is a `BLOCKER` citing the commit it came from|A lost side is a BLOCKER citing the commit it came from/);
+  });
+  test("his docs page lists the merge check under It's working if", () => {
+    const working = docs.split("## It's working if")[1] ?? "";
+    assert.match(working, /merge/i);
+    assert.match(working, /remerge-diff/);
+    assert.match(working, /both kept|ours lost|theirs lost/);
+  });
+  test("the merge check still starts no other session", () => {
+    assert.doesNotMatch(row, /sub-?agent/i);
+    assert.doesNotMatch(handOver, /sub-?agent/i);
+  });
+});

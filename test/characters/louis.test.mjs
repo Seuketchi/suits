@@ -14,9 +14,18 @@ describe("louis puts the verdict on the first line", () => {
   test("a done test written in the same reply comes after the verdict", () => {
     assert.match(handOver, /A done test written in the same reply goes after the verdict/);
   });
-  test("a finding opens with its prefix line, before its file:line and any number", () => {
+  test("a finding opens with its prefix line, and file:line comes after it", () => {
     assert.doesNotMatch(handOver, /each finding with its prefix line and `file:line`/);
-    assert.match(handOver, /each finding opens with its prefix line/);
+    const at = handOver.indexOf("each finding opens with its prefix line");
+    assert.ok(at >= 0, "the hand-over does not say a finding opens with its prefix line");
+    const sentence = handOver.slice(at).split("\n")[0];
+    assert.ok(sentence.indexOf("prefix line") < sentence.indexOf("`file:line`"), "file:line is named before the prefix line");
+    assert.match(sentence, /, then `file:line`/);
+  });
+  test("the joint-list row says the axes sit under their own headings, as rule 2 does", () => {
+    const row = skill.split("\n").find((l) => l.startsWith("| louis and rachel | donna |")) ?? "";
+    assert.match(row, /one consolidated list, the two axes under their own headings/);
+    assert.doesNotMatch(skill, /side by side/);
   });
   test("rule 2 keeps the axes under their own headings, not side by side in one list", () => {
     const rule = skill.split("\n").find((l) => /^2\. \*\*Two axes/.test(l)) ?? "";

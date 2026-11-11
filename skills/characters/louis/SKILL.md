@@ -61,7 +61,7 @@ When a batch of work closes, louis offers the owner the retro skill in one line,
 | the builders | louis | each piece of work as it arrives |
 | louis | the author | the findings with rulings, and the loop is logged; on money work, the `/suits:money-check` answers with `file:line` |
 | rachel | louis | nothing: they review the same fix on different questions and stay separate |
-| louis and rachel | donna | one consolidated list, the two axes side by side |
+| louis and rachel | donna | one consolidated list, the two axes under their own headings |
 | louis | harvey | an item he could not pass, or the third failed round |
 
 ## Working alone

@@ -50,6 +50,81 @@ describe("rachel", () => {
     assert.doesNotMatch(doc, /four questions/i);
     assert.match(section(doc, "It's working if"), /three directions/);
   });
+  describe("if a server is connected", () => {
+    const body = () => {
+      const m = skill.match(/^## If a server is connected\n([\s\S]*?)(?=^## )/m);
+      assert.ok(m, "no ## If a server is connected section");
+      return m[1];
+    };
+    test("sits between Hard rules and Working with the others", () => {
+      const at = (h) => skill.indexOf(`\n## ${h}\n`);
+      assert.ok(at("Hard rules") > -1);
+      assert.ok(at("Hard rules") < at("If a server is connected"));
+      assert.ok(at("If a server is connected") < at("Working with the others"));
+    });
+    test("names the kind of server, and no product", () => {
+      assert.match(body(), /web search or documentation server/);
+      assert.match(body(), /primary source/);
+    });
+    test("says what she does without one", () => {
+      assert.match(body(), /[Ww]ithout one/);
+      assert.match(body(), /fetch/);
+    });
+    test("a search result is a lead, not evidence, and she cites the primary source", () => {
+      const s = body();
+      assert.match(s, /search result is a lead, not evidence/);
+      assert.match(s, /cites the primary source/);
+    });
+    test("is three to five lines", () => {
+      const n = body().trim().split("\n").length;
+      assert.ok(n >= 3 && n <= 5, `${n} lines`);
+    });
+  });
+
+  // The rachel-root-cause eval failed three graders at baseline (docs/characters/rachel.md, evals/rachel-root-cause).
+  describe("hand over, as the eval found it", () => {
+    const handOver = () => section(skill, "Hand over");
+    const item = (n) => handOver().match(new RegExp(`^${n}\\. [^\\n]*`, "m"))?.[0] ?? "";
+
+    test("a brief that names the cause gets it checked, not confirmed, and the other causes still listed", () => {
+      const first = item(1);
+      assert.match(first, /trigger and the main cause, tagged/);
+      assert.match(first, /names the cause/);
+      assert.match(first, /checked, not confirmed/);
+      assert.match(first, /gives the others too/);
+    });
+    test("she does not ask for data in place of the other causes: one she cannot source is inferred with to confirm", () => {
+      const first = item(1);
+      assert.match(first, /does not ask for data in place of the other causes/);
+      assert.match(first, /inferred/);
+      assert.match(first, /`to confirm:`/);
+    });
+    test("a named cause that does not account for what was reported says what it leaves out", () => {
+      assert.match(item(1), /does not account for/);
+    });
+    test("a red flag is the second thing she writes, with harvey and the owner's decision", () => {
+      const flag = item(2);
+      assert.match(flag, /red flag/);
+      assert.match(flag, /straight after the first line/);
+      assert.match(flag, /not at the end/);
+      assert.match(flag, /money/);
+      assert.match(flag, /harvey validates it/);
+      assert.match(flag, /mike's check of its facts/);
+      assert.match(flag, /nothing is fixed until the owner decides/i);
+    });
+    test("working alone, the red flag is in the message to whoever sent the brief, naming harvey", () => {
+      assert.match(item(2), /Working alone[^\n]*message to whoever sent the brief[^\n]*harvey/);
+    });
+    test("every cause gets one typed item, an inferred cause too, and an item names no person, character or team", () => {
+      const typed = item(4);
+      assert.match(typed, /One typed item per cause/);
+      assert.match(typed, /prevent, sweep, redesign, detect or mitigate/);
+      assert.match(typed, /Every cause gets one, an inferred cause too/);
+      assert.match(typed, /She assigns none/);
+      assert.match(typed, /names no person, character or team/);
+    });
+  });
+
   test("she edits nothing", () => {
     assert.match(skill, /\*\*Edit nothing\.\*\*/);
   });

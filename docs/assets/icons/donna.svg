@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-labelledby="t">
+  <title id="t">donna</title>
+  <circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 32C13 23 18 17 24 17C30 17 35 23 35 32Z"/>
+    <path d="M11 36H37"/>
+    <path d="M24 17V14"/>
+    <circle cx="24" cy="12.5" r="2.5" fill="#d4a03a" stroke="#d4a03a" stroke-width="1"/>
+  </g>
+</svg>

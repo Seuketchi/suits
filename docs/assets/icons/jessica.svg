@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-labelledby="t">
+  <title id="t">jessica</title>
+  <circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="14" y="13" width="20" height="26" rx="3"/>
+    <rect x="19" y="10" width="10" height="6" rx="2" fill="#d4a03a" stroke="#d4a03a" stroke-width="1.5"/>
+    <path d="M19 24L21 26L24 22M27 25H30M19 32L21 34L24 30M27 33H30"/>
+  </g>
+</svg>

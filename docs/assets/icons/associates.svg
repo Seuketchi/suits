@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-labelledby="t">
+  <title id="t">associates</title>
+  <circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="rotate(40 24 24)">
+      <rect x="14" y="12" width="20" height="9" rx="2" fill="#d4a03a" stroke="#d4a03a" stroke-width="1.5"/>
+      <rect x="22" y="21" width="4" height="16" rx="2"/>
+    </g>
+  </g>
+</svg>

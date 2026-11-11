@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 140" width="390" height="140" role="img" aria-labelledby="t">
+  <title id="t">suits</title>
+  <g fill="#e8edf5" stroke="#e8edf5" stroke-width="4" stroke-linejoin="round">
+    <path d="M22 22H60L78 92V118H22Z"/>
+    <path d="M138 22H100L82 92V118H138Z"/>
+  </g>
+  <g fill="#e3b95c" stroke="#e3b95c" stroke-width="3" stroke-linejoin="round">
+    <path d="M73 30H87L84 44H76Z"/>
+    <path d="M76 44H84L85.5 66L80 82L74.5 66Z"/>
+    <path d="M107 90V82L111 86L114 79L117 86L121 82V90Z"/>
+  </g>
+  <g fill="none" stroke="#e8edf5" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M203 60C198 53 173 52 173 66C173 79 203 76 203 90C203 104 178 102 171 94"/>
+    <path d="M223 52V82Q223 100 238 100Q253 100 253 84M253 52V100"/>
+    <path d="M273 52V100"/>
+    <path d="M299 34V86Q299 100 313 100H317M286 52H314"/>
+    <path d="M363 60C358 53 333 52 333 66C333 79 363 76 363 90C363 104 338 102 331 94"/>
+  </g>
+  <circle cx="273" cy="34" r="7" fill="#e3b95c"/>
+</svg>

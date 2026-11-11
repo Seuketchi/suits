@@ -9,7 +9,7 @@ const money = readFileSync("skills/tools/money-check/SKILL.md", "utf8");
 describe("louis reviews in one pass", () => {
   const row = skill.split("\n").find((l) => l.startsWith("| `/suits:code-review` | there is a diff")) ?? "";
   test("the code-review row says one pass", () => {
-    assert.match(row, /one pass/i);
+    assert.match(row, /He asks for its one-pass mode/);
     assert.doesNotMatch(row, /sub-?agent/i);
   });
   test("rule 7 says one pass and starts no other session", () => {

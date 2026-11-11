@@ -83,7 +83,8 @@ describe("characters", () => {
         assert.match(text, /\b(?:gh pr diff|git show)\b/);
         assert.match(text, /hand-off[^.\n]* is a message/i);
         assert.match(text, /start no other session/i);
-        assert.match(text, /`suits_checklist`/);
+        assert.match(text, /to whoever sent the brief/);
+        assert.match(text, /For a job of three or more steps, list them with `suits_checklist` and mark each done, when that tool is present\./);
       });
 
       test("explains Working alone in its docs page, under Common questions", () => {

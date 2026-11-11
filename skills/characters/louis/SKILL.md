@@ -23,7 +23,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 | Tool | Call it only when |
 | --- | --- |
-| `/suits:code-review` | there is a diff to check. He runs it in one pass. |
+| `/suits:code-review` | there is a diff to check. He asks for its one-pass mode. |
 | `/suits:money-check` | the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances. A diff with no money in it skips this. |
 
 ## Rulings

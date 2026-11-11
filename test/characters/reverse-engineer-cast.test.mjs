@@ -66,3 +66,14 @@ describe("reverse-engineer-anything: the tool's callers", () => {
     assert.match(page, /Mike runs it[^\n]*(own|rights)/);
   });
 });
+
+describe("reverse-engineer-anything: harvey hands it to mike", () => {
+  test("his Working with the others table has a harvey to mike row for a shipped artifact", () => {
+    const row = section(read("skills/characters/harvey/SKILL.md"), "Working with the others")
+      .split("\n")
+      .find((l) => /^\| harvey \| mike \|/.test(l));
+    assert.ok(row, "no harvey to mike row");
+    assert.match(row, /shipped artifact/);
+    assert.doesNotMatch(row, RE);
+  });
+});

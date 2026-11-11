@@ -66,6 +66,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 | rachel or mike | harvey | a finding that needs a decision (a design flaw, a change of scope, money, a broken rule), at the same moment the owner hears of it |
 | harvey | the owner | sound, not sound or needs more, on the finding's thread |
 | the builders | harvey | a problem that survived three fixes |
+| harvey | mike | a shipped artifact with no source whose facts matter to a call, for him to dig into |
 | harvey | donna | the pitch structure for the deck, and any decision to log |
 | harvey | the owner | the `/suits:negotiation-prep` block: five rows, with anything above his authority marked for the owner |
 

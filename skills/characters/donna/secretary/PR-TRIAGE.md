@@ -13,8 +13,8 @@ A table of a repo's open pull requests, each with a recommendation, and the draf
    - **keep**: it stands alone. The evidence can be its files, its age or that it is a draft.
    The evidence is overlapping files, a later pull request that already contains the change, or age. A recommendation with no evidence is not made; the row says `unchecked`.
 3. **Draft the fold body.** For each fold, run `/suits:pr` on the combined change and keep its body as a draft in the owner's files.
-4. **Draft the closing comment.** For each fold or supersede, a short draft for the owner to post: "Superseded by #N, which carries this change. Closing unmerged." For a fold, name the pull request it was folded into.
-5. **Hand over.** One table, then the drafts under it, in a file in the owner's notes. First line the count: how many to fold, supersede and keep.
+4. **Draft the closing comment.** For each fold or supersede, a short draft for the owner to post: "Superseded by #N, which carries this change. Closing unmerged." Each comment is written out in full and ends with the words "Closing unmerged." as written; a description of a comment is not a draft. For a fold, name the pull request it was folded into.
+5. **Hand over.** One table, then the drafts under it, in a file in the owner's notes. First line the count: how many to fold, supersede and keep. The comments are in the reply as well as in the file.
 
 ## The table
 

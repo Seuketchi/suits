@@ -26,7 +26,7 @@ When there is no action log, she tracks from the board of tickets and the decisi
 No. It drafts in chat and publishes only when the request said to. `to-tickets` shows its breakdown for approval first.
 
 **Why does she offer the retro and not run it?**
-It is a skill only a person can start. If a retro proposes a rule for louis, the proposal goes to you and harvey, not into his file.
+It is a skill only a person can start. If a retro proposes a rule for any character, jessica included, the proposal goes to you and harvey, not into that character's file.
 
 **What counts as a blocker?**
 Something that needs another person and actually stops work now. Failed CI or a merge conflict is work to do.

@@ -192,6 +192,13 @@ describe("retro: jessica offers it and does not call it", () => {
     assert.match(section(page, "It's working if"), /offers a retro at the close of a batch and never runs it/i);
   });
 
+  test("a rule the retro proposes for any character, jessica included, goes through the owner and harvey", () => {
+    const body = section(jessica(), "The retro offer");
+    assert.match(body, /any rule the retro proposes for a character, jessica included, goes through the owner and harvey, never straight into that character's file/i);
+    assert.doesNotMatch(body, /for louis/i);
+    assert.match(section(jessicaPage(), "Common questions"), /rule for any character, jessica included[^.]*goes to you and harvey, not into that character's file/i);
+  });
+
   test("a rule for louis the retro proposes still goes to the owner and harvey, and the retro pages say jessica offers it", () => {
     assert.match(skill(), /Jessica may offer it when a batch closes/);
     assert.doesNotMatch(skill(), /Louis may offer it/);

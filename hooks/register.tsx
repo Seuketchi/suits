@@ -15,6 +15,7 @@ import {
   checklistRows,
   checklistText,
   decide,
+  paneText,
   helperOn,
   parseRules,
   rulesReport,
@@ -232,9 +233,9 @@ export const register: Register = on => {
 
   // The pane opens only when the owner asks for it.
   on('command.run', { command: 'suits-checklist' }, async $ => {
-    await $.ui.open({ id: PANE_ID, title: 'Checklist' })
+    const opened = await $.ui.open({ id: PANE_ID, title: 'Checklist' })
 
-    return { text: 'Checklist pane opened.' }
+    return { text: paneText(opened) }
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE_ID }, async ($, e) => {

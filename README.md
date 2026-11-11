@@ -2,25 +2,112 @@
 
 **S**ome **U**nusually **I**ntelligent **T**eam **S**pecialists.
 
-A team of Claude Code skills. Each character has its own job and voice and calls other skills as tools. The tools stay separate files and are never copied into a character, so improving a tool improves every character that uses it. A character calls a tool only when the task needs it.
+A set of specialist skills for Claude Code. Each character has its own job and voice, and calls shared tools only when a task needs them. Ask for something and donna names the one character who owns it.
+
+## Quick start
+
+```text
+/plugin marketplace add Seuketchi/suits
+/plugin install suits@suits
+```
+
+Start a new session so the slash commands register. Then ask, in plain words:
+
+- `/suits:donna Draft a reply to the vendor about the late delivery.` A document or email, written up and never sent.
+- `/suits:mike What does the retry logic in the payment client do today?` What our own code does, with `file:line` references.
+- `/suits:louis Review this diff against the spec.` Findings, each with a ruling.
+
+Not sure who to ask? Ask donna. She names the owner.
+
+## How it works
+
+A request reaches donna, the front desk. She names one owner and writes the request down. The owner calls a tool only when a stated fact about the task matches that tool's trigger. The default is not to call.
+
+```mermaid
+flowchart LR
+    you(["You, the owner"]) -->|"ask"| donna["donna<br/>front desk"]
+    donna -->|"names ONE owner<br/>logs the request"| owner{"owner character"}
+    owner --> trigger{"does a stated fact<br/>match a tool's trigger?"}
+    trigger -->|"yes: one line says which tool and why"| tool["tool skill<br/>shared by every character"]
+    trigger -->|"no (the default)"| own["owner does the work itself"]
+    tool --> own
+    own -->|"hand-over, verdict first"| donna
+    donna -->|"reports on a change of state,<br/>then once at the end"| you
+```
+
+Work that spans characters moves by hand-off, one packet at a time, never copied:
+
+```mermaid
+flowchart TD
+    donna["donna<br/>takes the ask"] -->|"ask, hand-off packet"| harvey["harvey<br/>build or not, budget"]
+    donna -->|"a bug, first"| rachel["rachel<br/>outside research, root cause"]
+    donna -->|"small ask about code"| mike["mike<br/>our own system"]
+    harvey -->|"bounded goal, caps, done test"| jessica["jessica<br/>plan and tickets"]
+    jessica -->|"tickets: blockers, owned files, done test"| assoc["associates<br/>build test first"]
+    jessica -->|"done test, at intake"| louis["louis<br/>strict review"]
+    mike -->|"facts, with sources"| rachel
+    mike -->|"facts, with sources"| harvey
+    rachel -->|"the cause the fix must address"| assoc
+    assoc -->|"each piece as it is done"| louis
+    louis -->|"findings with rulings"| assoc
+    assoc -->|"problem that survived three fixes"| harvey
+    louis -->|"item he could not pass"| harvey
+    jessica -->|"status report, go-live check"| donna
+    louis -->|"consolidated review"| donna
+    rachel -->|"finding that needs a decision"| harvey
+```
+
+Each character's own page lists exactly who it takes work from and hands work to.
+
+### The mod
+
+The plugin also ships a small mod in [hooks](./hooks). It carries no rules of its own: the decisions are in `logic.mjs`, and the wiring is in `register.tsx`.
+
+```mermaid
+flowchart LR
+    rules[(".claude/suits-rules.json<br/>your project's rules")] --> hook
+    call["every tool call"] --> hook{"rules hook"}
+    hook -->|"matches a never rule"| deny["call refused<br/>toast: id and why"]
+    hook -->|"matches a warn rule"| warn["call runs<br/>toast, and the why is added to the result"]
+    hook -->|"no match, or no rules file"| pass["call runs"]
+    skill["a character skill is used"] --> status["status line names<br/>the working character"]
+    steps["suits_checklist tool"] --> pane["/suits-checklist pane<br/>character, steps, n of m done"]
+    status --> pane
+    env["SUITS_HELPER set"] --> helper["new sessions refused,<br/>character told to work alone"]
+```
 
 ## The team
 
-| Character | Stands for | Job |
+| Character | Role | Call them for |
 | --- | --- | --- |
-| donna | **D**oesn't **O**verlook **N**or **N**eglect **A**nything | Front desk. Takes the ask, names one owner, writes everything up, reports back. |
-| jessica | **J**ust **E**nsure **S**chedules **S**tay **I**n **C**heck **A**lways | Project manager. Plans, maps tickets, tracks risk and status, owns the board. |
-| harvey | **H**aggles **A**nd **R**arely **V**acates **E**very **Y**ard | Senior judgement. Decides whether to build, validates findings, closes exceptions. |
-| mike | **M**aybe **I** **K**now **E**verything | Our own system: what the code does and what was decided before. |
-| rachel | **R**arely **A**ccepts **C**laims **H**unting **E**very **L**ead | Outside research, and the root-cause audit on a bug. |
-| louis | **L**et **O**nly **U**nimpeachable **I**tems **S**hip | Strict review against the rules and the spec. |
-| the associates | **A**lways **S**hipping **S**mall **O**bviously **C**orrect **I**ncrements **A**fter **T**esting **E**very **S**tep | The builders: test first, one file owner each. |
+| **donna** | Front desk and secretary | A request that needs an owner and a record; documents, emails, briefs, minutes, decks, a pull request body. Drafts and tracks; never sends or signs. |
+| **jessica** | Project manager | A plan, tickets with blockers and owned files, a status report, risks, go-live readiness. |
+| **harvey** | Senior judgement | Whether to build, the budget, a pitch or negotiation, validating a finding that changes scope, money or a rule. |
+| **mike** | Our own system | What the code does today and what was decided before. |
+| **rachel** | Outside research | An external fact, a literature question, or a bug's root cause before anyone looks for the line to change. |
+| **louis** | Strict review | A diff to check against the rules and the spec, with numbers checked; rules on every review comment. |
+| **the associates** | The builders | Implementing a ticket or fixing a bug, test first, each owning its own files. |
+
+<details>
+<summary>What the names stand for</summary>
+
+| Character | Stands for |
+| --- | --- |
+| donna | **D**oesn't **O**verlook **N**or **N**eglect **A**nything |
+| jessica | **J**ust **E**nsure **S**chedules **S**tay **I**n **C**heck **A**lways |
+| harvey | **H**aggles **A**nd **R**arely **V**acates **E**very **Y**ard |
+| mike | **M**aybe **I** **K**now **E**verything |
+| rachel | **R**arely **A**ccepts **C**laims **H**unting **E**very **L**ead |
+| louis | **L**et **O**nly **U**nimpeachable **I**tems **S**hip |
+| the associates | **A**lways **S**hipping **S**mall **O**bviously **C**orrect **I**ncrements **A**fter **T**esting **E**very **S**tep |
+
+</details>
 
 The team may grow.
 
 ## The tools
 
-Each tool is its own skill, and each character calls it only when the task needs it. The one-line description of each is in [skills/tools](./skills/tools/README.md).
+Each tool is its own skill. It is never copied into a character, so improving a tool improves every character that calls it. The one-line description of each is in [skills/tools](./skills/tools/README.md).
 
 ### User-invoked
 
@@ -63,7 +150,10 @@ Each tool is its own skill, and each character calls it only when the task needs
 
 ## Mods
 
-The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that enforce a project's own rules. Suits carries no rules of its own. A project lists them in `.claude/suits-rules.json`, found from the folder the session starts in up to the git root:
+<details>
+<summary>Project rules, the checklist pane and helper mode</summary>
+
+Hooks on tool calls enforce a project's own rules. Suits carries no rules of its own. A project lists them in `.claude/suits-rules.json`, found from the folder the session starts in up to the git root:
 
 ```json
 {
@@ -85,6 +175,7 @@ The plugin also ships a small mod, in [hooks](./hooks): hooks on tool calls that
 
 ### Checklist
 
+
 For a job of three or more steps, a character lists the steps with the `suits_checklist` tool: `steps` sets the list, `done` marks step numbers (from 1) done. `/suits-checklist` opens a pane that shows the working character, each step as done or left, and "n of m done". The pane opens only when asked, and it seats at any width. Nothing else opens it.
 
 ### Cast board
@@ -97,6 +188,7 @@ When the project has `donna/action-log.md`, the pane also shows a count by statu
 
 ### Helper mode
 
+
 A session that must do its work alone, with no new session started, is a helper. One variable turns helper mode on: `SUITS_HELPER`, any value but empty or `0`. It is the only variable the mod reads, and it is read at each event, not once at start.
 
 - Starting a session is refused with "This session is a helper: do the work yourself in one pass (Working alone).", and a toast says so.
@@ -104,6 +196,8 @@ A session that must do its work alone, with no new session started, is a helper.
 - The status line shows the working character when a character skill is used (`louis`), and `louis · helper` in helper mode. In helper mode with no character yet it shows `helper`. A tool skill does not change it.
 
 Nothing in this plugin sets the variable. Whatever starts a helper sets it: put `SUITS_HELPER=1` in the environment of the session it launches, or have a mod of its own call `$.env.set("SUITS_HELPER", "1")` in a `session.start` hook, which sets it for the whole process.
+
+</details>
 
 ## Layout
 

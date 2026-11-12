@@ -35,7 +35,9 @@ Start a new session so the slash commands register. Then ask, in plain words:
 - `/suits:mike What does the retry logic in the payment client do today?` What our own code does, with `file:line` references.
 - `/suits:louis Review this diff against the spec.` Findings, each with a ruling.
 
-Not sure who to ask? Ask donna. She names the owner.
+Not sure who to ask? Type `/suits:ask-donna` and describe your situation, for example `/suits:ask-donna I'm writing a grant proposal and the deadline is Friday`. It names the one owner and the commands to type. It does no work itself.
+
+**Which guide is for you?** Pick the one that fits in [docs/guides](docs/guides/README.md): researcher, startup founder, developer, project manager, freelancer or consultant, thesis student.
 
 ## 🧭 How it works
 
@@ -134,6 +136,7 @@ Each tool is its own skill. It is never copied into a character, so improving a 
 
 ### User-invoked
 
+- `ask-donna`: started by the owner.
 - `retro`: started by the owner, offered by jessica.
 
 ### Model-invoked

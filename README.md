@@ -20,6 +20,16 @@
   </picture>
 </p>
 
+> **You wear the suits. The suits don't wear you.**
+>
+> A good suit is cut to the person, never the other way round. These take the measure of your work: the drafts, the checks, the reading at 2 a.m., the detail you would have caught if you'd had one more hour. Then they hand back the part that was always yours, which is the decision. Wear them long enough and they fit like they knew you.
+>
+> A suit also says something before you speak: that you showed up ready, and that you'll stand behind what you say. That's the deal here. The tools do the heavy lifting. You keep the say, and you keep the responsibility. Nothing goes out under your name that you haven't read. Nothing is sent, signed or paid without your hand on it.
+>
+> The man who started Anthropic lost his father to an illness that became treatable only a few years later. He built a company on the hope that AI could close gaps like that one: finishing in years the work that would otherwise take decades. That hope only holds if the people holding the tools choose well.
+>
+> So choose well. Use these to give people back their time, catch the mistake before it reaches someone who trusted you, and finish the work that matters sooner. The machine can carry the weight. Only you can carry the care.
+
 A set of specialist skills for Claude Code. Each character has its own job and voice, and calls shared tools only when a task needs them. Ask for something and donna names the one character who owns it.
 
 ## 🚀 Quick start

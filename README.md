@@ -16,7 +16,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
-    <img src="docs/assets/banner.svg" alt="louis, mike, harvey, donna, rachel and jessica, standing in a row, each with an emblem pinned to the lapel" width="900">
+    <img src="docs/assets/banner.svg" alt="The associates, louis, mike, harvey, donna, rachel and jessica, standing in a row, each with an emblem pinned to the lapel" width="900">
   </picture>
 </p>
 

@@ -77,6 +77,7 @@ Through it she writes drafts only: she never sends, replies, accepts, declines, 
 | `jessica`'s blocked and aged items, and the dates in her status | donna's tickler | carried and nudged, never copied |
 
 - **One record.** The action log lives at `donna/action-log.md` (or is the run's board, when it has one) and the decision log at `donna/decision-log.md`, in the owner's repo or notes or where the owner says. Look for the file first and extend it. There is never a second copy.
+- **A desk server, when one is connected.** When the session has an MCP server whose tools include `desk_log` and `desk_read`, that desk is the one record for the action log, the decision log and the tickler: write each entry with `desk_log`, read them back with `desk_read`, and do not also write the files. The desk is append-only, so a correction is a new entry with `corrects` set to the entry it fixes. Without such a server, the files above are the record.
 - **No loops.** A hand-off passes the artefact and what is wanted back. Neither calls the other for the same artefact twice in one task: take what came back and finish.
 
 ## Working with harvey

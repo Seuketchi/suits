@@ -13,6 +13,13 @@
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-d4a03a.svg" alt="Claude Code plugin">
 </p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
+    <img src="docs/assets/banner.svg" alt="louis, mike, harvey, donna, rachel and jessica, standing in a row, each with an emblem pinned to the lapel" width="900">
+  </picture>
+</p>
+
 A set of specialist skills for Claude Code. Each character has its own job and voice, and calls shared tools only when a task needs them. Ask for something and donna names the one character who owns it.
 
 ## 🚀 Quick start

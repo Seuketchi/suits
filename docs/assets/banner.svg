@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="900" height="320" role="img" aria-labelledby="t">
+  <title id="t">louis, mike, harvey, donna, rachel and jessica, standing in a row</title>
+  <g id="louis" transform="translate(105 104) scale(1)"><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V158H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M-4 48H4L6.5 72L0 82L-6.5 72Z" fill="#b8862b"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-25 -2Q-27 -29 0 -29Q27 -29 25 -2Q19 -15 0 -15Q-19 -15 -25 -2Z" fill="#14213d"/><g transform="translate(-35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="21" cy="21" r="9"/>
+    <path d="M28 28L36 36" stroke-width="4"/>
+    <path d="M17 21L20 24L25 18" stroke="#d4a03a"/>
+  </g></g></g></g>
+  <g id="mike" transform="translate(272 94) scale(1)"><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V168H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M-4 48H4L6.5 72L0 82L-6.5 72Z" fill="#b8862b"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-25 0Q-29 -30 4 -30Q28 -28 25 0Q22 -12 8 -17Q-10 -9 -25 0Z" fill="#5f82b8"/><g transform="translate(-35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 15C20 12 15 12 11 14V34C15 32 20 32 24 35C28 32 33 32 37 34V14C33 12 28 12 24 15Z"/>
+    <path d="M24 15V35"/>
+    <path d="M15 20H20M15 25H20M28 20H33M28 25H33" stroke="#d4a03a" stroke-width="2.5"/>
+  </g></g></g></g>
+  <g id="jessica" transform="translate(809 104) scale(1)"><path d="M-27 -2Q-31 -33 0 -33Q31 -33 27 -2V24Q27 32 18 32H-18Q-27 32 -27 24Z" fill="#14213d"/><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V158H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-26 0Q-30 -32 0 -32Q30 -32 26 0Q14 -22 -6 -20Q-18 -16 -26 0Z" fill="#14213d"/><g transform="translate(35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="14" y="13" width="20" height="26" rx="3"/>
+    <rect x="19" y="10" width="10" height="6" rx="2" fill="#d4a03a" stroke="#d4a03a" stroke-width="1.5"/>
+    <path d="M19 24L21 26L24 22M27 25H30M19 32L21 34L24 30M27 33H30"/>
+  </g></g></g></g>
+  <g id="rachel" transform="translate(692 94) scale(1)"><path d="M-27 -4Q-31 -32 0 -32Q31 -32 27 -4Q33 12 27 26Q33 40 22 48Q8 40 0 48Q-8 40 -22 48Q-33 40 -27 26Q-33 12 -27 -4Z" fill="#5f82b8"/><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V168H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-26 -2Q-29 -31 0 -31Q29 -31 26 -2Q18 -18 0 -18Q-18 -18 -26 -2Z" fill="#5f82b8"/><g transform="translate(35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 10L30 24H18Z" fill="#d4a03a" stroke="#d4a03a" stroke-width="2"/>
+    <path d="M24 38L30 24H18Z"/>
+    <circle cx="24" cy="24" r="1.5" fill="#5f82b8"/>
+  </g></g></g></g>
+  <g id="donna" transform="translate(575 84) scale(1)"><path d="M-27 -4Q-31 -33 0 -33Q31 -33 27 -4V34Q27 46 16 46H-16Q-27 46 -27 34Z" fill="#b8862b"/><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V178H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-26 -2Q-30 -32 0 -32Q30 -32 26 -2Q20 -20 -2 -20Q-18 -19 -26 -2Z" fill="#b8862b"/><g transform="translate(35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 32C13 23 18 17 24 17C30 17 35 23 35 32Z"/>
+    <path d="M11 36H37"/>
+    <path d="M24 17V14"/>
+    <circle cx="24" cy="12.5" r="2.5" fill="#d4a03a" stroke="#d4a03a" stroke-width="1"/>
+  </g></g></g></g>
+  <g id="harvey" transform="translate(450 76) scale(1.14)"><path d="M-13 24Q-13 32 -26 36L-48 44Q-58 50 -58 64V163.1578947368421H58V64Q58 50 48 44L26 36Q13 32 13 24Z" fill="#14213d"/><path d="M-9 18V34L0 46L9 34V18Z" fill="#e6ecf6" stroke="#14213d" stroke-width="2.5" stroke-linejoin="round"/><path d="M-15 33L0 92L15 33L0 46Z" fill="#ffffff"/><path d="M-15 33L-30 62L-14 72L0 92M15 33L30 62L14 72L0 92" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M-4 48H4L6.5 72L0 82L-6.5 72Z" fill="#b8862b"/><circle r="24" fill="#e6ecf6" stroke="#14213d" stroke-width="3"/><path d="M-25 -3Q-30 -33 3 -32Q30 -30 25 -3Q20 -19 4 -20Q-14 -19 -25 -3Z" fill="#14213d"/><g transform="translate(-35 100)"><circle r="21" fill="#ffffff" stroke="#b8862b" stroke-width="2"/><g transform="scale(.8) translate(-24 -24)"><circle cx="24" cy="24" r="21" fill="none" stroke="#5f82b8" stroke-width="2.5"/>
+  <g fill="none" stroke="#5f82b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 32L15 19L21 25L24 15L27 25L33 19L35 32Z"/>
+    <path d="M13 36H35"/>
+    <circle cx="15" cy="17" r="1.8" fill="#d4a03a" stroke="#d4a03a" stroke-width="1"/>
+    <circle cx="24" cy="13" r="1.8" fill="#d4a03a" stroke="#d4a03a" stroke-width="1"/>
+    <circle cx="33" cy="17" r="1.8" fill="#d4a03a" stroke="#d4a03a" stroke-width="1"/>
+  </g></g></g></g>
+  <path d="M36 262H874" stroke="#b8862b" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#14213d" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="600" text-anchor="middle">
+    <text x="105" y="298" font-size="21">louis</text>
+    <text x="272" y="298" font-size="21">mike</text>
+    <text x="450" y="302" font-size="26">harvey</text>
+    <text x="575" y="298" font-size="21">donna</text>
+    <text x="692" y="298" font-size="21">rachel</text>
+    <text x="809" y="298" font-size="21">jessica</text>
+  </g>
+</svg>

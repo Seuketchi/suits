@@ -2,7 +2,7 @@
 
 What the owner is waiting on, and what the owner has promised, each with a date to resurface. Each time donna is asked about the day, or opens the owner's files, she lists what is due, overdue or stale, and drafts the nudge. Nothing falls off because nobody asked.
 
-**Needs:** a plain file, `donna/tickler.md`, in the owner's repo or notes (or where the owner says), and the action log ([MINUTES.md](MINUTES.md)). Look for an existing one and extend it.
+**Needs:** a plain file, `donna/tickler.md`, in the owner's repo or notes (or where the owner says), and the action log ([MINUTES.md](MINUTES.md)). Look for an existing one and extend it. When a desk server is connected (tools `desk_log` and `desk_read`), the tickler is the desk's `tickler` log instead.
 
 ## The file
 

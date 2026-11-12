@@ -14,6 +14,7 @@
     "./skills/characters/louis",
     "./skills/characters/mike",
     "./skills/characters/rachel",
+    "./skills/tools/ask-donna",
     "./skills/tools/code-review",
     "./skills/tools/codebase-design",
     "./skills/tools/critical-path",

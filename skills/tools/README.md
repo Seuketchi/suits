@@ -4,6 +4,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 
 ## User-invoked
 
+- **[ask-donna](./ask-donna/SKILL.md)**: Say who to ask and what to type for a situation, with the matching guide. Started by the owner.
 - **[retro](./retro/SKILL.md)**: Look back at a batch that has landed and propose fixes to the owner's setup, from the logs and the review rounds. Started by the owner; offered by jessica.
 
 ## Model-invoked

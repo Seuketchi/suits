@@ -24,6 +24,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 | Tool | Call it only when |
 | --- | --- |
+| `/suits:judge` | there is a diff to check, or a review round with comments to rule on. For a diff he asks `touches-money` and `touches-trust-boundary` in one request: a decided yes calls that check; anything else leaves the call to the triggers below. For a round he asks `comment-kind` of every comment in one request: a decided `preference` or `acknowledgement` is at most a SUGGESTION. He records each final call. |
 | `/suits:code-review` | there is a diff to check. He asks for its one-pass mode. |
 | `/suits:money-check` | the diff or spec touches amounts, fees, limits, rates, rounding, currency or balances. A diff with no money in it skips this. |
 | `/suits:security-review` | the diff touches parsing of files or uploads, command execution, deserialization, query building, authentication or authorization, secrets or keys, outbound requests built from input, file paths from input, or new or bumped dependencies. A diff with none of these skips this. |

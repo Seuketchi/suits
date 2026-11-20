@@ -146,6 +146,45 @@ export const QUESTIONS = {
     whenTrue: "The change touches a trust boundary and needs the security pass",
     whenFalse: "Nothing in the change touches a trust boundary",
   },
+  "falls-short": {
+    kind: "noul",
+    floor: 0.7,
+    sendsCode: true,
+    instructions: {
+      question:
+        "`done_test` is what the work had to meet, one line per rule, and `diff` is the change actually made, read from the repository. Does the change fall short: a line of `done_test` it does not meet, or work left half-finished?",
+      examples_yes: "a done-test line asks for an empty-list case and the diff has none; a new function body is a stub or a TODO; a test is skipped or deleted to pass",
+      examples_no: "every done-test line has matching code and a test; a TODO left in an untouched file",
+    },
+    whenTrue: "The work does not yet meet its done test",
+    whenFalse: "The work meets every line of its done test and looks finished",
+  },
+  "red-flag": {
+    kind: "noul",
+    floor: 0.7,
+    sendsCode: true,
+    instructions: {
+      question:
+        "`finding` is one finding about a bug or a problem, in plain words. Is it a red flag: the cause is a design flaw, it changes scope, it involves money, it breaks a rule, the cause has no owner, only a guardrail is proposed for a design cause, or the failure was silent for a long time?",
+      examples_yes: "customers were charged twice for three weeks and nobody noticed; the fix needs a schema change nobody planned; the module that fails has no maintainer",
+      examples_no: "a typo in an error message; an off-by-one in a loop, caught by a test the same day",
+    },
+    whenTrue: "The owner must hear of it at once",
+    whenFalse: "An ordinary finding with none of those marks",
+  },
+  "rule-duplicate": {
+    kind: "noul",
+    floor: 0.8,
+    sendsCode: true,
+    instructions: {
+      question:
+        "`new_rule` is a rule proposed for review or for a check, and `item` is a rule that already exists. Does `item` already require what `new_rule` requires, so adding `new_rule` would say nothing new?",
+      examples_yes: "new: 'every amount carries its currency'; existing: 'an amount never travels without its currency code'",
+      examples_no: "new: 'round half to even'; existing: 'name the rounding mode at one point' (the existing rule asks for a named mode, not this one)",
+    },
+    whenTrue: "The existing rule already says it; the new one adds nothing",
+    whenFalse: "The new rule says something the existing one does not",
+  },
 };
 
 const stateDirDefault = () => join(process.env.XDG_STATE_HOME || join(homedir(), ".local", "state"), "suits-judge");

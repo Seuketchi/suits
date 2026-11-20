@@ -24,6 +24,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 | Tool | Call it only when |
 | --- | --- |
+| `/suits:judge` | a finding is ready to hand over and she has not already called it a red flag. She asks `red-flag` with the finding in plain words: a decided yes makes it a red flag under hard rule 4; anything else leaves her own reading. She records the final call. |
 | `/suits:research` | an outside fact is needed that the code cannot give |
 | `/suits:source-finder` | a claim needs academic sources, or a literature section has gaps |
 | `/suits:root-cause-audit` | the task is a bug: before the fix, to frame the causes, and after it, to check the fix against them |

@@ -19,7 +19,7 @@ The skills the characters call. Each is a separate file, never copied into a cha
 - **[grilling](./grilling/SKILL.md)**: Question the user about a plan, decision, or idea until every open decision is settled. Called by harvey.
 - **[handoff](./handoff/SKILL.md)**: Write the session up as a short document so another session can pick the work up. Called by donna.
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual report, then grill through the one you pick. Called by harvey.
-- **[judge](./judge/SKILL.md)**: Ask Jev (TypeSafe's model) one small typed question and take its answer only when it is confident; otherwise decide as before. Called by donna, louis.
+- **[judge](./judge/SKILL.md)**: Ask Jev (TypeSafe's model) one small typed question and take its answer only when it is confident; otherwise decide as before. Called by donna, louis, rachel.
 - **[money-check](./money-check/SKILL.md)**: A ten-item check on amounts, fees, limits, rates, rounding, currency and balances in a diff or spec. Called by louis.
 - **[morning-brief](./morning-brief/SKILL.md)**: A private daily brief of what is assigned and what needs review, with pending reviews only the owner can see. Called by donna.
 - **[negotiation-prep](./negotiation-prep/SKILL.md)**: Prepare a negotiation as five rows: interests, alternatives, walk-away point and authority. Called by harvey.

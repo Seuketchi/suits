@@ -152,3 +152,49 @@ describe("judge: the characters use it", () => {
     assert.match(readFileSync("skills/tools/ask-donna/SKILL.md", "utf8"), /The one exception is the `owner` question of `\/suits:judge`/);
   });
 });
+
+describe("judge: falls-short, red-flag, rule-duplicate", () => {
+  const d = () => {
+    const x = dirs();
+    allow(x.configDir, ["Seuketchi"]);
+    return x;
+  };
+  const opts = (x, fetch, extra = {}) => ({ key: "k", fetch, ownerOf: () => "Seuketchi", ...x, ...extra });
+
+  test("each is a yes-means-escalate question that sends repository content", () => {
+    for (const id of ["falls-short", "red-flag", "rule-duplicate"]) {
+      assert.equal(QUESTIONS[id].kind, "noul", id);
+      assert.equal(QUESTIONS[id].sendsCode, true, id);
+    }
+  });
+
+  test("falls-short: a confident yes holds the work; a no never passes it", async () => {
+    const state = { repo: "/r", done_test: "D1: empty list returns []", diff: "+ return xs.map(f)" };
+    const [held] = await ask(["falls-short"], state, opts(d(), fake({ "falls-short": noul(0.9) }).fetch));
+    assert.deepEqual([held.answer, held.decided], ["yes", true]);
+    const [ok] = await ask(["falls-short"], state, opts(d(), fake({ "falls-short": noul(0.02) }).fetch));
+    assert.deepEqual([ok.answer, ok.decided], ["no", false]);
+  });
+
+  test("red-flag is refused without an allowed repository", async () => {
+    const { fetch, calls } = fake({});
+    const [r] = await ask(["red-flag"], { finding: "charged twice for weeks" }, opts(d(), fetch));
+    assert.match(r.error, /not sent/);
+    assert.equal(calls.length, 0);
+  });
+
+  test("rule-duplicate asks every existing rule in one request", async () => {
+    const { fetch, calls } = fake({ "rule-duplicate#0": noul(0.1), "rule-duplicate#1": noul(0.93) });
+    const results = await ask(["rule-duplicate"], { repo: "/r", new_rule: "every amount carries its currency" }, opts(d(), fetch, { items: ["name the rounding mode", "an amount never travels without its currency code"] }));
+    assert.equal(calls.length, 1);
+    assert.deepEqual(results.map((r) => r.decided), [false, true]);
+  });
+
+  test("louis, rachel and retro ask them", () => {
+    const louis = readFileSync("skills/characters/louis/SKILL.md", "utf8");
+    assert.match(louis, /asks `falls-short` with the done test and the diff from git, never the builder's message/);
+    assert.match(louis, /passes it only by overruling, naming the done-test lines he checked/);
+    assert.match(readFileSync("skills/characters/rachel/SKILL.md", "utf8"), /`\/suits:judge` \| a finding is ready to hand over[^\n]*`red-flag`/);
+    assert.match(readFileSync("skills/tools/retro/SKILL.md", "utf8"), /`rule-duplicate` question of `\/suits:judge`/);
+  });
+});

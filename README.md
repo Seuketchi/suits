@@ -161,7 +161,7 @@ Each tool is its own skill. It is never copied into a character, so improving a 
 - `grilling`: called by harvey.
 - `handoff`: called by donna.
 - `improve-codebase-architecture`: called by harvey.
-- `judge`: called by donna, louis.
+- `judge`: called by donna, louis, rachel.
 - `money-check`: called by louis.
 - `morning-brief`: called by donna.
 - `negotiation-prep`: called by harvey.

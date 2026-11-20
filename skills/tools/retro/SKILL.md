@@ -51,6 +51,8 @@ Decide who fixes each finding by asking whether a program could catch it.
 - **Mechanical:** a fixed pattern, a banned call, an import shape or a file location. It becomes a proposed check: a lint rule, hook or CI job, whichever is cheapest for the repo. A check is the default over a written rule.
 - **Judgement call:** cross-file consistency, matching the surrounding style, anything no check could stand in for. It becomes a proposed review rule for louis.
 
+Before a rule is proposed, ask the `rule-duplicate` question of `/suits:judge` against every existing review rule and documented standard, in one request. A decided yes drops the new rule and names the existing one that covers it; anything else leaves it in. Record the final call.
+
 A proposed rule for louis goes to the owner and harvey. It is never put into louis's own file by this skill, because he edits nothing he reviews. Nothing changes until the owner agrees.
 
 ## Output

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync } from "node:fs";
 import test from "node:test";
 
-import { ADR, checkReadOnly, denyMessage, readOnlyCharacter } from "../../hooks/readonly.mjs";
+import { ADR, checkReadOnly, denyMessage, readOnlyCharacter } from "../../plugins/suits-hooks/hooks/readonly.mjs";
 
 // Commands a read-only version may run.
 const ALLOWED = [

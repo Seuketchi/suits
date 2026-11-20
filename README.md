@@ -37,7 +37,10 @@ A set of specialist skills for Claude Code. Each character has its own job and v
 ```text
 /plugin marketplace add Seuketchi/suits
 /plugin install suits@suits
+/plugin install suits-hooks@suits
 ```
+
+`suits` is the characters and tools. `suits-hooks` is optional: the checklist and cast panes, the status line, helper mode, your project's rules file and the guard that keeps the read-only versions to reading. They install apart so that the characters load even where hooks are turned off.
 
 Start a new session so the slash commands register. Then ask, in plain words:
 
@@ -91,7 +94,7 @@ Each character's own page lists exactly who it takes work from and hands work to
 
 ### 🧩 The mod
 
-The plugin also ships a small mod in [hooks](./hooks). The decisions are in `logic.mjs` and `readonly.mjs`, and the wiring is in `register.tsx`. A project's rules come only from its own rules file. The one rule of the plugin's own holds the read-only versions of louis, mike and rachel to reading.
+The second plugin, `suits-hooks`, is a small mod in [plugins/suits-hooks/hooks](./plugins/suits-hooks/hooks). The decisions are in `logic.mjs` and `readonly.mjs`, and the wiring is in `register.tsx`. A project's rules come only from its own rules file. The one rule of the plugin's own holds the read-only versions of louis, mike and rachel to reading.
 
 ```mermaid
 flowchart LR
@@ -241,7 +244,7 @@ Nothing in this plugin sets the variable. Whatever starts a helper sets it: put 
 - [skills/characters](./skills/characters/README.md): the characters.
 - [skills/tools](./skills/tools/README.md): the tools they call.
 - [agents](./agents): the read-only versions of louis, mike and rachel.
-- [hooks](./hooks): the mod, with its decisions in `logic.mjs` and `readonly.mjs`.
+- [plugins/suits-hooks](./plugins/suits-hooks): the mod, installed as `suits-hooks`, with its decisions in `hooks/logic.mjs` and `hooks/readonly.mjs`.
 - [docs](./docs): one page per skill, and the decisions in [docs/adr](./docs/adr).
 
 ## ✅ Checks

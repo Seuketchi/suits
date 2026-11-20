@@ -4,7 +4,8 @@
 // character's "When to call" table, which says who calls a tool. From that it
 // builds the copies:
 //
-// - `.claude-plugin/plugin.json`'s `skills`;
+// - `.claude-plugin/plugin.json`'s `skills`, and the character names in
+//   `plugins/suits-hooks/hooks/characters.json`, which the hooks read;
 // - the root README's "User-invoked" and "Model-invoked" tool lists;
 // - the User-invoked / Model-invoked grouping of `skills/tools/README.md` and
 //   `skills/characters/README.md`, and each tool's "Called by" tail.
@@ -25,6 +26,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const BUCKETS = ["characters", "tools"];
 const PLUGIN = ".claude-plugin/plugin.json";
+const HOOK_CHARACTERS = "plugins/suits-hooks/hooks/characters.json";
 const ROOT_README = "README.md";
 const bucketReadme = (bucket) => `skills/${bucket}/README.md`;
 
@@ -85,6 +87,8 @@ export function expected(root) {
   const plugin = JSON.parse(read(root, PLUGIN));
   plugin.skills = [...characters, ...tools].map((s) => `./skills/${s.bucket}/${s.name}`);
   out[PLUGIN] = `${JSON.stringify(plugin, null, 2)}\n`;
+  // The hooks ship as their own plugin and cannot read this one's manifest, so they get the list.
+  out[HOOK_CHARACTERS] = `${JSON.stringify(characters.map((c) => c.name))}\n`;
 
   for (const bucket of BUCKETS) {
     const file = bucketReadme(bucket);

@@ -12,16 +12,17 @@ import { join, resolve } from "node:path";
 
 const repo = resolve(".");
 const script = join(repo, "scripts/lists.mjs");
-const COPIES = [".claude-plugin/plugin.json", "README.md", "skills/tools/README.md", "skills/characters/README.md"];
+const COPIES = [".claude-plugin/plugin.json", "README.md", "skills/tools/README.md", "skills/characters/README.md", "plugins/suits-hooks/hooks/characters.json"];
 
 const run = (root, mode) => spawnSync("node", [script, mode, "--root", root], { encoding: "utf8" });
 
-// A temp copy of what the script reads: the four copies and every SKILL.md.
+// A temp copy of what the script reads: the copies and every SKILL.md.
 const dirs = [];
 const copyRepo = () => {
   const dir = mkdtempSync(join(tmpdir(), "lists-"));
   dirs.push(dir);
   mkdirSync(join(dir, ".claude-plugin"));
+  mkdirSync(join(dir, "plugins/suits-hooks/hooks"), { recursive: true });
   for (const f of COPIES) cpSync(join(repo, f), join(dir, f));
   for (const bucket of ["characters", "tools"]) {
     for (const name of readdirSync(join(repo, "skills", bucket)).filter((n) => statSync(join(repo, "skills", bucket, n)).isDirectory())) {
@@ -219,5 +220,12 @@ describe("package.json and CLAUDE.md", () => {
     const adr = readFileSync("docs/adr/0004-the-tool-list-has-one-source.md", "utf8");
     assert.match(adr, /^# /m);
     assert.match(adr, /^## Decision/m);
+  });
+});
+
+describe("scripts/lists.mjs: the hooks' character list", () => {
+  test("names every character folder, so the hooks plugin knows them without the skills plugin's manifest", () => {
+    const names = readdirSync(join(repo, "skills/characters")).filter((n) => statSync(join(repo, "skills/characters", n)).isDirectory()).sort();
+    assert.deepEqual(JSON.parse(readFileSync(join(repo, "plugins/suits-hooks/hooks/characters.json"), "utf8")), names);
   });
 });

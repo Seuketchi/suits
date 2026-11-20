@@ -113,18 +113,21 @@ for (const file of [...rootMarkdown, ...markdownFiles(join(repo, "skills")), ...
 let validated = "skipped (no `claude` on PATH)";
 try {
   execFileSync("claude", ["--version"], { stdio: "ignore" });
-  let output;
-  try {
-    output = execFileSync("claude", ["plugin", "validate", repo, "--json"], { encoding: "utf8" });
-  } catch (error) {
-    output = error.stdout; // exits 1 on errors; the JSON report is still on stdout
-  }
-  const report = JSON.parse(output);
-  for (const target of [report.manifest, ...(report.contents ?? [])].filter(Boolean)) {
-    const file = relative(repo, target.file);
-    for (const e of target.errors) problems.push(`plugin validate: ${file}: ${e.path}: ${e.message}`);
-    for (const w of target.warnings) {
-      if (!ACCEPTED_WARNINGS.some((re) => re.test(w.message))) problems.push(`plugin validate: ${file}: ${w.path}: ${w.message}`);
+  // Both plugins in the marketplace: the skills at the root, the hooks in plugins/suits-hooks.
+  for (const dir of [repo, join(repo, "plugins", "suits-hooks")]) {
+    let output;
+    try {
+      output = execFileSync("claude", ["plugin", "validate", dir, "--json"], { encoding: "utf8" });
+    } catch (error) {
+      output = error.stdout; // exits 1 on errors; the JSON report is still on stdout
+    }
+    const report = JSON.parse(output);
+    for (const target of [report.manifest, ...(report.contents ?? [])].filter(Boolean)) {
+      const file = relative(repo, target.file);
+      for (const e of target.errors) problems.push(`plugin validate: ${file}: ${e.path}: ${e.message}`);
+      for (const w of target.warnings) {
+        if (!ACCEPTED_WARNINGS.some((re) => re.test(w.message))) problems.push(`plugin validate: ${file}: ${w.path}: ${w.message}`);
+      }
     }
   }
   validated = "ran";

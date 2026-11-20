@@ -10,7 +10,21 @@
       "source": "./",
       "description": "A team of specialist skills for Claude Code: each with its own job and voice, calling the tools it needs and only when the task needs it.",
       "category": "engineering",
-      "keywords": ["skills", "team", "personal"]
+      "keywords": [
+        "skills",
+        "team",
+        "personal"
+      ]
+    },
+    {
+      "name": "suits-hooks",
+      "source": "./plugins/suits-hooks",
+      "description": "The suits panes and guards: checklist and cast panes, status line, helper mode, the project rules file and the read-only Bash guard. Optional; install beside suits.",
+      "category": "engineering",
+      "keywords": [
+        "hooks",
+        "suits"
+      ]
     }
   ]
 }

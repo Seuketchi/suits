@@ -1,10 +1,10 @@
 import { expect, test } from 'claude-code/testing'
 
 const PANE_ID = 'suits-checklist'
-const TOOL = 'mcp__suits__suits_checklist'
+const TOOL = 'mcp__suits-hooks__suits_checklist'
 
 const PANE = {
-  plugin: 'suits',
+  plugin: 'suits-hooks',
   component: 'Pane',
   requestId: PANE_ID,
   props: {
@@ -24,8 +24,8 @@ function engine(on: any, placement: { isPlaced: true } | { isPlaced: false; reas
   const tools: string[] = []
 
   on('fs.read', (_: unknown, e: { path: string }) => {
-    if (e.path.endsWith('.claude-plugin/plugin.json')) {
-      return { value: JSON.stringify({ skills: ['./skills/characters/louis'] }) }
+    if (e.path.endsWith('hooks/characters.json')) {
+      return { value: JSON.stringify(['louis']) }
     }
     throw new Error('ENOENT')
   })

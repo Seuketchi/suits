@@ -69,15 +69,19 @@ async function findRules($: any): Promise<{ path?: string; parsed: ReturnType<ty
 // done; the character is the one the last `suits:<character>` skill named.
 // Change a tag when a value's fields change: it declines what an earlier
 // version stored, which outlives a reload.
-const checklist = atom({ plugin: 'suits', key: 'checklist' } as const, { steps: [], done: [] } as Checklist, {
+// The plugin the characters and their read-only versions ship in. These hooks
+// ship apart from it, as suits-hooks, so the name is written here.
+const SKILLS_PLUGIN = 'suits'
+
+const checklist = atom({ plugin: 'suits-hooks', key: 'checklist' } as const, { steps: [], done: [] } as Checklist, {
   shape: 'checklist-1',
 })
-const character = atom({ plugin: 'suits', key: 'character' } as const, '', { shape: 'character-1' })
+const character = atom({ plugin: 'suits-hooks', key: 'character' } as const, '', { shape: 'character-1' })
 
 // The cast board and donna's action log, as the cast pane draws them. The
 // session holds them; nothing is written to disk.
-const cast = atom({ plugin: 'suits', key: 'cast' } as const, EMPTY_CAST as CastBoard, { shape: 'cast-1' })
-const actionLog = atom({ plugin: 'suits', key: 'actionLog' } as const, { status: 'missing' } as ActionLog, {
+const cast = atom({ plugin: 'suits-hooks', key: 'cast' } as const, EMPTY_CAST as CastBoard, { shape: 'cast-1' })
+const actionLog = atom({ plugin: 'suits-hooks', key: 'actionLog' } as const, { status: 'missing' } as ActionLog, {
   shape: 'action-log-1',
 })
 
@@ -96,7 +100,7 @@ let characters: string[] | undefined
 async function charactersOf($: any): Promise<string[]> {
   if (characters === undefined) {
     try {
-      characters = charactersFrom(await $.fs.read(`${$.plugin.root}/.claude-plugin/plugin.json`))
+      characters = charactersFrom(await $.fs.read(`${$.plugin.root}/hooks/characters.json`))
     } catch {
       return []
     }
@@ -165,7 +169,7 @@ async function readOnlyDenial(
   if (e.agentId === undefined) return undefined
 
   try {
-    const who = readOnlyCharacter(await agentType($, e.agentId), $.plugin.name)
+    const who = readOnlyCharacter(await agentType($, e.agentId), SKILLS_PLUGIN)
 
     if (who === undefined) return undefined
 
@@ -183,7 +187,7 @@ export const register: Register = on => {
   // A check that failed is told once per cause.
   const failed = new Set<string>()
 
-  on('tool.call', { tool: `mcp__suits__${CHECKLIST_TOOL}` }, async ($, e) => {
+  on('tool.call', { tool: `mcp__suits-hooks__${CHECKLIST_TOOL}` }, async ($, e) => {
     // This hook answers without `next`, so the generic hook below may not see
     // the call: it feeds the board itself.
     await feedCastSafely($, { kind: 'tool', tool: e.tool, loop: e.agentId ?? '' })

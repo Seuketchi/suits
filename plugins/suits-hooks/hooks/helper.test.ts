@@ -1,10 +1,8 @@
 import { expect, test } from 'claude-code/testing'
 
-const CHARACTERS = JSON.stringify({
-  skills: ['./skills/characters/louis', './skills/characters/donna', './skills/tools/tdd'],
-})
+const CHARACTERS = JSON.stringify(['louis', 'donna'])
 
-// The engine beneath the plugin: the plugin's own manifest, the status lines
+// The engine beneath the plugin: the character list, the status lines
 // and toasts it was asked to show, and a spawn that would start.
 function engine(on: any, env: Record<string, string>, failsOnce: { toast?: true; env?: true } = {}) {
   const failures = { toast: failsOnce.toast ? 1 : 0, env: failsOnce.env ? 1 : 0 }
@@ -16,7 +14,7 @@ function engine(on: any, env: Record<string, string>, failsOnce: { toast?: true;
     return { value: env[e.name] }
   })
   on('fs.read', (_: unknown, e: { path: string }) => {
-    if (e.path.endsWith('.claude-plugin/plugin.json')) return { value: CHARACTERS }
+    if (e.path.endsWith('hooks/characters.json')) return { value: CHARACTERS }
     throw new Error('ENOENT')
   })
   on('ui.toast', (_: unknown, e: { text: string }) => {

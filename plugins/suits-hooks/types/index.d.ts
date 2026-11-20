@@ -18,7 +18,7 @@ export type ActionLog =
 
 declare module 'claude-code' {
   interface PluginState {
-    suits: {
+    'suits-hooks': {
       // The job's steps and which are done (`suits_checklist` writes it).
       checklist: Shaped<Checklist>
       // The character working, from the last `suits:<character>` skill; '' for none.

@@ -49,6 +49,5 @@
     "./skills/tools/test-kitchen",
     "./skills/tools/to-spec",
     "./skills/tools/to-tickets"
-  ],
-  "types": "./types/index.d.ts"
+  ]
 }

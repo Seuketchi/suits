@@ -1,0 +1,8 @@
+{
+  "name": "suits-hooks",
+  "description": "The suits panes and guards: the checklist and cast panes, the status line, helper mode, the project rules file and the read-only versions' Bash guard. Install beside suits.",
+  "author": { "name": "Tristan Jadman" },
+  "license": "MIT",
+  "repository": "https://github.com/Seuketchi/suits",
+  "types": "./types/index.d.ts"
+}

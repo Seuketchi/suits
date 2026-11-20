@@ -37,4 +37,4 @@ jobs:
         run: npm test
 
       - name: Mod tests against the hook engine
-        run: claude plugin test .
+        run: claude plugin test plugins/suits-hooks

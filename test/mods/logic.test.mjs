@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { EMPTY_CHECKLIST, HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_STEPS, MAX_STEP_LENGTH, paneText, MAX_SUBJECT, NO_FILE_TEXT, applyChecklist, checklistCount, checklistRows, checklistText, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../hooks/logic.mjs";
+import { EMPTY_CHECKLIST, HELPER_DENY, HELPER_PROMPT, HELPER_TOAST, MAX_STEPS, MAX_STEP_LENGTH, paneText, MAX_SUBJECT, NO_FILE_TEXT, applyChecklist, checklistCount, checklistRows, checklistText, decide, characterOf, charactersFrom, describeInput, helperOn, parseRules, rulesReport, searchDirs, statusFor, toastFor, unreadableRules, warnNotes } from "../../plugins/suits-hooks/hooks/logic.mjs";
 
 const FILE = JSON.stringify({
   never: [

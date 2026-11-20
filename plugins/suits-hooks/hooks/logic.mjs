@@ -192,11 +192,14 @@ export const HELPER_TOAST = "suits blocked a new session: helper mode";
 export const HELPER_PROMPT =
   "Helper mode is on: follow the Working alone section of the character you are running.";
 
-// The characters, from the folders plugin.json lists under skills/characters.
+// The characters: a list of names (characters.json, written by `npm run lists`),
+// or the folders a plugin.json lists under skills/characters.
 export function charactersFrom(manifestText) {
   let skills;
   try {
-    skills = JSON.parse(manifestText).skills;
+    const parsed = JSON.parse(manifestText);
+    if (Array.isArray(parsed)) return parsed.filter((name) => typeof name === "string");
+    skills = parsed.skills;
   } catch {
     return [];
   }

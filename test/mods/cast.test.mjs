@@ -12,7 +12,7 @@ import {
   isActionLogPath,
   paneText,
   parseActionLog,
-} from "../../hooks/logic.mjs";
+} from "../../plugins/suits-hooks/hooks/logic.mjs";
 
 const CHARACTERS = ["harvey", "mike", "louis", "donna"];
 const take = (board, name, loop) => castEvent(board, { kind: "skill", skill: `suits:${name}`, loop }, CHARACTERS);
@@ -83,8 +83,8 @@ test("a tool call with no loop is the main loop's", () => {
 });
 
 test("a tool call keeps its name only, never its arguments", () => {
-  const board = castEvent(take(EMPTY_CAST, "harvey", ""), { kind: "tool", tool: "mcp__suits__suits_checklist", loop: "", input: { steps: ["x"] } }, CHARACTERS);
-  assert.deepEqual(board.lastTool, { harvey: "mcp__suits__suits_checklist" });
+  const board = castEvent(take(EMPTY_CAST, "harvey", ""), { kind: "tool", tool: "mcp__suits-hooks__suits_checklist", loop: "", input: { steps: ["x"] } }, CHARACTERS);
+  assert.deepEqual(board.lastTool, { harvey: "mcp__suits-hooks__suits_checklist" });
 });
 
 test("a skill that is not a character is labelled as a slash command and credited like a tool", () => {

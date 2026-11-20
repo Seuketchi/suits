@@ -4,7 +4,7 @@ const PANE_ID = 'suits-cast'
 const LOG_PATH = '/donna/action-log.md'
 
 const PANE = {
-  plugin: 'suits',
+  plugin: 'suits-hooks',
   component: 'Pane',
   requestId: PANE_ID,
   props: {
@@ -32,8 +32,8 @@ function engine(on: any, log?: string, files: Record<string, string> = {}): Engi
   const seen: Engine = { opened: [], file: { log }, reads: [], toasts: [] }
 
   on('fs.read', (_: unknown, e: { path: string }) => {
-    if (e.path.endsWith('.claude-plugin/plugin.json')) {
-      return { value: JSON.stringify({ skills: ['./skills/characters/harvey', './skills/characters/mike'] }) }
+    if (e.path.endsWith('hooks/characters.json')) {
+      return { value: JSON.stringify(['harvey', 'mike']) }
     }
     for (const [suffix, value] of Object.entries(files)) if (e.path.endsWith(suffix)) return { value }
     if (e.path === LOG_PATH && seen.file.log !== undefined) {
@@ -100,8 +100,8 @@ for (const surface of ['terminal', 'desktop'] as const) {
     expect(await text(ui, /mike:/)).toBe('mike: Bash')
 
     // the checklist tool answers for itself and is still seen
-    await $.tool.call({ tool: 'mcp__suits__suits_checklist', steps: ['a', 'b'] })
-    expect(await text(ui, /mike:/)).toBe('mike: mcp__suits__suits_checklist')
+    await $.tool.call({ tool: 'mcp__suits-hooks__suits_checklist', steps: ['a', 'b'] })
+    expect(await text(ui, /mike:/)).toBe('mike: mcp__suits-hooks__suits_checklist')
     await ui.unmount()
   })
 
@@ -218,7 +218,7 @@ test('a call the rules hook denies is still denied, and is not put on the board'
 // The board's write always loses to another (a conditional write that never
 // lands), so feeding it rejects; the checklist's and the rest stay up. A hook
 // that merely throws is skipped by the engine and breaks nothing.
-const breakBoard = (on: any) => on('state.set', { plugin: 'suits', key: 'cast' }, () => ({ value: { isSet: false, version: 0 } }))
+const breakBoard = (on: any) => on('state.set', { plugin: 'suits-hooks', key: 'cast' }, () => ({ value: { isSet: false, version: 0 } }))
 
 const WARN = { warn: [{ id: 'one-build', why: 'two builds at once exhaust the shared box', tools: ['Bash'], match: '\\bbuild\\b' }] }
 
@@ -252,7 +252,7 @@ test('a board failure on a suits_checklist call still answers with the checklist
   breakBoard(on)
   await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
 
-  const out = await $.tool.call({ tool: 'mcp__suits__suits_checklist', steps: ['a', 'b'] })
+  const out = await $.tool.call({ tool: 'mcp__suits-hooks__suits_checklist', steps: ['a', 'b'] })
 
   expect(JSON.stringify(out.result)).toContain('1. [ ] a')
   expect(JSON.stringify(out.result)).toContain('0 of 2 done')

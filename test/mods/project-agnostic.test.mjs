@@ -4,16 +4,16 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { parseRules } from "../../hooks/logic.mjs";
+import { parseRules } from "../../plugins/suits-hooks/hooks/logic.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
 // The files that ship in hooks/. The tests there carry made-up rules of
 // their own, so they are not part of what is checked.
 const shipped = () =>
-  readdirSync(join(repo, "hooks"))
+  readdirSync(join(repo, "plugins/suits-hooks/hooks"))
     .filter((name) => !/\.test\.[a-z]+$/.test(name))
-    .map((name) => [name, readFileSync(join(repo, "hooks", name), "utf8")]);
+    .map((name) => [name, readFileSync(join(repo, "plugins/suits-hooks/hooks", name), "utf8")]);
 
 // A rule written into code: a "never" or "warn" list with an entry in it, or
 // an object that pairs a rule's "match" with a pattern.

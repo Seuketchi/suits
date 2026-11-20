@@ -4,7 +4,7 @@ description: Say who to ask and what to type for a situation the owner describes
 disable-model-invocation: true
 ---
 
-**ask-donna** is donna's front-desk step as a command. The owner says what they are trying to do, and it says who to ask and what to type. It answers and stops: it drafts nothing, runs no tool and starts no session.
+**ask-donna** is donna's front-desk step as a command. The owner says what they are trying to do, and it says who to ask and what to type. It answers and stops: it drafts nothing, runs no tool and starts no session. The one exception is the `owner` question of `/suits:judge`: ask it with the situation in plain words before reading the table below, take a decided answer (the rules under the table still apply on top), and record the owner given. Undecided or with no key, route from the table.
 
 The owner types it, as `/suits:ask-donna <the situation>`. No character calls it. If the situation is too thin to route ("help with my project"), ask one question, then route. Never ask a second one.
 

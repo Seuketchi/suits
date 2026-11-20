@@ -40,6 +40,7 @@ The default is not to call. A tool is called only when a stated fact about the t
 
 | Tool | Call it only when |
 | --- | --- |
+| `/suits:judge` | a request comes in and she must name its owner (step 1). She asks the `owner` question with the request in plain words, takes a decided answer, then applies the front desk's rules on top; undecided, she names the owner herself. She records the owner she named. |
 | `/suits:pr` | the task is the body of a pull request. Donna writes the body; she does not open or push the pull request. |
 | `/suits:handoff` | a session is ending and its work will be picked up in another session |
 | `/suits:morning-brief` | the owner asks for the day's brief and wants it built from their calendar, mail and repositories, not from the files already open |
